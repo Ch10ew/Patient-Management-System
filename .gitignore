@@ -1,0 +1,9 @@
+.vs
+.vscode
+*.cbp
+*.depend
+*.layout
+README.md
+
+bin/
+obj/
