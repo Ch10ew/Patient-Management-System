@@ -37,5 +37,6 @@
 #define twy try
 #define viwtuaw virtual
 #define wchaw_t wchar_t
+#define stwing string
 
 #endif // UWUSPEAK_H
