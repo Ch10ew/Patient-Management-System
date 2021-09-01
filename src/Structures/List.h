@@ -35,6 +35,9 @@ namespace pms
     class List
     {
         public:
+            // Constructors
+            List(const List<T> &source);
+            
             // Element Access
             const T& Head() const;
             const T& Tail() const;
@@ -89,6 +92,21 @@ namespace pms
     template <typename T>
     ListNode<T>::ListNode(T data) : data(data)
     {
+    }
+
+    /// ========================================
+    ///   List class constructor definitions.
+    /// ========================================
+    // Constructors
+    template <typename T>
+    List<T>::List(const List<T> &source)
+    {
+        for (int i = 0; i < source.Size(); ++i)
+        {
+            T data_copy = source.At(i);
+            std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data_copy);
+            this->InsertTail(tmp);
+        }
     }
 
     /// ========================================
@@ -400,7 +418,11 @@ namespace pms
     template <typename T>
     std::vector<T> List<T>::Merge(std::vector<T> left_vector, std::vector<T> right_vector)
     {
+        std::vector<T> return_vector;
 
+
+
+        return return_vector;
     }
 
 } // namespace pms
