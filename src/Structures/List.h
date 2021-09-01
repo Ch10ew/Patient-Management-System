@@ -36,6 +36,7 @@ namespace pms
     {
         public:
             // Constructors
+            List();
             List(const List<T> &source);
             
             // Element Access
@@ -66,12 +67,21 @@ namespace pms
             void Sort();
             template<class Compare>
             void Sort(Compare func);
+
+            // Operator Overloads
+            void operator=(const List<T>& source);
         
         private:
-            /**
-             * Auxiliary function for `Sort()`
-             */
-            std::vector<T> Merge(std::vector<T> left_vector, std::vector<T> right_vector);
+            // Auxiliary functions for `Sort()`
+            List<T> Sorter(List<T> input_list);
+
+            template <class Compare>
+            List<T> Sorter(List<T> input_list, Compare func);
+
+            List<T> Merge(List<T> left_list, List<T> right_list);
+
+            template <class Compare>
+            List<T> Merge(List<T> left_list, List<T> right_list, Compare func);
 
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
@@ -99,14 +109,14 @@ namespace pms
     /// ========================================
     // Constructors
     template <typename T>
+    List<T>::List()
+    {
+    }
+
+    template <typename T>
     List<T>::List(const List<T> &source)
     {
-        for (int i = 0; i < source.Size(); ++i)
-        {
-            T data_copy = source.At(i);
-            std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data_copy);
-            this->InsertTail(tmp);
-        }
+        *this = source;
     }
 
     /// ========================================
@@ -137,33 +147,15 @@ namespace pms
         size_t counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
 
-        if (this->Size() < n)
+        while (current)
         {
-            while (current)
+            if (counter == n)
             {
-                if (counter == n)
-                {
-                    return current->data;
-                }
-
-                current = current->next;
-                ++counter;
+                return current->data;
             }
-        }
-        else
-        {
-            counter = this->Size() - 1;
-            current = tail_;
-            while (current)
-            {
-                if (counter == n)
-                {
-                    return current->data;
-                }
 
-                current = current->prev;
-                --counter;
-            }
+            current = current->next;
+            ++counter;
         }
 
         throw std::runtime_error("List is empty.");
@@ -210,8 +202,8 @@ namespace pms
 
         if (head_)
         {
+            head_->prev = tmp;
             tmp->next = head_;
-            tmp->next->prev = tmp;
         }
 
         head_ = tmp;
@@ -264,12 +256,21 @@ namespace pms
     {
         std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
         std::shared_ptr<ListNode<T>> current = head_;
-        while (current->next)
+
+        if (size_ == 0)
         {
-            current = current->next;
+            head_ = tmp;
+            tail_ = tmp;
         }
-        current->next = tmp;
-        tmp->prev = current;
+        else
+        {
+            while (current->next)
+            {
+                current = current->next;
+            }
+            current->next = tmp;
+            tmp->prev = current;
+        }
         ++size_;
     }
 
@@ -394,35 +395,208 @@ namespace pms
     {
         std::vector<T> return_vector;
 
-        for (int i = 0; i < this->Size(); ++i)
+        for (int i = 0; i < size_; ++i)
         {
             return_vector.push_back(this->At(i));
         }
 
         return return_vector;
     }
-
+    
+    /**
+     * @brief Sorts the current list
+     * 
+     * @tparam T Type used for List<T>
+     */
     template <typename T>
     void List<T>::Sort()
     {
-        
+        *this = Sorter(*this);
     }
 
+    /**
+     * @brief Sorts the current list
+     * 
+     * @tparam T Type used for List<T>
+     * @param func Comparison function in the form of `bool foo(const T& lhs, const T& rhs)`
+     */
     template <typename T>
-    template<class Compare>
+    template <class Compare>  // trying to use a named requirement, might fail if compiler doesnt like this
     void List<T>::Sort(Compare func)
     {
-        
+        *this = Sorter(*this, func);
     }
 
     template <typename T>
-    std::vector<T> List<T>::Merge(std::vector<T> left_vector, std::vector<T> right_vector)
+    void List<T>::operator=(const List<T>& source)
     {
-        std::vector<T> return_vector;
+        for (int i = 0; i < source.Size(); ++i)
+        {
+            T data_copy = source.At(i);
+            this->InsertTail(data_copy);
+        }
+    }
 
+    template <typename T>
+    List<T> List<T>::Sorter(List<T> input_list)
+    {
+        // No sorting needed
+        if (input_list.Size() <= 1)
+            return input_list;
+        
+        // Divide List into sublists
+        List<T> left_list;
+        List<T> right_list;
 
+        for (int i = 0; i < input_list.Size(); ++i)
+        {
+            if (i < input_list.Size() / 2)
+            {
+                T data_copy = input_list.At(i);
+                left_list.InsertTail(data_copy);
+            }
+            else
+            {
+                T data_copy = input_list.At(i);
+                right_list.InsertTail(data_copy);
+            }
+        }
 
-        return return_vector;
+        // Recursively sor the sublists
+        left_list = Sorter(left_list);
+        right_list = Sorter(right_list);
+
+        // Merge sorted sublists
+        return Merge(left_list, right_list);
+    }
+
+    template <typename T>
+    template <class Compare>
+    List<T> List<T>::Sorter(List<T> input_list, Compare func)
+    {
+        // No sorting needed
+        if (input_list.Size() <= 1)
+            return input_list;
+        
+        // Divide List into sublists
+        List<T> left_list;
+        List<T> right_list;
+
+        for (int i = 0; i < input_list.Size(); ++i)
+        {
+            if (i < input_list.Size() / 2)
+            {
+                T data_copy = input_list.At(i);
+                left_list.InsertTail(data_copy);
+            }
+            else
+            {
+                T data_copy = input_list.At(i);
+                right_list.InsertTail(data_copy);
+            }
+        }
+
+        // Recursively sor the sublists
+        left_list = Sorter(left_list);
+        right_list = Sorter(right_list);
+
+        // Merge sorted sublists
+        return Merge(left_list, right_list, func);
+    }
+
+    /**
+     * @brief Sorts and merges two `List<T>`
+     * 
+     * @tparam T Type used for List<T>
+     * @param left_list (Sorted) Left list to be merged
+     * @param right_list (Sorted) Right list to be merged
+     * @return List<T> Sorted and merged list of `left_list` and `right_list`
+     */
+    template <typename T>
+    List<T> List<T>::Merge(List<T> left_list, List<T> right_list)
+    {
+        List<T> return_list;
+
+        while (left_list.Size() != 0 && right_list.Size() != 0)
+        {
+            if (left_list.Head() < right_list.Head())  // Normal comparison
+            {
+                T data_copy = left_list.Head();
+                return_list.InsertTail(data_copy);
+                left_list.RemoveHead();
+            }
+            else
+            {
+                T data_copy = right_list.Head();
+                return_list.InsertTail(data_copy);
+                right_list.RemoveHead();
+            }
+        }
+
+        // In the case where the lists were not balanced, e.g. left list size 4, right list size 3
+        while (left_list.Size() != 0)
+        {
+            T data_copy = left_list.Head();
+            return_list.InsertTail(data_copy);
+            left_list.RemoveHead();
+        }
+
+        while (right_list.Size() != 0)
+        {
+            T data_copy = right_list.Head();
+            return_list.InsertTail(data_copy);
+            right_list.RemoveHead();
+        }
+
+        return return_list;
+    }
+
+    /**
+     * @brief Sorts and merges two `List<T>`
+     * 
+     * @tparam T Type used for List<T>
+     * @param left_list (Sorted) Left list to be merged
+     * @param right_list (Sorted) Right list to be merged
+     * @return List<T> Sorted and merged list of `left_list` and `right_list`
+     */
+    template <typename T>
+    template <class Compare>
+    List<T> List<T>::Merge(List<T> left_list, List<T> right_list, Compare func)
+    {
+        List<T> return_list;
+
+        while (left_list.Size() != 0 && right_list.Size() != 0)
+        {
+            if (func(left_list.Head(), right_list.Head()))  // Use of `func`
+            {
+                T data_copy = left_list.Head();
+                return_list.InsertTail(data_copy);
+                left_list.RemoveHead();
+            }
+            else
+            {
+                T data_copy = right_list.Head();
+                return_list.InsertTail(data_copy);
+                right_list.RemoveHead();
+            }
+        }
+
+        // In the case where the lists were not balanced, e.g. left list size 4, right list size 3
+        while (left_list.Size() != 0)
+        {
+            T data_copy = left_list.Head();
+            return_list.InsertTail(data_copy);
+            left_list.RemoveHead();
+        }
+
+        while (right_list.Size() != 0)
+        {
+            T data_copy = right_list.Head();
+            return_list.InsertTail(data_copy);
+            right_list.RemoveHead();
+        }
+
+        return return_list;
     }
 
 } // namespace pms
