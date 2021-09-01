@@ -63,6 +63,12 @@ namespace pms
             void Sort();
             template<class Compare>
             void Sort(Compare func);
+        
+        private:
+            /**
+             * Auxiliary function for `Sort()`
+             */
+            std::vector<T> Merge(std::vector<T> left_vector, std::vector<T> right_vector);
 
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
@@ -377,7 +383,7 @@ namespace pms
 
         return return_vector;
     }
-    
+
     template <typename T>
     void List<T>::Sort()
     {
@@ -389,6 +395,12 @@ namespace pms
     void List<T>::Sort(Compare func)
     {
         
+    }
+
+    template <typename T>
+    std::vector<T> List<T>::Merge(std::vector<T> left_vector, std::vector<T> right_vector)
+    {
+
     }
 
 } // namespace pms
