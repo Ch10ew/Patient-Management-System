@@ -2,6 +2,7 @@
 #define PMS_LIST_H
 
 #include <memory>
+#include <vector>
 
 namespace pms
 {
@@ -58,9 +59,9 @@ namespace pms
             void Swap(const size_t a, const size_t b);
 
             /// WIP
-            void sort();
+            void Sort();
             template<class Compare>
-            void sort(Compare func);
+            void Sort(Compare func);
 
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
@@ -110,15 +111,34 @@ namespace pms
     {
         size_t counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
-        while (current)
-        {
-            if (counter == n)
-            {
-                return current->data;
-            }
 
-            current = current->next;
-            ++counter;
+        if (this->Size() < n)
+        {
+            while (current)
+            {
+                if (counter == n)
+                {
+                    return current->data;
+                }
+
+                current = current->next;
+                ++counter;
+            }
+        }
+        else
+        {
+            counter = this->Size() - 1;
+            current = tail_;
+            while (current)
+            {
+                if (counter == n)
+                {
+                    return current->data;
+                }
+
+                current = current->prev;
+                --counter;
+            }
         }
 
         throw std::runtime_error("List is empty.");
@@ -345,16 +365,16 @@ namespace pms
     }
 
     template <typename T>
-    void List<T>::sort()
+    void List<T>::Sort()
     {
-
+        
     }
 
     template <typename T>
     template<class Compare>
-    void List<T>::sort(Compare func)
+    void List<T>::Sort(Compare func)
     {
-
+        
     }
 
 } // namespace pms
