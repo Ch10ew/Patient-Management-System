@@ -57,6 +57,7 @@ namespace pms
             // Operations
             int Search(const T data) const;
             void Swap(const size_t a, const size_t b);
+            std::vector<T> ToVector();
 
             /// WIP
             void Sort();
@@ -364,6 +365,19 @@ namespace pms
         b_node->data = tmp_data;
     }
 
+    template <typename T>
+    std::vector<T> List<T>::ToVector()
+    {
+        std::vector<T> return_vector;
+
+        for (int i = 0; i < this->Size(); ++i)
+        {
+            return_vector.push_back(this->At(i));
+        }
+
+        return return_vector;
+    }
+    
     template <typename T>
     void List<T>::Sort()
     {
