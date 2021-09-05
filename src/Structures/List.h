@@ -270,6 +270,7 @@ namespace pms
             }
             current->next = tmp;
             tmp->prev = current;
+            tail_ = tmp;
         }
         ++size_;
     }
@@ -280,6 +281,12 @@ namespace pms
         if (size_ < 1)
             return;
         
+        if (size_ == 1)
+        {
+            Clear();
+            return;
+        }
+
         std::shared_ptr<ListNode<T>> tmp = head_;
         head_ = head_->next;
         tmp->next = nullptr; // clean up `next` ptr from head
@@ -293,6 +300,12 @@ namespace pms
         if (size_ < 1)
             return;
         
+        if (size_ == 1)
+        {
+            Clear();
+            return;
+        }
+
         int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
         while (current->next)
@@ -331,11 +344,18 @@ namespace pms
         if (size_ < 1)
             return;
         
+        if (size_ == 1)
+        {
+            Clear();
+            return;
+        }
+
         std::shared_ptr<ListNode<T>> current = head_;
         while (current->next)
         {
             current = current->next;
         }
+        tail_ = current->prev;
         current->prev->next = nullptr;
         current->prev = nullptr;
         --size_;
@@ -427,7 +447,7 @@ namespace pms
     void List<T>::operator=(const List<T>& source)
     {
         this->Clear();
-        
+
         for (int i = 0; i < source.Size(); ++i)
         {
             T data_copy = source.At(i);

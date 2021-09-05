@@ -72,7 +72,7 @@ int main()
     PrintDebug(dll);
     dll.InsertHead(Car("XYZ2345", 230000.0));
     PrintDebug(dll);
-    dll.InsertHead(Car("ABC1234", 120000.0));
+    dll.InsertHead(Car("ABC1234", 145000.0));
     PrintDebug(dll);
 
     std::cout << "(\"ABC1234\", 120000.0) Index: " << dll.Search(Car("ABC1234", 120000.0)) << "\n" << std::endl;
