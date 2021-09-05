@@ -42,25 +42,25 @@ namespace pms
             // Element Access
             const T& Head() const;
             const T& Tail() const;
-            const T& At(const size_t n) const;
+            const T& At(const int n) const;
 
             // Capacity
             const bool Empty() const;
-            const size_t Size() const;
+            const int Size() const;
 
             // Modifiers
             void Clear();
-            void ShrinkToFit(const size_t size);
+            void ShrinkToFit(const int size);
             void InsertHead(const T data);
-            void InsertInPlace(const T data, const size_t index);
+            void InsertInPlace(const T data, const int index);
             void InsertTail(const T data);
             void RemoveHead();
-            void RemoveInPlace(const size_t index);
+            void RemoveInPlace(const int index);
             void RemoveTail();
 
             // Operations
             int Search(const T data) const;
-            void Swap(const size_t a, const size_t b);
+            void Swap(const int a, const int b);
             std::vector<T> ToVector();
 
             /// WIP
@@ -86,7 +86,7 @@ namespace pms
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
             std::shared_ptr<ListNode<T>> tail_ = nullptr;
-            size_t size_ = 0;
+            int size_ = 0;
     };
 
 
@@ -142,9 +142,9 @@ namespace pms
     }
 
     template <typename T>
-    const T& List<T>::At(const size_t n) const
+    const T& List<T>::At(const int n) const
     {
-        size_t counter = 0;
+        int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
 
         while (current)
@@ -169,7 +169,7 @@ namespace pms
     }
 
     template <typename T>
-    const size_t List<T>::Size() const
+    const int List<T>::Size() const
     {
         return size_;
     }
@@ -183,7 +183,7 @@ namespace pms
     }
 
     template <typename T>
-    void List<T>::ShrinkToFit(const size_t size)
+    void List<T>::ShrinkToFit(const int size)
     {
         int difference = int(size_) - int(size);
         if (difference > 0)
@@ -215,9 +215,9 @@ namespace pms
     }
 
     template <typename T>
-    void List<T>::InsertInPlace(const T data, const size_t index)
+    void List<T>::InsertInPlace(const T data, const int index)
     {
-        size_t counter = 0;
+        int counter = 0;
         std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
         std::shared_ptr<ListNode<T>> current = head_;
         while (current->next)
@@ -277,17 +277,23 @@ namespace pms
     template <typename T>
     void List<T>::RemoveHead()
     {
-        --size_;
+        if (size_ < 1)
+            return;
+        
         std::shared_ptr<ListNode<T>> tmp = head_;
         head_ = head_->next;
         tmp->next = nullptr; // clean up `next` ptr from head
-        head_->prev = nullptr;
+        //head_->prev = nullptr;
+        --size_;
     }
 
     template <typename T>
-    void List<T>::RemoveInPlace(const size_t index)
+    void List<T>::RemoveInPlace(const int index)
     {
-        size_t counter = 0;
+        if (size_ < 1)
+            return;
+        
+        int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
         while (current->next)
         {
@@ -322,6 +328,9 @@ namespace pms
     template <typename T>
     void List<T>::RemoveTail()
     {
+        if (size_ < 1)
+            return;
+        
         std::shared_ptr<ListNode<T>> current = head_;
         while (current->next)
         {
@@ -356,7 +365,7 @@ namespace pms
     }
 
     template <typename T>
-    void List<T>::Swap(const size_t a, const size_t b)
+    void List<T>::Swap(const int a, const int b)
     {
         if (a > size_ || b > size_)
             return;
@@ -364,7 +373,7 @@ namespace pms
         if (a == b)
             return;
 
-        size_t counter = 0;
+        int counter = 0;
         std::shared_ptr<ListNode<T>> a_node;
         std::shared_ptr<ListNode<T>> b_node;
         T tmp_data;
@@ -388,19 +397,6 @@ namespace pms
 
         a_node->data = b_node->data;
         b_node->data = tmp_data;
-    }
-
-    template <typename T>
-    std::vector<T> List<T>::ToVector()
-    {
-        std::vector<T> return_vector;
-
-        for (int i = 0; i < size_; ++i)
-        {
-            return_vector.push_back(this->At(i));
-        }
-
-        return return_vector;
     }
     
     /**
@@ -430,6 +426,8 @@ namespace pms
     template <typename T>
     void List<T>::operator=(const List<T>& source)
     {
+        this->Clear();
+        
         for (int i = 0; i < source.Size(); ++i)
         {
             T data_copy = source.At(i);
