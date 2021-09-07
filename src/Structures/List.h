@@ -303,15 +303,6 @@ namespace pms
     template <typename T>
     void List<T>::RemoveInPlace(const int index)
     {
-        if (size_ < 1)
-            return;
-        
-        if (size_ == 1)
-        {
-            Clear();
-            return;
-        }
-
         if (index == size_ - 1)
         {
             this->RemoveTail();
@@ -324,27 +315,24 @@ namespace pms
         {
             if (index == counter)
             {
-                current = current->prev;
-                if (current)
-                {
-                    std::shared_ptr<ListNode<T>> after = current->next->next;
+                std::shared_ptr<ListNode<T>> prev = current->prev;
+                std::shared_ptr<ListNode<T>> next = current->next;
 
-                    current->next->prev = nullptr; // set "current"'s `prev` to nullptr
-                    current->next->next->prev = current; // set "after"'s prev to "before"
-                    current->next->next = nullptr;  // set "current"'s `next` to nullptr
-                    current->next = after; // set "before"'s next to "after"
-                }
+                if (prev)
+                    prev->next = next;
                 else
-                {
-                    current = head_; // fix current from `nullptr` to `head_`
-                    head_ = current->next; // set new head_
-                    current->next->prev = nullptr; // set "after"'s `prev` to nullptr
-                    current->next = nullptr; // set "current"'s next to nullptr
-                }
+                    head_ = next;
+                
+                if (next)
+                    next->prev = prev;
+                else
+                    tail_ = prev;
+                
+                current->prev = nullptr;
+                current->next = nullptr;
                 --size_;
                 return;
             }
-
             current = current->next;
             ++counter;
         }
