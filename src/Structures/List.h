@@ -217,6 +217,12 @@ namespace pms
     template <typename T>
     void List<T>::InsertInPlace(const T data, const int index)
     {
+        if (index == size_ - 1)
+        {
+            this->InsertTail(data);
+            return;
+        }
+
         int counter = 0;
         std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
         std::shared_ptr<ListNode<T>> current = head_;
@@ -303,6 +309,12 @@ namespace pms
         if (size_ == 1)
         {
             Clear();
+            return;
+        }
+
+        if (index == size_ - 1)
+        {
+            this->RemoveTail();
             return;
         }
 

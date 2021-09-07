@@ -67,7 +67,7 @@ int main()
 
     pms::List<Car> dll;
 
-    PrintDebug(dll);
+    /*PrintDebug(dll);
     dll.InsertHead(Car("ABC1234", 120000.0));
     PrintDebug(dll);
     dll.InsertHead(Car("XYZ2345", 230000.0));
@@ -77,6 +77,7 @@ int main()
 
     std::cout << "(\"ABC1234\", 120000.0) Index: " << dll.Search(Car("ABC1234", 120000.0)) << "\n" << std::endl;
 
+    std::cout << "SWAPPING:" << std::endl;
     PrintDebug(dll);
     dll.Swap(0,1);
     PrintDebug(dll);
@@ -87,7 +88,28 @@ int main()
     PrintDebug(dll);
     
     dll.Clear();
+    PrintDebug(dll);*/
+
     PrintDebug(dll);
+    dll.InsertTail(Car("ABC1234", 120000.0));
+    dll.InsertTail(Car("XYZ2345", 230000.0));
+    dll.InsertTail(Car("ABC1234", 145000.0));
+
+    PrintDebug(dll);
+    dll.InsertInPlace(Car("BCD1234", 69000.0), 1);
+    PrintDebug(dll);
+    dll.InsertInPlace(Car("BCD5678", 71000.0), 0);
+    PrintDebug(dll);
+    dll.InsertInPlace(Car("DEF1234", 31000.0), dll.Size() - 1);
+    PrintDebug(dll);
+
+    PrintDebug(dll);
+    dll.RemoveInPlace(2);
+    PrintDebug(dll);
+    /*dll.RemoveInPlace(0);
+    PrintDebug(dll);
+    dll.RemoveInPlace(dll.Size() - 1);
+    PrintDebug(dll);*/
 
     return 0;
 }
