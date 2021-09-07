@@ -8,5 +8,6 @@ README.md
 bin/
 obj/
 Artifacts/
-src/compile.bat
+src/main.bat
+src/test_main.bat
 src/a.exe

@@ -61,7 +61,6 @@ namespace pms
             // Operations
             int Search(const T data) const;
             void Swap(const int a, const int b);
-            std::vector<T> ToVector();
 
             /// WIP
             void Sort();
@@ -144,6 +143,9 @@ namespace pms
     template <typename T>
     const T& List<T>::At(const int n) const
     {
+        if (n < 0)
+            throw std::runtime_error("Invalid index given.");
+
         int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
 
@@ -185,6 +187,9 @@ namespace pms
     template <typename T>
     void List<T>::ShrinkToFit(const int size)
     {
+        if (size < 0)
+            throw std::runtime_error("Invalid index given.");
+
         int difference = int(size_) - int(size);
         if (difference > 0)
         {
@@ -217,11 +222,17 @@ namespace pms
     template <typename T>
     void List<T>::InsertInPlace(const T data, const int index)
     {
-        if (index == size_ - 1)
+        if (index < 0)
+            return;
+        
+        if ((index == 0 && size_ == 0) || index == size_ - 1)
         {
             this->InsertTail(data);
             return;
         }
+
+        if (index >= size_)
+            return;
 
         int counter = 0;
         std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
