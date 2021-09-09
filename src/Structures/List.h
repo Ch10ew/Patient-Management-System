@@ -4,6 +4,7 @@
 #ifndef PMS_LIST_H
 #define PMS_LIST_H
 
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -453,6 +454,9 @@ namespace pms
     template <typename T>
     void List<T>::Sort()
     {
+        if (size_ == 0)
+            throw std::length_error("pms::List<T>::Sort(): List is empty");
+        
         *this = Sorter(*this);
     }
 
@@ -466,6 +470,9 @@ namespace pms
     template <class Compare>  // trying to use a named requirement, might fail if compiler doesnt like this
     void List<T>::Sort(Compare func)
     {
+        if (size_ == 0)
+            throw std::length_error("pms::List<T>::Sort(): List is empty");
+        
         *this = Sorter(*this, func);
     }
 
@@ -494,19 +501,18 @@ namespace pms
 
         for (int i = 0; i < input_list.Size(); ++i)
         {
+            T data_copy = input_list.At(i);
             if (i < input_list.Size() / 2)
             {
-                T data_copy = input_list.At(i);
                 left_list.InsertTail(data_copy);
             }
             else
             {
-                T data_copy = input_list.At(i);
                 right_list.InsertTail(data_copy);
             }
         }
 
-        // Recursively sor the sublists
+        // Recursively sort the sublists
         left_list = Sorter(left_list);
         right_list = Sorter(right_list);
 
@@ -540,7 +546,7 @@ namespace pms
             }
         }
 
-        // Recursively sor the sublists
+        // Recursively sort the sublists
         left_list = Sorter(left_list);
         right_list = Sorter(right_list);
 

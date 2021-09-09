@@ -2024,13 +2024,73 @@ namespace pms
         std::cout << "Test A - Test Sort() when list is empty." << std::endl;
         try
         {
-            list.RemoveInPlace(0);
-            std::cerr << "Failed Test - RemoveInPlace(0) did not throw when out of bounds." << std::endl;
+            list.Sort();
+            std::cerr << "Failed Test - Sort() did not throw when list is empty." << std::endl;
             return;
         }
         catch(...)
         {
-            // Passed test, Correct behaviour is to throw when out of range.
+            // Passed test, Correct behaviour is to throw when list is empty.
+        }
+
+        std::cout << "Test B - Test Sort() when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.Sort();
+        if (list.Size() != 1)
+        {
+            std::cerr << "Failed Test - Sort() changed the size of list from 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test Sort() when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort();
+        if (list.At(0) != 1 || list.At(1) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 2, 1 }. Expected { 1, 2 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test Sort() when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(3);
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort();
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 3, 2, 1 }. Expected { 1, 2, 3 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test E - Test Sort() when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(4);
+        list.InsertTail(3);
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort();
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 4, 3, 2, 1 }. Expected { 1, 2, 3, 4 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test F - Test Sort() when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(5);
+        list.InsertTail(4);
+        list.InsertTail(3);
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort();
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 5, 4, 3, 2, 1 }. Expected { 1, 2, 3, 4, 5 }." << std::endl;
+            return;
         }
     }
 
@@ -2038,7 +2098,28 @@ namespace pms
 
     void ListTest::operatorEqualTest()
     {
+        std::cout << std::endl; // newline
+
+        std::cout << "operator=() Testing" << std::endl;
+        List<int> list;
+        List<int> equality_check_list;
+
+        std::cout << "Test A - Test equality when supplied list is empty." << std::endl;
+        list = equality_check_list;
+        if (list.Size() != 0)
+        {
+            std::cerr << "Failed Test - List size is not 0." << std::endl;
+            return;
+        }
         
+        std::cout << "Test B - Test equality when supplied list has 1 element." << std::endl;
+        equality_check_list.InsertTail(1);
+        list = equality_check_list;
+        if (list.At(0) != equality_check_list.At(0))
+        {
+            std::cerr << "Failed Test - `list` element 0 is not the same as `equality_check_list` element 0." << std::endl;
+            return;
+        }
     }
 
 } // namespace pms
