@@ -7,6 +7,14 @@
 
 namespace pms
 {
+    // For sorting
+    bool Sort2Comparison(int a, int b)
+    {
+        return a > b;
+    }
+
+
+    
     class ListTest
     {
         public:
@@ -28,7 +36,9 @@ namespace pms
             void SearchTest();
             void SwapTest();
             void SortTest();
+            void Sort2Test();
             void operatorEqualTest();
+            
     };
 
     ListTest::ListTest()
@@ -49,6 +59,7 @@ namespace pms
         SearchTest();
         SwapTest();
         SortTest();
+        Sort2Test();
         operatorEqualTest();
     }
 
@@ -2087,6 +2098,88 @@ namespace pms
         list.InsertTail(2);
         list.InsertTail(1);
         list.Sort();
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 5, 4, 3, 2, 1 }. Expected { 1, 2, 3, 4, 5 }." << std::endl;
+            return;
+        }
+    }
+
+
+
+    void ListTest::Sort2Test()
+    {
+        std::cout << std::endl; // newline
+
+        std::cout << "Sort() overload Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test Sort2() when list is empty." << std::endl;
+        try
+        {
+            list.Sort(Sort2Comparison);
+            std::cerr << "Failed Test - Sort2() did not throw when list is empty." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when list is empty.
+        }
+
+        std::cout << "Test B - Test Sort2() when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.Sort(Sort2Comparison);
+        if (list.Size() != 1)
+        {
+            std::cerr << "Failed Test - Sort2() changed the size of list from 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test Sort2() when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort(Sort2Comparison);
+        if (list.At(0) != 1 || list.At(1) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 2, 1 }. Expected { 1, 2 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test Sort2() when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(3);
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort(Sort2Comparison);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 3, 2, 1 }. Expected { 1, 2, 3 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test E - Test Sort2() when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(4);
+        list.InsertTail(3);
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort(Sort2Comparison);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 4, 3, 2, 1 }. Expected { 1, 2, 3, 4 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test F - Test Sort2() when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(5);
+        list.InsertTail(4);
+        list.InsertTail(3);
+        list.InsertTail(2);
+        list.InsertTail(1);
+        list.Sort(Sort2Comparison);
         if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
         {
             std::cerr << "Failed Test - List contains { 5, 4, 3, 2, 1 }. Expected { 1, 2, 3, 4, 5 }." << std::endl;
