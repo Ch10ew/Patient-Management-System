@@ -14,7 +14,7 @@ namespace pms
     }
 
 
-    
+
     class ListTest
     {
         public:
@@ -34,6 +34,7 @@ namespace pms
             void RemoveInPlaceTest();
             void RemoveTailTest();
             void SearchTest();
+            void Search2Test();
             void SwapTest();
             void SortTest();
             void Sort2Test();

@@ -1,10 +1,12 @@
 /// [TO DO] add overload for Search() for custom comp function
+/// [TO DO] add overload for Search() for custom classed comp function
 /// [TO DO] add current for optimization for some insertion/removal/access
+/// [TO DO] add classed function overload for Sort()
 
 #ifndef PMS_LIST_H
 #define PMS_LIST_H
 
-#include <iostream>
+#include <cmath>
 #include <memory>
 #include <vector>
 
@@ -89,11 +91,16 @@ namespace pms
             template <class Compare>
             List<T> Merge(List<T> left_list, List<T> right_list, Compare func);
 
+            // Optimization auxiliary functions
+            const int SmallestDifferenceInIndex(const int index) const;
+            const int ShortestPathTransversalDirectionToIndex(const int index) const;
+
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
             std::shared_ptr<ListNode<T>> tail_ = nullptr;
             std::shared_ptr<ListNode<T>> current_ = nullptr;
             int size_ = 0;
+            int current_index_ = 0;
     };
 
 
@@ -647,6 +654,63 @@ namespace pms
         }
 
         return return_list;
+    }
+
+    /**
+     * @brief Tells the smallest difference in indices between either head, tail or current.
+     * @param index target index (must be a valid index)
+     * @return int smallest difference to the target index
+     */
+    template <typename T>
+    const int List<T>::SmallestDifferenceInIndex(const int index) const
+    {
+        int difference_head = index;
+        int difference_tail = size_ - index;
+        int difference_current = abs(current_index_ - index);
+
+        if (difference_head > difference_tail)
+        {
+            if (difference_tail > difference_current)
+            {
+                return difference_current;
+            }
+            else
+            {
+                return difference_tail;
+            }
+        }
+        else if (difference_head > difference_current)
+        {
+            return difference_current;
+        }
+        
+        return difference_head;
+    }
+
+    /**
+     * @brief Tells the direction to transverse the list to get to the target index.
+     * -1 represents left, 1 represents right
+     * @param index target index (must be a valid index)
+     * @return int direction
+     */
+    template <typename T>
+    const int List<T>::ShortestPathTransversalDirectionToIndex(const int index) const
+    {
+        int difference_head = index;
+        int difference_tail = size_ - index;
+        int difference_current = current_index_ - index;
+        int difference_smallest = SmallestDifferenceInIndex();
+        
+        if (difference_smallest == difference_head)
+            return 1;
+        
+        if (difference_smallest == difference_tail)
+            return -1;
+        
+        if (difference_current > 0)
+            return -1;
+        
+        return 1;
     }
 
 } // namespace pms
