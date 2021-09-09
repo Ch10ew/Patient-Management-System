@@ -399,14 +399,19 @@ namespace pms
         List<int> list;
 
         std::cout << "Test A - Test ShrinkToFit(1) when list is empty." << std::endl;
-        list.ShrinkToFit(1);
-        if (list.Size() != 0)
+        try
         {
-            std::cerr << "Failed Test - ShrinkToFit(1) added elements to empty list. (Size != 0)" << std::endl;
+            list.ShrinkToFit(1);
+            std::cerr << "Failed Test - ShrinkToFit(2) did not throw when length error." << std::endl;
             return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when length error.
         }
 
         std::cout << "Test B - Test ShrinkToFit(0) when list has 1 element." << std::endl;
+        list.Clear();
         list.InsertTail(1);
         list.ShrinkToFit(0);
         if (list.Size() != 0)
@@ -416,15 +421,21 @@ namespace pms
         }
 
         std::cout << "Test C - Test ShrinkToFit(1) when list has 1 element." << std::endl;
+        list.Clear();
         list.InsertTail(1);
-        list.ShrinkToFit(1);
-        if (list.Size() != 1)
+        try
         {
-            std::cerr << "Failed Test - ShrinkToFit(1) did not shrink list to size 1." << std::endl;
+            list.ShrinkToFit(2);
+            std::cerr << "Failed Test - ShrinkToFit(1) did not throw when length error." << std::endl;
             return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when length error.
         }
 
         std::cout << "Test D - Test ShrinkToFit(0) when list has 2 elements." << std::endl;
+        list.Clear();
         list.InsertTail(1);
         list.InsertTail(2);
         list.ShrinkToFit(0);
@@ -435,6 +446,7 @@ namespace pms
         }
 
         std::cout << "Test E - Test ShrinkToFit(1) when list has 2 elements." << std::endl;
+        list.Clear();
         list.InsertTail(1);
         list.InsertTail(2);
         list.ShrinkToFit(1);
@@ -445,13 +457,18 @@ namespace pms
         }
 
         std::cout << "Test F - Test ShrinkToFit(2) when list has 2 elements." << std::endl;
+        list.Clear();
         list.InsertTail(1);
         list.InsertTail(2);
-        list.ShrinkToFit(2);
-        if (list.Size() != 2)
+        try
         {
-            std::cerr << "Failed Test - ShrinkToFit(2) did not shrink list to size 2." << std::endl;
+            list.ShrinkToFit(2);
+            std::cerr << "Failed Test - ShrinkToFit(2) did not throw when length error." << std::endl;
             return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when length error.
         }
 
         std::cout << "Test G - Test ShrinkToFit(-1) when list is empty." << std::endl;
@@ -459,7 +476,7 @@ namespace pms
         try
         {
             list.ShrinkToFit(-1);
-            std::cerr << "Failed Test - ShrinkToFit(-1) shrunk elements when index is invalid." << std::endl;
+            std::cerr << "Failed Test - ShrinkToFit(-1) shrunk elements when out of range." << std::endl;
             return;
         }
         catch(...)
@@ -1415,21 +1432,606 @@ namespace pms
         List<int> list;
 
         std::cout << "Test A - Test Search(0) when list is empty." << std::endl;
+        if (list.Search(0) != -1)
+        {
+            std::cerr << "Failed Test - Search did not return -1." << std::endl;
+            return;
+        }
 
+        std::cout << "Test B - Test Search(0) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        if (list.Search(0) != -1)
+        {
+            std::cerr << "Failed Test - Search did not return -1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test Search(1) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(1) != 0)
+        {
+            std::cerr << "Failed Test - Search did not return 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test Search(2) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(2) != 1)
+        {
+            std::cerr << "Failed Test - Search did not return 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test E - Test Search(3) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(3) != 2)
+        {
+            std::cerr << "Failed Test - Search did not return 2." << std::endl;
+            return;
+        }
+
+        std::cout << "Test F - Test Search(4) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(4) != 3)
+        {
+            std::cerr << "Failed Test - Search did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test G - Test Search(5) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(5) != 4)
+        {
+            std::cerr << "Failed Test - Search did not return 4." << std::endl;
+            return;
+        }
     }
 
 
 
     void ListTest::SwapTest()
     {
-        
+        std::cout << std::endl; // newline
+
+        std::cout << "Swap() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test Swap(0, 0) when list is empty." << std::endl;
+        try
+        {
+            list.Swap(0, 0);
+            std::cerr << "Failed Test - Swap(0, 0) did not throw when same index." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when logic error.
+        }
+
+        std::cout << "Test B - Test Swap(0, 1) when list is empty." << std::endl;
+        try
+        {
+            list.Swap(0, 1);
+            std::cerr << "Failed Test - Swap(0, 1) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when logic error.
+        }
+
+        std::cout << "Test C - Test Swap(0, 1) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.Swap(0, 1);
+        if (list.At(0) != 2 || list.At(1) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2 }. Swap(0, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test Swap(1, 0) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.Swap(1, 0);
+        if (list.At(0) != 2 || list.At(1) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2 }. Swap(1, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test E - Test Swap(0, 1) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.Swap(0, 1);
+        if (list.At(0) != 2 || list.At(1) != 1 || list.At(2) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }. Swap(0, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test F - Test Swap(0, 2) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.Swap(0, 2);
+        if (list.At(0) != 3 || list.At(1) != 2 || list.At(2) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }. Swap(0, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test G - Test Swap(1, 0) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.Swap(1, 0);
+        if (list.At(0) != 2 || list.At(1) != 1 || list.At(2) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }. Swap(1, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test H - Test Swap(1, 2) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.Swap(1, 2);
+        if (list.At(0) != 1 || list.At(1) != 3 || list.At(2) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }. Swap(1, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test I - Test Swap(2, 0) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.Swap(2, 0);
+        if (list.At(0) != 3 || list.At(1) != 2 || list.At(2) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }. Swap(2, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test J - Test Swap(2, 1) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.Swap(2, 1);
+        if (list.At(0) != 1 || list.At(1) != 3 || list.At(2) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }. Swap(2, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test K - Test Swap(0, 1) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(0, 1);
+        if (list.At(0) != 2 || list.At(1) != 1 || list.At(2) != 3 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(0, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test L - Test Swap(0, 2) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(0, 2);
+        if (list.At(0) != 3 || list.At(1) != 2 || list.At(2) != 1 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(0, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test M - Test Swap(0, 3) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(0, 3);
+        if (list.At(0) != 4 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(0, 3) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test N - Test Swap(1, 0) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(1, 0);
+        if (list.At(0) != 2 || list.At(1) != 1 || list.At(2) != 3 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(1, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test O - Test Swap(1, 2) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(1, 2);
+        if (list.At(0) != 1 || list.At(1) != 3 || list.At(2) != 2 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(1, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test P - Test Swap(1, 3) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(1, 3);
+        if (list.At(0) != 1 || list.At(1) != 4 || list.At(2) != 3 || list.At(3) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(1, 3) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Q - Test Swap(2, 0) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(2, 0);
+        if (list.At(0) != 3 || list.At(1) != 2 || list.At(2) != 1 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(2, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test R - Test Swap(2, 1) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(2, 1);
+        if (list.At(0) != 1 || list.At(1) != 3 || list.At(2) != 2 || list.At(3) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(2, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test S - Test Swap(2, 3) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.Swap(2, 3);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 4 || list.At(3) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Swap(2, 3) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test T - Test Swap(0, 1) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(0, 1);
+        if (list.At(0) != 2 || list.At(1) != 1 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(0, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test U - Test Swap(0, 2) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(0, 2);
+        if (list.At(0) != 3 || list.At(1) != 2 || list.At(2) != 1 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(0, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test U - Test Swap(0, 3) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(0, 3);
+        if (list.At(0) != 4 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 1 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(0, 3) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test V - Test Swap(0, 4) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(0, 4);
+        if (list.At(0) != 5 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(0, 4) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test W - Test Swap(1, 0) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(1, 0);
+        if (list.At(0) != 2 || list.At(1) != 1 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(1, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test X - Test Swap(1, 2) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(1, 2);
+        if (list.At(0) != 1 || list.At(1) != 3 || list.At(2) != 2 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(1, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Y - Test Swap(1, 3) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(1, 3);
+        if (list.At(0) != 1 || list.At(1) != 4 || list.At(2) != 3 || list.At(3) != 2 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(1, 3) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Z - Test Swap(1, 4) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(1, 4);
+        if (list.At(0) != 1 || list.At(1) != 5 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(1, 4) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AA - Test Swap(2, 0) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(2, 0);
+        if (list.At(0) != 3 || list.At(1) != 2 || list.At(2) != 1 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(2, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AB - Test Swap(2, 1) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(2, 1);
+        if (list.At(0) != 1 || list.At(1) != 3 || list.At(2) != 2 || list.At(3) != 4 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(2, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AC - Test Swap(2, 3) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(2, 3);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 4 || list.At(3) != 3 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(2, 3) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AD - Test Swap(2, 4) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(2, 4);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 5 || list.At(3) != 4 || list.At(4) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(2, 4) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AE - Test Swap(3, 0) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(3, 0);
+        if (list.At(0) != 4 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 1 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(3, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AF - Test Swap(3, 1) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(3, 1);
+        if (list.At(0) != 1 || list.At(1) != 4 || list.At(2) != 3 || list.At(3) != 2 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(3, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AG - Test Swap(3, 2) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(3, 2);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 4 || list.At(3) != 3 || list.At(4) != 5)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(3, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AH - Test Swap(3, 4) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(3, 4);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 5 || list.At(4) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(3, 4) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AI - Test Swap(4, 0) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(4, 0);
+        if (list.At(0) != 5 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(4, 0) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AJ - Test Swap(4, 1) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(4, 1);
+        if (list.At(0) != 1 || list.At(1) != 5 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 2)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(4, 1) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AK - Test Swap(4, 2) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(4, 2);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 5 || list.At(3) != 4 || list.At(4) != 3)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(4, 2) did not swap." << std::endl;
+            return;
+        }
+
+        std::cout << "Test AL - Test Swap(4, 3) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.Swap(4, 3);
+        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 5 || list.At(4) != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4, 5 }. Swap(4, 3) did not swap." << std::endl;
+            return;
+        }
     }
 
 
 
     void ListTest::SortTest()
     {
-        
+        std::cout << std::endl; // newline
+
+        std::cout << "Sort() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test Sort() when list is empty." << std::endl;
+        try
+        {
+            list.RemoveInPlace(0);
+            std::cerr << "Failed Test - RemoveInPlace(0) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
     }
 
 

@@ -204,6 +204,7 @@ namespace pms
             {
                 RemoveTail();
             }
+            return;
         }
         
         throw std::length_error("pms::List<T>::Head(): New size given is larger than size of original list");
@@ -318,6 +319,12 @@ namespace pms
     template <typename T>
     void List<T>::RemoveInPlace(const int index)
     {
+        if (index < 0)
+            throw std::out_of_range("pms::List<T>::Head(): Negative index");
+
+        if (index >= size_)
+            throw std::out_of_range("pms::List<T>::RemoveInPlace(): Index out of range");
+
         if (index == size_ - 1)
         {
             RemoveTail();
@@ -326,6 +333,10 @@ namespace pms
 
         int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
+
+        if (!current)
+            return;
+
         while (current->next)
         {
             if (index == counter)
@@ -403,10 +414,10 @@ namespace pms
     void List<T>::Swap(const int a, const int b)
     {
         if (a > size_ || b > size_)
-            return;
+            throw std::out_of_range("pms::List<T>::Swap(): Index out of range");
 
         if (a == b)
-            return;
+            throw std::logic_error("pms::List<T>::Swap(): Logic error; same index given");
 
         int counter = 0;
         std::shared_ptr<ListNode<T>> a_node;
