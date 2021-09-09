@@ -1,3 +1,6 @@
+/// [TO DO] add overload for Search() for custom comp function
+/// [TO DO] add current for optimization for some insertion/removal/access
+
 #ifndef PMS_LIST_H
 #define PMS_LIST_H
 
@@ -60,10 +63,13 @@ namespace pms
 
             // Operations
             int Search(const T data) const;
+            
+
             void Swap(const int a, const int b);
 
             /// WIP
             void Sort();
+
             template<class Compare>
             void Sort(Compare func);
 
@@ -85,6 +91,7 @@ namespace pms
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
             std::shared_ptr<ListNode<T>> tail_ = nullptr;
+            std::shared_ptr<ListNode<T>> current_ = nullptr;
             int size_ = 0;
     };
 
@@ -126,25 +133,25 @@ namespace pms
     const T& List<T>::Head() const
     {
         if (size_ > 0)
-            return this->head_->data;
+            return head_->data;
 
-        throw std::runtime_error("List is empty.");
+        throw std::out_of_range("pms::List<T>::Head(): List is empty");
     }
 
     template <typename T>
     const T& List<T>::Tail() const
     {
         if (size_ > 0)
-            return this->tail_->data;
+            return tail_->data;
 
-        throw std::runtime_error("List is empty.");
+        throw std::out_of_range("pms::List<T>::Tail(): List is empty");
     }
 
     template <typename T>
     const T& List<T>::At(const int n) const
     {
         if (n < 0)
-            throw std::runtime_error("Invalid index given.");
+            throw std::out_of_range("pms::List<T>::At(): Negative index");
 
         int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
@@ -160,7 +167,7 @@ namespace pms
             ++counter;
         }
 
-        throw std::runtime_error("List is empty.");
+        throw std::out_of_range("pms::List<T>::At(): List is empty");
     }
 
     // Capacity
@@ -188,16 +195,18 @@ namespace pms
     void List<T>::ShrinkToFit(const int size)
     {
         if (size < 0)
-            throw std::runtime_error("Invalid index given.");
+            throw std::out_of_range("pms::List<T>::Head(): Negative index");
 
         int difference = int(size_) - int(size);
         if (difference > 0)
         {
             for (int i = 0; i < difference; ++i)
             {
-                this->RemoveTail();
+                RemoveTail();
             }
         }
+        
+        throw std::length_error("pms::List<T>::Head(): New size given is larger than size of original list");
     }
 
     template <typename T>
@@ -223,42 +232,37 @@ namespace pms
     void List<T>::InsertInPlace(const T data, const int index)
     {
         if (index < 0)
-            return;
+            throw std::out_of_range("pms::List<T>::Head(): Negative index");
         
-        if ((index == 0 && size_ == 0) || index == size_ - 1)
+        if (index > size_)
+            throw std::out_of_range("pms::List<T>::Head(): Index out of range");
+
+        if (index == size_)
         {
-            this->InsertTail(data);
+            InsertTail(data);
             return;
         }
-
-        if (index >= size_)
-            return;
 
         int counter = 0;
         std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
         std::shared_ptr<ListNode<T>> current = head_;
-        while (current->next)
+        while (current)
         {
             if (index == counter)
             {
-                current = current->prev;
-                if (current)
+                std::shared_ptr<ListNode<T>> prev = current->prev;
+                
+                if (prev)
                 {
-                    current->next->prev = tmp; // set "after"'s `prev` to "new"
-                    tmp->next = current->next; // set "new"'s next to "after"
-                    current->next = tmp; // set "before"'s next to "new"
-                    tmp->prev = current; // set "new"'s prev to "before"
-
-                    if (index == size_)
-                        tail_ = tmp;
+                    prev->next = tmp;
+                    tmp->prev = prev;
                 }
                 else
-                {
-                    current = head_; // fix current from `nullptr` to `head_`
-                    current->next->prev = tmp; // set "after"'s `prev` to "new"
-                    tmp->next = current; // set "new"'s next to "after"
                     head_ = tmp;
-                }
+
+                current->prev = tmp;
+                tmp->next = current;
+                
                 ++size_;
                 return;
             }
@@ -316,7 +320,7 @@ namespace pms
     {
         if (index == size_ - 1)
         {
-            this->RemoveTail();
+            RemoveTail();
             return;
         }
 
@@ -457,12 +461,12 @@ namespace pms
     template <typename T>
     void List<T>::operator=(const List<T>& source)
     {
-        this->Clear();
+        Clear();
 
         for (int i = 0; i < source.Size(); ++i)
         {
             T data_copy = source.At(i);
-            this->InsertTail(data_copy);
+            InsertTail(data_copy);
         }
     }
 

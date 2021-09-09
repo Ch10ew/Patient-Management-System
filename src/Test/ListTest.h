@@ -56,6 +56,8 @@ namespace pms
 
     void ListTest::HeadTest()
     {
+        std::cout << std::endl; // newline
+        
         std::cout << "Head() Testing" << std::endl;
         List<int> list;
 
@@ -102,14 +104,14 @@ namespace pms
             std::cerr << "Failed Test - List contains { 4, 3, 1, 2 }, Head() did not match head of list." << std::endl;
             return;
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::TailTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "Tail() Testing" << std::endl;
         List<int> list;
 
@@ -156,14 +158,14 @@ namespace pms
             std::cerr << "Failed Test - List contains { 4, 3, 1, 2 }, Tail() did not match tail of list." << std::endl;
             return;
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::AtTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "At() Testing" << std::endl;
         List<int> list;
 
@@ -262,16 +264,16 @@ namespace pms
         }
         catch(...)
         {
-            // Passed test, Correct behaviour is to throw when negative index is given.
+            // Passed test, Correct behaviour is to throw when index is negative.
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::EmptyTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "Empty() Testing" << std::endl;
         List<int> list;
 
@@ -289,14 +291,14 @@ namespace pms
             std::cerr << "Failed Test - List contains { 1 }, Empty() did not return false when list is not empty." << std::endl;
             return;
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::SizeTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "Size() Testing" << std::endl;
         List<int> list;
 
@@ -338,14 +340,14 @@ namespace pms
             std::cerr << "Failed Test - List contains { 3, 4, 2, 1 }, Size() did not return 4." << std::endl;
             return;
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::ClearTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "Clear() Testing" << std::endl;
         List<int> list;
 
@@ -368,7 +370,7 @@ namespace pms
 
         std::cout << "Test C - Test Clear() when list has 2 elements." << std::endl;
         list.InsertTail(1);
-        list.InsertHead(2);
+        list.InsertTail(2);
         list.Clear();
         if (list.Size() != 0)
         {
@@ -377,22 +379,22 @@ namespace pms
         }
         std::cout << "Test D - Test Clear() when list has 3 elements." << std::endl;
         list.InsertTail(1);
-        list.InsertHead(2);
-        list.InsertInPlace(3, 2);
+        list.InsertTail(2);
+        list.InsertTail(3);
         list.Clear();
         if (list.Size() != 0)
         {
             std::cerr << "Failed Test - Clear() did not clear list. (Size != 0)" << std::endl;
             return;
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::ShrinkToFitTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "ShrinkToFit() Testing" << std::endl;
         List<int> list;
 
@@ -464,14 +466,14 @@ namespace pms
         {
             // Passed test, Correct behaviour is to throw when index is negative.
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::InsertHeadTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "InsertHead() Testing" << std::endl;
         List<int> list;
 
@@ -506,89 +508,914 @@ namespace pms
             std::cerr << "Failed Test - List contains { 4, 3, 2, 1 }, Head() did not match head of list." << std::endl;
             return;
         }
-
-        std::cout << std::endl; // newline
     }
 
 
 
     void ListTest::InsertInPlaceTest()
     {
+        std::cout << std::endl; // newline
+
         std::cout << "InsertInPlace() Testing" << std::endl;
         List<int> list;
 
         std::cout << "Test A - Test InsertInPlace(1, 0) when list is empty." << std::endl;
         list.InsertInPlace(1, 0);
-        if (list.Head() != 1)
+        if (list.Head() != 1 || list.Tail() != 1 || list.Size() != 1)
         {
-            std::cerr << "Failed Test - List contains { 1 }, Head() did not match head of list." << std::endl;
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 1)
+                std::cerr << "Failed Test - List contains { 1 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 1)
+                std::cerr << "Failed Test - List contains { 1 }, Size() did not return 1." << std::endl;
             return;
         }
 
         std::cout << "Test B - Test InsertInPlace(1, 1) when list is empty." << std::endl;
-        list.Clear();
-        list.InsertInPlace(1, 1);
-        if (list.Size() != 0)
+        try
         {
-            std::cerr << "Failed Test - Illegal index given but element is inserted." << std::endl;
+            list.Clear();
+            list.InsertInPlace(1, 1);
+            std::cerr << "Failed Test - InsertInPlace(1, 1) did not throw when out of range." << std::endl;
             return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
         }
 
         std::cout << "Test C - Test InsertInPlace(1, -1) when list is empty." << std::endl;
-        list.Clear();
-        list.InsertInPlace(1, -1);
-        if (list.Size() != 0)
+        try
         {
-            std::cerr << "Failed Test - Illegal index given but element is inserted." << std::endl;
+            list.Clear();
+            list.InsertInPlace(1, -1);
+            std::cerr << "Failed Test - InsertInPlace(1, -1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test D - Test InsertInPlace(2, 0) when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertHead(1);
+        list.InsertInPlace(2, 0);
+        if (list.Head() != 2 || list.Tail() != 1 || list.Size() != 2)
+        {
+            if (list.Head() != 2)
+                std::cerr << "Failed Test - List contains { 2, 1 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 1)
+                std::cerr << "Failed Test - List contains { 2, 1 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 2)
+                std::cerr << "Failed Test - List contains { 2, 1 }, Size() did not return 2." << std::endl;
             return;
         }
 
-        /*
-            ADD EDGE CASES HERE
+        std::cout << "Test E - Test InsertInPlace(2, 1) when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertHead(1);
+        list.InsertInPlace(2, 1);
+        if (list.Head() != 1 || list.Tail() != 2 || list.Size() != 2)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 2)
+                std::cerr << "Failed Test - List contains { 1, 2 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 2)
+                std::cerr << "Failed Test - List contains { 1, 2 }, Size() did not return 2." << std::endl;
+            return;
+        }
 
-            Size 0 inserts
-            Size 1 inserts
-            Size 2 inserts
-            
-            check for Head(), Tail(), Size()
-        */
+        std::cout << "Test F - Test InsertInPlace(2, 2) when list has 1 element." << std::endl;
+        try
+        {
+            list.Clear();
+            list.InsertHead(1);
+            list.InsertInPlace(2, 2);
+            std::cerr << "Failed Test - InsertInPlace(1, -1) did not throw when out of range." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
 
-        std::cout << std::endl; // newline
+        std::cout << "Test G - Test InsertInPlace(2, -1) when list has 1 element." << std::endl;
+        try
+        {
+            list.Clear();
+            list.InsertHead(1);
+            list.InsertInPlace(2, -1);
+            std::cerr << "Failed Test - InsertInPlace(2, -1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test H - Test InsertInPlace(3, 0) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertInPlace(3, 0);
+        if (list.Head() != 3 || list.Tail() != 2 || list.Size() != 3)
+        {
+            if (list.Head() != 3)
+                std::cerr << "Failed Test - List contains { 3, 1, 2 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 2)
+                std::cerr << "Failed Test - List contains { 3, 1, 2 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 3, 1, 2 }, Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test I - Test InsertInPlace(3, 1) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertInPlace(3, 1);
+        if (list.Head() != 1 || list.Tail() != 2 || list.Size() != 3)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 3, 2 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 2)
+                std::cerr << "Failed Test - List contains { 1, 3, 2 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 1, 3, 2 }, Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test J - Test InsertInPlace(3, 2) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertInPlace(3, 2);
+        if (list.Head() != 1 || list.Tail() != 3 || list.Size() != 3)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 1, 2, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 1, 2, 3 }, Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test K - Test InsertInPlace(3, 3) when list has 2 elements." << std::endl;
+        try
+        {
+            list.Clear();
+            list.InsertHead(1);
+            list.InsertHead(2);
+            list.InsertInPlace(3, -1);
+            std::cerr << "Failed Test - InsertInPlace(3, 3) did not throw when out of range." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test L - Test InsertInPlace(3, -1) when list has 2 elements." << std::endl;
+        try
+        {
+            list.Clear();
+            list.InsertHead(1);
+            list.InsertHead(2);
+            list.InsertInPlace(3, -1);
+            std::cerr << "Failed Test - InsertInPlace(3, -1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test M - Test InsertInPlace(4, 0) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertInPlace(4, 0);
+        if (list.Head() != 4 || list.Tail() != 3 || list.Size() != 4)
+        {
+            if (list.Head() != 4)
+                std::cerr << "Failed Test - List contains { 4, 1, 2, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 4, 1, 2, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 4, 1, 2, 3 }, Size() did not return 4." << std::endl;
+            return;
+        }
+
+        std::cout << "Test N - Test InsertInPlace(4, 1) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertInPlace(4, 1);
+        if (list.Head() != 1 || list.Tail() != 3 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 4, 2, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 1, 4, 2, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 4, 2, 3 }, Size() did not return 4." << std::endl;
+            return;
+        }
+
+        std::cout << "Test O - Test InsertInPlace(4, 2) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertInPlace(4, 2);
+        if (list.Head() != 1 || list.Tail() != 3 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 4, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 1, 2, 4, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 4, 3 }, Size() did not return 4." << std::endl;
+            return;
+        }
+
+        std::cout << "Test P - Test InsertInPlace(4, 3) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertInPlace(4, 3);
+        if (list.Head() != 1 || list.Tail() != 4 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }, Size() did not return 4." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Q - Test InsertInPlace(4, 4) when list has 3 elements." << std::endl;
+        try
+        {
+            list.Clear();
+            list.InsertHead(1);
+            list.InsertHead(2);
+            list.InsertHead(3);
+            list.InsertInPlace(4, 4);
+            std::cerr << "Failed Test - InsertInPlace(4, 4) did not throw when out of range." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test R - Test InsertInPlace(4, -1) when list has 3 elements." << std::endl;
+        try
+        {
+            list.Clear();
+            list.InsertHead(1);
+            list.InsertHead(2);
+            list.InsertHead(3);
+            list.InsertInPlace(4, -1);
+            std::cerr << "Failed Test - InsertInPlace(4, -1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
     }
 
 
 
     void ListTest::InsertTailTest()
     {
-        
+        std::cout << std::endl; // newline
+
+        std::cout << "InsertTail() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test InsertTail(1) when list is empty." << std::endl;
+        list.InsertTail(1);
+        if (list.Tail() != 1)
+        {
+            std::cerr << "Failed Test - List contains { 1 }, Tail() did not match tail of list." << std::endl;
+            return;
+        }
+
+        std::cout << "Test B - Test InsertTail(2) when list has 1 element." << std::endl;
+        list.InsertTail(2);
+        if (list.Tail() != 2)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2 }, Tail() did not match tail of list." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test InsertTail(3) when list has 3 elements." << std::endl;
+        list.InsertTail(3);
+        if (list.Tail() != 3)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3 }, Tail() did not match tail of list." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test InsertTail(4) when list has 4 elements." << std::endl;
+        list.InsertTail(4);
+        if (list.Tail() != 4)
+        {
+            std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }, Tail() did not match tail of list." << std::endl;
+            return;
+        }
     }
 
 
 
     void ListTest::RemoveHeadTest()
     {
-        
+        std::cout << std::endl; // newline
+
+        std::cout << "RemoveHead() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test RemoveHead() when list is empty." << std::endl;
+        list.RemoveHead();
+        if (list.Size() != 0)
+        {
+            std::cerr << "Failed Test - List size is not 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test B - Test RemoveHead() when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.RemoveHead();
+        if (list.Size() != 0)
+        {
+            std::cerr << "Failed Test - List size is not 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test RemoveHead() when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.RemoveHead();
+        if (list.Size() != 1)
+        {
+            std::cerr << "Failed Test - List size is not 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test RemoveHead() when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.RemoveHead();
+        if (list.Size() != 2)
+        {
+            std::cerr << "Failed Test - List size is not 2." << std::endl;
+            return;
+        }
     }
 
 
 
     void ListTest::RemoveInPlaceTest()
     {
+        std::cout << std::endl; // newline
+
+        std::cout << "RemoveInPlace() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test RemoveInPlace(0) when list is empty." << std::endl;
+        try
+        {
+            list.RemoveInPlace(0);
+            std::cerr << "Failed Test - RemoveInPlace(0) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test B - Test RemoveInPlace(1) when list is empty." << std::endl;
+        try
+        {
+            list.RemoveInPlace(1);
+            std::cerr << "Failed Test - RemoveInPlace(1) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test C - Test RemoveInPlace(-1) when list is empty." << std::endl;
+        try
+        {
+            list.RemoveInPlace(-1);
+            std::cerr << "Failed Test - RemoveInPlace(-1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test D - Test RemoveInPlace(0) when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.RemoveInPlace(0);
+        if (list.Size() != 0)
+        {
+            std::cerr << "Failed Test - List contains {}. Size() did not return 0." << std::endl;
+            return;
+        }
         
+        std::cout << "Test E - Test RemoveInPlace(1) when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        try
+        {
+            list.RemoveInPlace(1);
+            std::cerr << "Failed Test - RemoveInPlace(1) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test F - Test RemoveInPlace(-1) when list is empty." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        try
+        {
+            list.RemoveInPlace(-1);
+            std::cerr << "Failed Test - RemoveInPlace(-1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test G - Test RemoveInPlace(0) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.RemoveInPlace(0);
+        if (list.Head() != 2 || list.Tail() != 2 || list.Size() != 1)
+        {
+            if (list.Head() != 2)
+                std::cerr << "Failed Test - List contains { 2 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 2)
+                std::cerr << "Failed Test - List contains { 2 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 1)
+                std::cerr << "Failed Test - List contains { 2 }. Size() did not return 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test H - Test RemoveInPlace(1) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.RemoveInPlace(1);
+        if (list.Head() != 1 || list.Tail() != 1 || list.Size() != 1)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 1)
+                std::cerr << "Failed Test - List contains { 1 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 1)
+                std::cerr << "Failed Test - List contains { 1 }. Size() did not return 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test I - Test RemoveInPlace(2) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        try
+        {
+            list.RemoveInPlace(2);
+            std::cerr << "Failed Test - RemoveInPlace(2) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test J - Test RemoveInPlace(-1) when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        try
+        {
+            list.RemoveInPlace(-1);
+            std::cerr << "Failed Test - RemoveInPlace(-1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test K - Test RemoveInPlace(0) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.RemoveInPlace(0);
+        if (list.Head() != 2 || list.Tail() != 3 || list.Size() != 2)
+        {
+            if (list.Head() != 2)
+                std::cerr << "Failed Test - List contains { 2, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 2, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 2)
+                std::cerr << "Failed Test - List contains { 2, 3 }. Size() did not return 2." << std::endl;
+            return;
+        }
+
+        std::cout << "Test L - Test RemoveInPlace(1) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.RemoveInPlace(1);
+        if (list.Head() != 1 || list.Tail() != 3 || list.Size() != 2)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 1, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 2)
+                std::cerr << "Failed Test - List contains { 1, 3 }. Size() did not return 2." << std::endl;
+            return;
+        }
+
+        std::cout << "Test M - Test RemoveInPlace(2) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.RemoveInPlace(2);
+        if (list.Head() != 1 || list.Tail() != 2 || list.Size() != 2)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 2)
+                std::cerr << "Failed Test - List contains { 1, 2 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 2)
+                std::cerr << "Failed Test - List contains { 1, 2 }. Size() did not return 2." << std::endl;
+            return;
+        }
+
+        std::cout << "Test N - Test RemoveInPlace(3) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        try
+        {
+            list.RemoveInPlace(3);
+            std::cerr << "Failed Test - RemoveInPlace(3) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test O - Test RemoveInPlace(-1) when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        try
+        {
+            list.RemoveInPlace(-1);
+            std::cerr << "Failed Test - RemoveInPlace(-1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test P - Test RemoveInPlace(0) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.RemoveInPlace(0);
+        if (list.Head() != 2 || list.Tail() != 4 || list.Size() != 3)
+        {
+            if (list.Head() != 2)
+                std::cerr << "Failed Test - List contains { 2, 3, 4 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 4)
+                std::cerr << "Failed Test - List contains { 2, 3, 4 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 2, 3, 4 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Q - Test RemoveInPlace(1) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.RemoveInPlace(1);
+        if (list.Head() != 1 || list.Tail() != 4 || list.Size() != 3)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 3, 4 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 4)
+                std::cerr << "Failed Test - List contains { 1, 3, 4 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 1, 3, 4 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test R - Test RemoveInPlace(2) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.RemoveInPlace(2);
+        if (list.Head() != 1 || list.Tail() != 4 || list.Size() != 3)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 4 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 4 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 1, 2, 4 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test S - Test RemoveInPlace(3) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.RemoveInPlace(3);
+        if (list.Head() != 1 || list.Tail() != 3 || list.Size() != 3)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 3 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 3)
+                std::cerr << "Failed Test - List contains { 1, 2, 3 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 3)
+                std::cerr << "Failed Test - List contains { 1, 2, 3 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test T - Test RemoveInPlace(4) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        try
+        {
+            list.RemoveInPlace(4);
+            std::cerr << "Failed Test - RemoveInPlace(4) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test U - Test RemoveInPlace(-1) when list has 4 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        try
+        {
+            list.RemoveInPlace(-1);
+            std::cerr << "Failed Test - RemoveInPlace(-1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
+
+        std::cout << "Test V - Test RemoveInPlace(0) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.RemoveInPlace(0);
+        if (list.Head() != 2 || list.Tail() != 5 || list.Size() != 4)
+        {
+            if (list.Head() != 2)
+                std::cerr << "Failed Test - List contains { 2, 3, 4, 5 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 5)
+                std::cerr << "Failed Test - List contains { 2, 3, 4, 5 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 2, 3, 4, 5 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test W - Test RemoveInPlace(1) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.RemoveInPlace(1);
+        if (list.Head() != 1 || list.Tail() != 5 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 3, 4, 5 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 5)
+                std::cerr << "Failed Test - List contains { 1, 3, 4, 5 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 3, 4, 5 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test X - Test RemoveInPlace(2) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.RemoveInPlace(2);
+        if (list.Head() != 1 || list.Tail() != 5 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 4, 5 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 5)
+                std::cerr << "Failed Test - List contains { 1, 2, 4, 5 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 4, 5 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Y - Test RemoveInPlace(3) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.RemoveInPlace(3);
+        if (list.Head() != 1 || list.Tail() != 5 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 5 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 5)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 5 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 5 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Y - Test RemoveInPlace(4) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        list.RemoveInPlace(4);
+        if (list.Head() != 1 || list.Tail() != 4 || list.Size() != 4)
+        {
+            if (list.Head() != 1)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }, Head() did not match head of list." << std::endl;
+            if (list.Tail() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }, Tail() did not match tail of list." << std::endl;
+            if (list.Size() != 4)
+                std::cerr << "Failed Test - List contains { 1, 2, 3, 4 }. Size() did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test Z - Test RemoveInPlace(5) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        try
+        {
+            list.RemoveInPlace(5);
+            std::cerr << "Failed Test - RemoveInPlace(5) did not throw when out of bounds." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when out of range.
+        }
+
+        std::cout << "Test AA - Test RemoveInPlace(-1) when list has 5 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        try
+        {
+            list.RemoveInPlace(-1);
+            std::cerr << "Failed Test - RemoveInPlace(-1) did not throw when index is negative." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when index is negative.
+        }
     }
 
 
 
     void ListTest::RemoveTailTest()
     {
-        
+        std::cout << std::endl; // newline
+
+        std::cout << "RemoveTail() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test RemoveTail() when list is empty." << std::endl;
+        list.RemoveTail();
+        if (list.Size() != 0)
+        {
+            std::cerr << "Failed Test - List size is not 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test B - Test RemoveTail() when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.RemoveTail();
+        if (list.Size() != 0)
+        {
+            std::cerr << "Failed Test - List size is not 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test RemoveTail() when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.RemoveTail();
+        if (list.Size() != 1)
+        {
+            std::cerr << "Failed Test - List size is not 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test RemoveTail() when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.RemoveTail();
+        if (list.Size() != 2)
+        {
+            std::cerr << "Failed Test - List size is not 2." << std::endl;
+            return;
+        }
     }
 
 
 
     void ListTest::SearchTest()
     {
-        
+        std::cout << std::endl; // newline
+
+        std::cout << "Search() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test Search(0) when list is empty." << std::endl;
+
     }
 
 
