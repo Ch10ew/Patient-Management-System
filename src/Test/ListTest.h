@@ -10,7 +10,7 @@ namespace pms
     // For sorting
     bool Sort2Comparison(int a, int b)
     {
-        return a > b;
+        return a < b;
     }
 
 

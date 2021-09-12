@@ -6,6 +6,7 @@
 #ifndef PMS_LIST_H
 #define PMS_LIST_H
 
+#include <iostream>
 #include <cmath>
 #include <memory>
 #include <vector>
@@ -28,6 +29,33 @@ namespace pms
         T data = nullptr;
         std::shared_ptr<ListNode<T>> prev = nullptr;
         std::shared_ptr<ListNode<T>> next = nullptr;
+    };
+
+    /// ========================================
+    ///   Optimization structures.
+    /// ========================================
+    enum class TransversalStartNode
+    {
+        HEAD,
+        CURRENT,
+        TAIL
+    };
+
+    enum class TransversalDirection
+    {
+        LEFT = -1,
+        RIGHT = 1
+    };
+
+    /**
+     * @brief Defines the transversal start node, direction, and distance for operations in the list
+     * 
+     */
+    struct TransversalInfo
+    {
+        TransversalStartNode start_node;
+        TransversalDirection direction;
+        int distance;
     };
 
     /// ========================================
@@ -65,12 +93,8 @@ namespace pms
             void RemoveTail();
 
             // Operations
-            int Search(const T data) const;
-            
-
+            int Search(const T data);
             void Swap(const int a, const int b);
-
-            /// WIP
             void Sort();
 
             template<class Compare>
@@ -92,8 +116,7 @@ namespace pms
             List<T> Merge(List<T> left_list, List<T> right_list, Compare func);
 
             // Optimization auxiliary functions
-            const int SmallestDifferenceInIndex(const int index) const;
-            const int ShortestPathTransversalDirectionToIndex(const int index) const;
+            const TransversalInfo GetTransversalInfo(const int index) const;
 
         private:
             std::shared_ptr<ListNode<T>> head_ = nullptr;
@@ -161,17 +184,32 @@ namespace pms
         if (n < 0)
             throw std::out_of_range("pms::List<T>::At(): Negative index");
 
-        int counter = 0;
-        std::shared_ptr<ListNode<T>> current = head_;
+        std::shared_ptr<ListNode<T>> current = current_;
+        TransversalInfo transversal_info = GetTransversalInfo(n);
 
+        switch (transversal_info.start_node)
+        {
+            case TransversalStartNode::HEAD:
+                current = head_;
+                break;
+            case TransversalStartNode::TAIL:
+                current = tail_;
+                break;
+        }
+
+        int counter = 0;
         while (current)
         {
-            if (counter == n)
+            if (counter == transversal_info.distance)
             {
                 return current->data;
             }
 
-            current = current->next;
+            if (transversal_info.direction == TransversalDirection::RIGHT)
+                current = current->next;
+            else
+                current = current->prev;
+            
             ++counter;
         }
 
@@ -195,7 +233,29 @@ namespace pms
     template <typename T>
     void List<T>::Clear()
     {
+        if (size_ == 0)
+            return;
+
+        std::shared_ptr<ListNode<T>> current = head_;
+        std::shared_ptr<ListNode<T>> prev = head_;
+        if (current)
+            current = current->next;
+        
+        while (current)
+        {
+            prev = current;
+            current = current->next;
+            if (current)
+            {
+                prev->next = nullptr;
+                current->prev = nullptr;
+            }
+        }
+        head_->next = nullptr;
+        
         head_ = nullptr;
+        current_ = nullptr;
+        tail_ = nullptr;
         size_ = 0;
     }
 
@@ -251,13 +311,25 @@ namespace pms
             InsertTail(data);
             return;
         }
+        
+        std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
+        std::shared_ptr<ListNode<T>> current = current_;
+        TransversalInfo transversal_info = GetTransversalInfo(index);
+
+        switch (transversal_info.start_node)
+        {
+            case TransversalStartNode::HEAD:
+                current = head_;
+                break;
+            case TransversalStartNode::TAIL:
+                current = tail_;
+                break;
+        }
 
         int counter = 0;
-        std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
-        std::shared_ptr<ListNode<T>> current = head_;
         while (current)
         {
-            if (index == counter)
+            if (counter == transversal_info.distance)
             {
                 std::shared_ptr<ListNode<T>> prev = current->prev;
                 
@@ -276,7 +348,10 @@ namespace pms
                 return;
             }
 
-            current = current->next;
+            if (transversal_info.direction == TransversalDirection::RIGHT)
+                current = current->next;
+            else
+                current = current->prev;
             ++counter;
         }
     }
@@ -285,7 +360,7 @@ namespace pms
     void List<T>::InsertTail(const T data)
     {
         std::shared_ptr<ListNode<T>> tmp = std::make_shared<ListNode<T>>(data);
-        std::shared_ptr<ListNode<T>> current = head_;
+        std::shared_ptr<ListNode<T>> current = tail_;
 
         if (size_ == 0)
         {
@@ -294,10 +369,6 @@ namespace pms
         }
         else
         {
-            while (current->next)
-            {
-                current = current->next;
-            }
             current->next = tmp;
             tmp->prev = current;
             tail_ = tmp;
@@ -339,13 +410,21 @@ namespace pms
             return;
         }
 
+        std::shared_ptr<ListNode<T>> current = current_;
+        TransversalInfo transversal_info = GetTransversalInfo(index);
+
+        switch (transversal_info.start_node)
+        {
+            case TransversalStartNode::HEAD:
+                current = head_;
+                break;
+            case TransversalStartNode::TAIL:
+                current = tail_;
+                break;
+        }
+
         int counter = 0;
-        std::shared_ptr<ListNode<T>> current = head_;
-
-        if (!current)
-            return;
-
-        while (current->next)
+        while (current)
         {
             if (index == counter)
             {
@@ -367,7 +446,12 @@ namespace pms
                 --size_;
                 return;
             }
-            current = current->next;
+
+            if (transversal_info.direction == TransversalDirection::RIGHT)
+                current = current->next;
+            else
+                current = current->prev;
+            
             ++counter;
         }
     }
@@ -384,13 +468,9 @@ namespace pms
             return;
         }
 
-        std::shared_ptr<ListNode<T>> current = head_;
-        while (current->next)
-        {
-            current = current->next;
-        }
+        std::shared_ptr<ListNode<T>> current = tail_;
         tail_ = current->prev;
-        current->prev->next = nullptr;
+        tail_->next = nullptr;
         current->prev = nullptr;
         --size_;
     }
@@ -400,7 +480,7 @@ namespace pms
      * Returns the index of the specified data.
      */
     template <typename T>
-    int List<T>::Search(const T data) const
+    int List<T>::Search(const T data)
     {
         int counter = 0;
         std::shared_ptr<ListNode<T>> current = head_;
@@ -490,8 +570,9 @@ namespace pms
 
         for (int i = 0; i < source.Size(); ++i)
         {
-            T data_copy = source.At(i);
-            InsertTail(data_copy);
+            /*T data_copy = source.At(i);
+            InsertTail(data_copy);*/
+            InsertTail(source.At(i));
         }
     }
 
@@ -655,62 +736,55 @@ namespace pms
 
         return return_list;
     }
-
-    /**
-     * @brief Tells the smallest difference in indices between either head, tail or current.
-     * @param index target index (must be a valid index)
-     * @return int smallest difference to the target index
-     */
+    
     template <typename T>
-    const int List<T>::SmallestDifferenceInIndex(const int index) const
+    const TransversalInfo List<T>::GetTransversalInfo(const int index) const
     {
+        TransversalInfo return_transversal_info;
         int difference_head = index;
-        int difference_tail = size_ - index;
+        int difference_tail = (size_ - 1) - index;
         int difference_current = abs(current_index_ - index);
 
         if (difference_head > difference_tail)
         {
             if (difference_tail > difference_current)
             {
-                return difference_current;
+                return_transversal_info.start_node = TransversalStartNode::CURRENT;
+                return_transversal_info.distance = difference_current;
+                difference_current = current_index_ - index;
+                if (difference_current < 0)
+                    return_transversal_info.direction = TransversalDirection::LEFT;
+                else
+                    return_transversal_info.direction = TransversalDirection::RIGHT;
             }
             else
             {
-                return difference_tail;
+                return_transversal_info.start_node = TransversalStartNode::TAIL;
+                return_transversal_info.distance = difference_tail;
+                return_transversal_info.direction = TransversalDirection::LEFT;
             }
         }
-        else if (difference_head > difference_current)
+        else
         {
-            return difference_current;
+            if (difference_head > difference_current)
+            {
+                return_transversal_info.start_node = TransversalStartNode::CURRENT;
+                return_transversal_info.distance = difference_current;
+                difference_current = current_index_ - index;
+                if (difference_current < 0)
+                    return_transversal_info.direction = TransversalDirection::LEFT;
+                else
+                    return_transversal_info.direction = TransversalDirection::RIGHT;
+            }
+            else
+            {
+                return_transversal_info.start_node = TransversalStartNode::HEAD;
+                return_transversal_info.distance = difference_head;
+                return_transversal_info.direction = TransversalDirection::RIGHT;
+            }
         }
-        
-        return difference_head;
-    }
 
-    /**
-     * @brief Tells the direction to transverse the list to get to the target index.
-     * -1 represents left, 1 represents right
-     * @param index target index (must be a valid index)
-     * @return int direction
-     */
-    template <typename T>
-    const int List<T>::ShortestPathTransversalDirectionToIndex(const int index) const
-    {
-        int difference_head = index;
-        int difference_tail = size_ - index;
-        int difference_current = current_index_ - index;
-        int difference_smallest = SmallestDifferenceInIndex();
-        
-        if (difference_smallest == difference_head)
-            return 1;
-        
-        if (difference_smallest == difference_tail)
-            return -1;
-        
-        if (difference_current > 0)
-            return -1;
-        
-        return 1;
+        return return_transversal_info;
     }
 
 } // namespace pms
