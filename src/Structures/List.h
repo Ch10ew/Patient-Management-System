@@ -295,6 +295,8 @@ namespace pms
             tail_ = tmp;
 
         ++size_;
+        current_ = head_;
+        current_index_ = 0;
     }
 
     template <typename T>
@@ -320,9 +322,11 @@ namespace pms
         {
             case TransversalStartNode::HEAD:
                 current = head_;
+                current_index_ = 0;
                 break;
             case TransversalStartNode::TAIL:
                 current = tail_;
+                current_index_ = size_ - 1;
                 break;
         }
 
@@ -349,9 +353,15 @@ namespace pms
             }
 
             if (transversal_info.direction == TransversalDirection::RIGHT)
+            {
                 current = current->next;
+                ++current_index_;
+            }
             else
+            {
                 current = current->prev;
+                --current_index_;
+            }
             ++counter;
         }
     }
@@ -374,6 +384,8 @@ namespace pms
             tail_ = tmp;
         }
         ++size_;
+        current_ = tail_;
+        current_index_ = size_ - 1;
     }
 
     template <typename T>
@@ -391,8 +403,10 @@ namespace pms
         std::shared_ptr<ListNode<T>> tmp = head_;
         head_ = head_->next;
         tmp->next = nullptr; // clean up `next` ptr from head
-        //head_->prev = nullptr;
+        
         --size_;
+        current_ = head_;
+        current_index_ = 0;
     }
 
     template <typename T>
@@ -417,9 +431,11 @@ namespace pms
         {
             case TransversalStartNode::HEAD:
                 current = head_;
+                current_index_ = 0;
                 break;
             case TransversalStartNode::TAIL:
                 current = tail_;
+                current_index_ = size_ - 1;
                 break;
         }
 
@@ -448,10 +464,15 @@ namespace pms
             }
 
             if (transversal_info.direction == TransversalDirection::RIGHT)
+            {
                 current = current->next;
+                ++current_index_;
+            }
             else
+            {
                 current = current->prev;
-            
+                --current_index_;
+            }
             ++counter;
         }
     }
@@ -473,6 +494,8 @@ namespace pms
         tail_->next = nullptr;
         current->prev = nullptr;
         --size_;
+        current_ = tail_;
+        current_index_ = size_ - 1;
     }
 
     // Operations
@@ -483,15 +506,17 @@ namespace pms
     int List<T>::Search(const T data)
     {
         int counter = 0;
-        std::shared_ptr<ListNode<T>> current = head_;
-        while (current)
+        current_ = head_;
+
+        while (current_)
         {
-            if (current->data == data)
+            if (current_->data == data)
             {
                 return counter;
             }
 
-            current = current->next;
+            current_ = current_->next;
+            ++current_index_;
             ++counter;
         }
 
@@ -507,11 +532,12 @@ namespace pms
         if (a == b)
             throw std::logic_error("pms::List<T>::Swap(): Logic error; same index given");
 
-        int counter = 0;
         std::shared_ptr<ListNode<T>> a_node;
         std::shared_ptr<ListNode<T>> b_node;
         T tmp_data;
         std::shared_ptr<ListNode<T>> current = head_;
+        
+        int counter = 0;
         while (current)
         {
             if (counter == a)
@@ -570,8 +596,6 @@ namespace pms
 
         for (int i = 0; i < source.Size(); ++i)
         {
-            /*T data_copy = source.At(i);
-            InsertTail(data_copy);*/
             InsertTail(source.At(i));
         }
     }
