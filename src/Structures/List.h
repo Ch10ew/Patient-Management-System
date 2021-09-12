@@ -403,7 +403,8 @@ namespace pms
         std::shared_ptr<ListNode<T>> tmp = head_;
         head_ = head_->next;
         tmp->next = nullptr; // clean up `next` ptr from head
-        
+        head_->prev = nullptr;
+
         --size_;
         current_ = head_;
         current_index_ = 0;
