@@ -1,8 +1,3 @@
-/// [TO DO] add overload for Search() for custom comp function
-/// [TO DO] add overload for Search() for custom classed comp function
-/// [TO DO] add current for optimization for some insertion/removal/access
-/// [TO DO] add classed function overload for Sort()
-
 #ifndef PMS_LIST_H
 #define PMS_LIST_H
 

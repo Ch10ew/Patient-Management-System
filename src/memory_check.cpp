@@ -23,11 +23,10 @@ int main()
         std::cout << "Enter a number to clear the list: ";
         std::cin >> a;
 
-        /*for (int i = 0; i < 1000000; ++i)
+        for (int i = 0; i < 1000000; ++i)
         {
             my_list.RemoveHead();
-        }*/
-        my_list.Clear();
+        }
     }
 
     std::cout << "Enter a number to end: ";

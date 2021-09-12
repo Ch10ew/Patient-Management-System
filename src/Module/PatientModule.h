@@ -1,20 +1,23 @@
 #ifndef PMS_PATIENTMODULE_H
 #define PMS_PATIENTMODULE_H
 
-#include "../Database/Database.h"
+#include "UI.h"
+#include "../Structures/List.h"
 
+#include <map>
 #include <string>
 
 namespace pms
 {
-    class PatientModule
+    class NurseModule : protected UI
     {
         public:
-            // Patient GetPatient(int ID);
-            // Patient GetPatient(std::string name);
+            static void Init();
+            static std::map<std::string, List<Role>> lists;
+
 
         private:
-            Database database_;
+            
     };
 } // namespace pms
 
