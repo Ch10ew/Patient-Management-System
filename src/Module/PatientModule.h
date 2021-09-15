@@ -3,6 +3,7 @@
 
 #include "UI.h"
 #include "../Structures/List.h"
+#include "../Structures/Role.h"
 
 #include <map>
 #include <string>
