@@ -2,7 +2,7 @@
 
 #include "../Structures/List.h"
 #include "../Module/NurseModule.h"
-//#include "../Module/DoctorModule.h"
+#include "../Module/DoctorModule.h"
 
 #include <memory>
 
@@ -11,7 +11,7 @@ namespace pms
     Application::Application()
     {
         modules_.InsertTail(std::make_shared<NurseModule>(resource_pool_));
-        //modules_.InsertTail(DoctorModule(resource_pool_));
+        modules_.InsertTail(std::make_shared<DoctorModule>(resource_pool_));
 
         Run();
     }
