@@ -71,7 +71,7 @@ namespace pms
             // Element Access
             const T& Head() const;
             const T& Tail() const;
-            const T& At(const int n) const;
+            T& At(const int n) const;
 
             // Capacity
             const bool Empty() const;
@@ -90,6 +90,10 @@ namespace pms
 
             // Operations
             int Search(const T data);
+
+            template <class Compare>
+            int Search(const T data, Compare func);
+
             void Swap(const int a, const int b);
             void Sort();
 
@@ -175,7 +179,7 @@ namespace pms
     }
 
     template <typename T>
-    const T& List<T>::At(const int n) const
+    T& List<T>::At(const int n) const
     {
         if (n < 0)
             throw std::out_of_range("pms::List<T>::At(): Negative index");
@@ -524,6 +528,29 @@ namespace pms
         while (current_)
         {
             if (current_->data == data)
+            {
+                return counter;
+            }
+
+            current_ = current_->next;
+            ++current_index_;
+            ++counter;
+        }
+
+        return -1;
+    }
+
+    
+    template <typename T>
+    template <class Compare>
+    int List<T>::Search(const T data, Compare func)
+    {
+        int counter = 0;
+        current_ = head_;
+
+        while (current_)
+        {
+            if (func(current_->data, data))
             {
                 return counter;
             }

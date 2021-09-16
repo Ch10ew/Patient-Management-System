@@ -13,6 +13,11 @@ namespace pms
         return a < b;
     }
 
+    bool Search2Comparison(int a, int b)
+    {
+        return a == b;
+    }
+
 
 
     class ListTest
@@ -33,6 +38,7 @@ namespace pms
             void RemoveHeadTest();
             void RemoveInPlaceTest();
             void RemoveTailTest();
+            void PopTest();
             void SearchTest();
             void Search2Test();
             void SwapTest();
@@ -57,7 +63,9 @@ namespace pms
         RemoveHeadTest();
         RemoveInPlaceTest();
         RemoveTailTest();
+        PopTest();
         SearchTest();
+        Search2Test();
         SwapTest();
         SortTest();
         Sort2Test();
@@ -1436,6 +1444,70 @@ namespace pms
 
 
 
+    void ListTest::PopTest()
+    {
+        std::cout << std::endl; // newline
+
+        std::cout << "Pop() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test Pop() when list is empty." << std::endl;
+        try
+        {
+            list.Pop();
+            std::cerr << "Failed Test - InsertInPlace(1, 1) did not throw when list is empty." << std::endl;
+            return;
+        }
+        catch(...)
+        {
+            // Passed test, Correct behaviour is to throw when list is empty.
+        }
+
+        std::cout << "Test B - Test Pop() when list has 1 element." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        int ret_B = list.Pop();
+        if (ret_B != 1 || list.Size() != 0)
+        {
+            if (ret_B != 1)
+                std::cerr << "Failed Test - Value returned by Pop() is not 1." << std::endl;
+            if (list.Size() != 0)
+                std::cerr << "Failed Test - List size is not 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test Pop() when list has 2 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        int ret_C = list.Pop();
+        if (ret_C != 2 || list.Size() != 1)
+        {
+            if (ret_C != 2)
+                std::cerr << "Failed Test - Value returned by Pop() is not 2." << std::endl;
+            if (list.Size() != 1)
+                std::cerr << "Failed Test - List size is not 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test Pop() when list has 3 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        int ret_D = list.Pop();
+        if (ret_D != 3 || list.Size() != 2)
+        {
+            if (ret_D != 3)
+                std::cerr << "Failed Test - Value returned by Pop() is not 3." << std::endl;
+            if (list.Size() != 2)
+                std::cerr << "Failed Test - List size is not 2." << std::endl;
+            return;
+        }
+    }
+
+
+
     void ListTest::SearchTest()
     {
         std::cout << std::endl; // newline
@@ -1493,6 +1565,71 @@ namespace pms
 
         std::cout << "Test G - Test Search(5) when list is { 1, 2, 3, 4, 5 }." << std::endl;
         if (list.Search(5) != 4)
+        {
+            std::cerr << "Failed Test - Search did not return 4." << std::endl;
+            return;
+        }
+    }
+
+
+
+    void ListTest::Search2Test()
+    {
+        std::cout << std::endl; // newline
+
+        std::cout << "Search2() Testing" << std::endl;
+        List<int> list;
+
+        std::cout << "Test A - Test Search(0) when list is empty." << std::endl;
+        if (list.Search(0, Search2Comparison) != -1)
+        {
+            std::cerr << "Failed Test - Search did not return -1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test B - Test Search(0) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        list.Clear();
+        list.InsertTail(1);
+        list.InsertTail(2);
+        list.InsertTail(3);
+        list.InsertTail(4);
+        list.InsertTail(5);
+        if (list.Search(0, Search2Comparison) != -1)
+        {
+            std::cerr << "Failed Test - Search did not return -1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test C - Test Search(1) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(1, Search2Comparison) != 0)
+        {
+            std::cerr << "Failed Test - Search did not return 0." << std::endl;
+            return;
+        }
+
+        std::cout << "Test D - Test Search(2) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(2, Search2Comparison) != 1)
+        {
+            std::cerr << "Failed Test - Search did not return 1." << std::endl;
+            return;
+        }
+
+        std::cout << "Test E - Test Search(3) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(3, Search2Comparison) != 2)
+        {
+            std::cerr << "Failed Test - Search did not return 2." << std::endl;
+            return;
+        }
+
+        std::cout << "Test F - Test Search(4) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(4, Search2Comparison) != 3)
+        {
+            std::cerr << "Failed Test - Search did not return 3." << std::endl;
+            return;
+        }
+
+        std::cout << "Test G - Test Search(5) when list is { 1, 2, 3, 4, 5 }." << std::endl;
+        if (list.Search(5, Search2Comparison) != 4)
         {
             std::cerr << "Failed Test - Search did not return 4." << std::endl;
             return;

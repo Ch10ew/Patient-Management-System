@@ -1,23 +1,22 @@
-#ifndef PMS_DOCTOR_H
-#define PMS_DOCTOR_H
+#ifndef PMS_NURSE_H
+#define PMS_NURSE_H
 
 #include "Role.h"
 #include <string>
 
 namespace pms
 {
-    class Doctor : protected Role
+    class Nurse : protected Role
     {
         public:
-            Doctor();
-            Doctor(std::string id);
-            Doctor(
+            Nurse();
+            Nurse(std::string id);
+            Nurse(
                 std::string id,
                 std::string username,
                 std::string password,
                 std::string first_name,
-                std::string last_name,
-                std::string specialism
+                std::string last_name
             );
 
         public:
@@ -25,8 +24,7 @@ namespace pms
             std::string password;
             std::string first_name;
             std::string last_name;
-            std::string specialism;
     };
 } // namespace pms
 
-#endif // PMS_DOCTOR_H
+#endif // PMS_NURSE_H

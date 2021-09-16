@@ -1,10 +1,10 @@
-#include "Structures/List.h"
+#include "Application/Application.h"
 
 #include <iostream>
 #include <string>
-#include <list>
+//#include <list>
 
-class Car
+/*class Car
 {
     public:
         std::string car_plate;
@@ -67,7 +67,7 @@ int main()
 
     pms::List<Car> dll;
 
-    /*PrintDebug(dll);
+    PrintDebug(dll);
     dll.InsertHead(Car("ABC1234", 120000.0));
     PrintDebug(dll);
     dll.InsertHead(Car("XYZ2345", 230000.0));
@@ -88,28 +88,12 @@ int main()
     PrintDebug(dll);
     
     dll.Clear();
-    PrintDebug(dll);*/
+    PrintDebug(dll);
+    return 0;
+}*/
 
-    PrintDebug(dll);
-    dll.InsertTail(Car("ABC1234", 120000.0));
-    dll.InsertTail(Car("XYZ2345", 230000.0));
-    dll.InsertTail(Car("ABC1234", 145000.0));
-
-    PrintDebug(dll);
-    dll.InsertInPlace(Car("BCD1234", 69000.0), 1);
-    PrintDebug(dll);
-    dll.InsertInPlace(Car("BCD5678", 71000.0), 0);
-    PrintDebug(dll);
-    dll.InsertInPlace(Car("DEF1234", 31000.0), dll.Size() - 1);
-    PrintDebug(dll);
-
-    PrintDebug(dll);
-    dll.RemoveInPlace(2);
-    PrintDebug(dll);
-    /*dll.RemoveInPlace(0);
-    PrintDebug(dll);
-    dll.RemoveInPlace(dll.Size() - 1);
-    PrintDebug(dll);*/
-
+int main()
+{
+    pms::Application application;
     return 0;
 }

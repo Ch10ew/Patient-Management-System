@@ -1,5 +1,7 @@
 #include "Role.h"
 
+#include <string>
+
 namespace pms
 {
     Role::Role()
@@ -7,18 +9,8 @@ namespace pms
     }
     
     Role::Role(std::string id)
-    : id_(id)
+    : id(id)
     {
-    }
-
-    std::string Role::GetId()
-    {
-        return id_;
-    }
-    
-    void Role::SetId(std::string id)
-    {
-        id_ = id;
     }
 
 } // namespace pms

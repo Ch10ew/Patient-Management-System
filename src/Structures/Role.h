@@ -11,12 +11,8 @@ namespace pms
             Role();
             Role(std::string id);
 
-            std::string GetId();
-            void SetId(std::string id);
-
-        protected:
-            std::string id_;
-
+        public:
+            std::string id;
     };
 } // namespace pms
 
