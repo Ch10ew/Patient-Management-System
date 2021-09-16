@@ -59,4 +59,4 @@ namespace ctimew{
     }
 }
 
-#endif
+#endif // CTIME_WRAPPER
