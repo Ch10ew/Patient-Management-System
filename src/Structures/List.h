@@ -495,6 +495,22 @@ namespace pms
         current_index_ = size_ - 1;
     }
 
+    /**
+     * @brief remove the tail from a list and return the data`
+     * 
+     * @tparam T Type used for List<T>
+     * @return T Type data in the tail of the list
+     */
+	template<typename T>
+	T List<T>::Pop()			
+	{
+		if(size_ == 0) 
+			throw std::out_of_range("pms::List<T>::Pop(): List is empty");
+		T data_copy = tail_->data;
+		RemoveTail();
+		return data_copy;
+	}
+    
     // Operations
     /**
      * Returns the index of the specified data.
@@ -807,22 +823,6 @@ namespace pms
 
         return return_transversal_info;
     }
-	
-	/**
-     * @brief remove the tail from a list and return the data`
-     * 
-     * @tparam T Type used for List<T>
-     * @return T Type data in the tail of the list
-     */
-	template<typename T>
-	T List<T>::Pop()			
-	{
-		if(size_ == 0) 
-			throw std::out_of_range("pms::List<T>::Pop(): List is empty");
-		T data_copy = tail_->data;
-		RemoveTail();
-		return data_copy;
-	}
 
 } // namespace pms
 
