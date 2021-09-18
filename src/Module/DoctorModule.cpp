@@ -14,6 +14,16 @@ namespace pms
         return (d1->username == d2->username) && (d1->password == d2->password);
     }
 
+    bool MatchPatientID(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return p1->id == p2->id;
+    }
+
+    bool MatchPatientName(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return (p1->first_name == p2->first_name) || (p1->last_name == p2->last_name);
+    }
+
     DoctorModule::DoctorModule(std::shared_ptr<ResourcePool> resource_pool)
     : UI(resource_pool)
     {
@@ -164,5 +174,54 @@ namespace pms
             }
             std::cout << std::endl;
         }
+    }
+
+    std::shared_ptr<Patient> DoctorModule::Search()
+    {
+        bool exit = false;
+
+        std::string* option_text = new std::string[7];
+        option_text[0] = "Search by ID";
+        option_text[1] = "Search by name";
+        option_text[2] = "Search by age";
+        option_text[3] = "Search by gender";
+        option_text[4] = "Search by contact number";
+        option_text[5] = "Search by address";
+        option_text[6] = "Search by disability";
+
+        while (!exit)
+        {
+            int option = Util::Menu("Search", option_text, 7);
+
+            // Run selected option
+            std::cout << std::endl;
+            std::cout << std::endl;
+            switch (option)
+            {
+                case 0:
+
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    exit = true;
+                    break;
+            }
+        }
+
+        // free pointer above
+        delete[] option_text;
     }
 } // namespace pms

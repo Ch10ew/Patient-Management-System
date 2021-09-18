@@ -93,9 +93,13 @@ namespace pms
 
             // Operations
             int Search(const T data);
+            int Search(const T data, const int start_index);
 
             template <class Compare>
             int Search(const T data, Compare func);
+
+            template <class Compare>
+            int Search(const T data, Compare func, const int start_index);
 
             void Swap(const int a, const int b);
             void Sort();
@@ -554,6 +558,29 @@ namespace pms
         return -1;
     }
 
+    template <typename T>
+    int List<T>::Search(const T data, const int start_index)
+    {
+        int counter = 0;
+        current_ = head_;
+
+        while (current_)
+        {
+            if (current_->data == data)
+            {
+                if (counter >= start_index)
+                {
+                    return counter;
+                }
+            }
+
+            current_ = current_->next;
+            ++current_index_;
+            ++counter;
+        }
+
+        return -1;
+    }
     
     template <typename T>
     template <class Compare>
@@ -567,6 +594,31 @@ namespace pms
             if (func(current_->data, data))
             {
                 return counter;
+            }
+
+            current_ = current_->next;
+            ++current_index_;
+            ++counter;
+        }
+
+        return -1;
+    }
+
+    template <typename T>
+    template <class Compare>
+    int List<T>::Search(const T data, Compare func)
+    {
+        int counter = 0;
+        current_ = head_;
+
+        while (current_)
+        {
+            if (func(current_->data, data))
+            {
+                if (counter >= start_index)
+                {
+                    return counter;
+                }
             }
 
             current_ = current_->next;
