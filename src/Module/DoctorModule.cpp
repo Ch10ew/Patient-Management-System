@@ -2,6 +2,7 @@
 
 #include "../Structures/List.h"
 #include "../Structures/Patient.h"
+#include "../Util/Util.h"
 
 #include <memory>
 #include <iostream>
@@ -85,61 +86,45 @@ namespace pms
 
     void DoctorModule::Menu()
     {
-        int option = -1;
         bool exit = false;
-        bool show_invalid = false;
 
-        do
+        std::string* option_text = new std::string[4];
+        option_text[0] = "View full patient list";
+        option_text[1] = "Modify patient record";
+        option_text[2] = "View patient list in descending order";
+        option_text[3] = "Search for patient record";
+
+        while (!exit)
         {
-            std::cout << std::endl;
-            std::cout << std::endl;
-            if (show_invalid)
-            {
-                std::cout << "\n" << "========== Invalid Input ==========" << std::endl;
-                show_invalid = false;
-            }
-            else
-                std::cout << "\n" << std::endl;
-            
-            // Display options
-            std::cout << " = Welcome, " << logged_in_doctor_->first_name << " = " << std::endl;
-            std::cout << "1 - View full patient list" << std::endl;
-            std::cout << "2 - Modify patient record" << std::endl;
-            std::cout << "3 - View patient list in descending order" << std::endl;
-            std::cout << "4 - Search for patient record" << std::endl;
-            std::cout << "5 - Logout" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Enter an option: ";
-            std::cin >> option;
+            int option = Util::Menu("Welcome, " + logged_in_doctor_->first_name, option_text, 4);
 
+            // Run selected option
             switch (option)
             {
-                case 1:
+                case 0:
                     //PrintPatientList();
                     std::cout << "[DEBUG] Print Patient List" << std::endl;
                     break;
-                case 2:
+                case 1:
                     //Modify(Search());
                     std::cout << "[DEBUG] Search & Modify" << std::endl;
                     break;
-                case 3:
+                case 2:
                     //Pagination();
                     std::cout << "[DEBUG] Pagination for patient" << std::endl;
                     break;
-                case 4:
+                case 3:
                     //PrintPatient(Search());
                     std::cout << "[DEBUG] Search & View" << std::endl;
                     break;
-                case 5:
+                case 4:
                     logged_in_ = false;
                     exit = true;
                     break;
-                default:
-                    show_invalid = true;
-                    break;
             }
         }
-        while (!exit);
-            
+
+        // free pointer above
+        delete[] option_text;
     }
 } // namespace pms

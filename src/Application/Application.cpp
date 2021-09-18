@@ -3,8 +3,10 @@
 #include "../Structures/List.h"
 #include "../Module/NurseModule.h"
 #include "../Module/DoctorModule.h"
+#include "../Util/Util.h"
 
 #include <iostream>
+#include <string>
 #include <limits>
 #include <memory>
 
@@ -20,73 +22,29 @@ namespace pms
 	
 	void Application::Run()
     {
-        std::string input;
-        int option = -1;
-        bool show_invalid = false;
-        bool input_valid = false;
-
-        do
+        std::string* option_text = new std::string[modules_.Size()];
+        for (int i = 0; i < modules_.Size(); ++i)
         {
-            std::cout << std::endl;
-            std::cout << std::endl;
-            if (show_invalid)
-            {
-                std::cout << "\n" << "========== Invalid Input ==========" << std::endl;
-                show_invalid = false;
-            }
-            else
-                std::cout << "\n" << std::endl;
-            
-            // Display options
-            std::cout << " = Patient Management System = " << std::endl;
-            std::cout << std::endl;
-            for (int i = 0; i < modules_.Size(); ++i)
-            {
-                std::cout << i + 1 << " - " << modules_.At(i)->getOptionText() << std::endl;
-            }
-            std::cout << modules_.Size() + 1 << " - Exit" << std::endl;
-            std::cout << std::endl;
-            std::cout << "Enter an option: ";
-            std::cin >> input;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            option_text[i] = modules_.At(i)->getOptionText();
+        }
 
-            try
-            {
-                option = std::stoi(input);
-                input_valid = true;
-            }
-            catch (...)
-            {
-                input_valid = false;
-            }
+        while (!exit_)
+        {
+            int option = Util::Menu("Patient Management System", option_text, modules_.Size());
 
-            if (input_valid)
+            // Run selected option
+            if (option == modules_.Size())
             {
-                --option;  // Make the option be like an index
-
-                // Run selected option
-                if (option >= 0 && option <= modules_.Size())
-                {
-                    if (option == modules_.Size())
-                    {
-                        exit_ = true;
-                    }
-                    else
-                    {
-                        modules_.At(option)->Run();
-                    }
-                }
-                else
-                {
-                    show_invalid = true;
-                }
+                exit_ = true;
             }
             else
             {
-                show_invalid = true;
+                modules_.At(option)->Run();
             }
         }
-        while (!exit_);
+
+        // free pointer above
+        delete[] option_text;
     }
 	
 } // namespace pms
