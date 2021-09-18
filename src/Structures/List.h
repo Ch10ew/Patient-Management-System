@@ -1,7 +1,7 @@
 #ifndef PMS_LIST_H
 #define PMS_LIST_H
 
-#include <iostream>
+#include <initializer_list>
 #include <cmath>
 #include <memory>
 #include <vector>
@@ -67,10 +67,13 @@ namespace pms
             // Constructors
             List();
             List(const List<T> &source);
-            
+            List(std::initializer_list<T> initializer_list);
+            template <typename ...Ts>
+            List(Ts&&...ts);
+
             // Element Access
-            const T& Head() const;
-            const T& Tail() const;
+            T& Head() const;
+            T& Tail() const;
             T& At(const int n) const;
 
             // Capacity
@@ -144,16 +147,27 @@ namespace pms
     /// ========================================
     ///   List class constructor definitions.
     /// ========================================
-    // Constructors
+    // Default constructor
     template <typename T>
     List<T>::List()
     {
     }
 
+    // Copy constructor
     template <typename T>
     List<T>::List(const List<T> &source)
     {
         *this = source;
+    }
+
+    // Constructor for initializer list initialization
+    template <typename T>
+    List<T>::List(std::initializer_list<T> initializer_list)
+    {
+        for (auto iterator = initializer_list.begin(); iterator != initializer_list.end(); ++iterator)
+        {
+            InsertTail(*iterator);
+        }
     }
 
     /// ========================================
@@ -161,7 +175,7 @@ namespace pms
     /// ========================================
     // Element Access
     template <typename T>
-    const T& List<T>::Head() const
+    T& List<T>::Head() const
     {
         if (size_ > 0)
             return head_->data;
@@ -170,7 +184,7 @@ namespace pms
     }
 
     template <typename T>
-    const T& List<T>::Tail() const
+    T& List<T>::Tail() const
     {
         if (size_ > 0)
             return tail_->data;

@@ -4,6 +4,8 @@
 #include "../Module/NurseModule.h"
 #include "../Module/DoctorModule.h"
 
+#include <iostream>
+#include <limits>
 #include <memory>
 
 namespace pms
@@ -18,11 +20,15 @@ namespace pms
 	
 	void Application::Run()
     {
+        std::string input;
         int option = -1;
         bool show_invalid = false;
+        bool input_valid = false;
 
         do
         {
+            std::cout << std::endl;
+            std::cout << std::endl;
             if (show_invalid)
             {
                 std::cout << "\n" << "========== Invalid Input ==========" << std::endl;
@@ -41,20 +47,44 @@ namespace pms
             std::cout << modules_.Size() + 1 << " - Exit" << std::endl;
             std::cout << std::endl;
             std::cout << "Enter an option: ";
-            std::cin >> option;
+            std::cin >> input;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            --option;  // Make the option be like an index
-
-            // Run selected option
-            if (option >= 0 && option <= modules_.Size())
+            try
             {
-                if (option == modules_.Size())
-                    exit_ = true;
+                option = std::stoi(input);
+                input_valid = true;
+            }
+            catch (...)
+            {
+                input_valid = false;
+            }
+
+            if (input_valid)
+            {
+                --option;  // Make the option be like an index
+
+                // Run selected option
+                if (option >= 0 && option <= modules_.Size())
+                {
+                    if (option == modules_.Size())
+                    {
+                        exit_ = true;
+                    }
+                    else
+                    {
+                        modules_.At(option)->Run();
+                    }
+                }
                 else
-                    modules_.At(option)->Run();
+                {
+                    show_invalid = true;
+                }
             }
             else
+            {
                 show_invalid = true;
+            }
         }
         while (!exit_);
     }

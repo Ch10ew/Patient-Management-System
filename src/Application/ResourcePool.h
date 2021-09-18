@@ -2,9 +2,12 @@
 #define PMS_RESOURCE_POOL_H
 
 #include "../Structures/List.h"
-#include "../Structures/Role.h"
+#include "../Structures/Nurse.h"
+#include "../Structures/Doctor.h"
+#include "../Structures/Patient.h"
 
 #include <map>
+#include <memory>
 
 namespace pms
 {
@@ -15,17 +18,10 @@ namespace pms
             // Used to load the data
             ResourcePool();
             
-            // Used to get a copy of the specified list
-            pms::List<Role> GetData(std::string key);
-        
-        private:
-            // [POTENTIAL CHANGE]
             // Stores all the data needed for the program
-            // Expected structure:
-            // key, value
-            // 'Patient', [patient list]
-            // 'Doctor', [doctor list]
-            std::map<std::string, pms::List<Role>> lists;
+            List<std::shared_ptr<Nurse>> nurse_data_;
+            List<std::shared_ptr<Doctor>> doctor_data_;
+            List<std::shared_ptr<Patient>> patient_data_;
     };
 } // namespace pms
 

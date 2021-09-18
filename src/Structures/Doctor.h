@@ -6,7 +6,7 @@
 
 namespace pms
 {
-    class Doctor : protected Role
+    class Doctor : public Role
     {
         public:
             Doctor();

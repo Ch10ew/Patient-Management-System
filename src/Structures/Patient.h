@@ -11,16 +11,25 @@ namespace pms
 {
     struct Visit
     {
+        Visit();
+        Visit(
+            std::string sickness,
+            std::string description,
+            std::string current_visit_date,
+            std::string current_visit_time,
+            std::shared_ptr<Doctor> doctor,
+            std::string medicine_information
+        );
+
         std::string sickness;
         std::string description;
         std::string current_visit_date; // Change to ctime wrapper when done
         std::string current_visit_time;
-        std::string disability;
         std::shared_ptr<Doctor> doctor;
         std::string medicine_information;
     };
 
-    class Patient : protected Role
+    class Patient : public Role
     {
         public:
             Patient();
@@ -32,7 +41,8 @@ namespace pms
                 int age,
                 char gender,
                 std::string contact_number,
-                std::string address
+                std::string address,
+                std::string disability
             );
 
         public:
@@ -42,6 +52,7 @@ namespace pms
             char gender;
             std::string contact_number;
             std::string address;
+            std::string disability;
             List<Visit> visit_history;
     };
 } // namespace pms

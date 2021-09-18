@@ -6,7 +6,7 @@
 
 namespace pms
 {
-    class Nurse : protected Role
+    class Nurse : public Role
     {
         public:
             Nurse();

@@ -4,6 +4,27 @@
 
 namespace pms
 {
+    Visit::Visit()
+    {
+    }
+
+    Visit::Visit(
+        std::string sickness,
+        std::string description,
+        std::string current_visit_date,
+        std::string current_visit_time,
+        std::shared_ptr<Doctor> doctor,
+        std::string medicine_information
+    )
+    : sickness(sickness),
+      description(description),
+      current_visit_date(current_visit_date),
+      current_visit_time(current_visit_time),
+      doctor(doctor),
+      medicine_information(medicine_information)
+    {
+    }
+
     Patient::Patient()
     {
     }
@@ -12,6 +33,7 @@ namespace pms
     : Role(id)
     {
     }
+    
     Patient::Patient(
         std::string id,
         std::string first_name,
@@ -19,7 +41,8 @@ namespace pms
         int age,
         char gender,
         std::string contact_number,
-        std::string address
+        std::string address,
+        std::string disability
     )
     : Role(id),
       first_name(first_name),
@@ -27,7 +50,8 @@ namespace pms
       age(age),
       gender(gender),
       contact_number(contact_number),
-      address(address)
+      address(address),
+      disability(disability)
     {
     }
 
