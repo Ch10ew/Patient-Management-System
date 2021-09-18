@@ -14,7 +14,7 @@ namespace pms
     ResourcePool::ResourcePool()
     {
         // Hardcoded Nurse data
-        nurse_data_.InsertTail(std::make_shared<Nurse>(
+        nurse_data.InsertTail(std::make_shared<Nurse>(
             "N0001",
             "faizal",
             "faizal123",
@@ -23,7 +23,7 @@ namespace pms
         ));
 
         // Hardcoded Doctor data
-        doctor_data_.InsertTail(std::make_shared<Doctor>(
+        doctor_data.InsertTail(std::make_shared<Doctor>(
             "D0001",
             "hafiz",
             "hafiz123",
@@ -34,7 +34,7 @@ namespace pms
 
         // Hardcoded Patient data
         // 1
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000001",
             "John",
             "Smith",
@@ -46,7 +46,7 @@ namespace pms
         ));
 
         // 2
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000002",
             "Kris",
             "Wu",
@@ -58,7 +58,7 @@ namespace pms
         ));
 
         // 3
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000003",
             "Monica",
             "Cheng",
@@ -70,7 +70,7 @@ namespace pms
         ));
 
         // 4
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000004",
             "Madelline",
             "Ping",
@@ -80,17 +80,17 @@ namespace pms
             "12, Jalan Elitis Pinggu, Taman Gay, Sugahati, 41900, Selangor",
             "Myopia"
         ));
-        patient_data_.Tail()->visit_history.InsertTail(Visit(
+        patient_data.Tail()->visit_history.InsertTail(Visit(
             "Ligma",
             "Unspecified",
             "2021-01-01",
             "00:00:00",
-            doctor_data_.Head(),
+            doctor_data.Head(),
             "Adderall"
         ));
 
         // 5
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000005",
             "Mika",
             "Lam",
@@ -102,7 +102,7 @@ namespace pms
         ));
 
         // 6
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000006",
             "Dominic",
             "Toretto",
@@ -112,17 +112,17 @@ namespace pms
             "99, Jalan Kampung Cepat, Taman Mat Rempit, 42000, Selangor",
             ""
         ));
-        patient_data_.Tail()->visit_history.InsertTail(Visit(
+        patient_data.Tail()->visit_history.InsertTail(Visit(
             "Dizziness",
             "Unspecified",
             "2021-01-01",
             "00:00:00",
-            doctor_data_.Head(),
+            doctor_data.Head(),
             "Panadol"
         ));
 
         // 7
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000007",
             "Dominic",
             "Toretto",
@@ -134,7 +134,7 @@ namespace pms
         ));
 
         // 8
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000008",
             "Dominic",
             "Toretto",
@@ -146,7 +146,7 @@ namespace pms
         ));
 
         // 9
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000009",
             "Keng Yeap",
             "Chong",
@@ -158,7 +158,7 @@ namespace pms
         ));
 
         // 10
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000010",
             "Keng Yeap",
             "Chong",
@@ -170,7 +170,7 @@ namespace pms
         ));
 
         // 11
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000011",
             "Tzen Fung",
             "Lim",
@@ -182,7 +182,7 @@ namespace pms
         ));
 
         // 12
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000012",
             "Take",
             "Tanaka",
@@ -194,7 +194,7 @@ namespace pms
         ));
 
         // 13
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000013",
             "Will",
             "Stetson",
@@ -206,7 +206,7 @@ namespace pms
         ));
 
         // 14
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000014",
             "Jessica",
             "Simpson",
@@ -218,7 +218,7 @@ namespace pms
         ));
 
         // 15
-        patient_data_.InsertTail(std::make_shared<Patient>(
+        patient_data.InsertTail(std::make_shared<Patient>(
             "P0000015",
             "Taylor",
             "Swift",

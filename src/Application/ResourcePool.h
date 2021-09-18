@@ -19,9 +19,9 @@ namespace pms
             ResourcePool();
             
             // Stores all the data needed for the program
-            List<std::shared_ptr<Nurse>> nurse_data_;
-            List<std::shared_ptr<Doctor>> doctor_data_;
-            List<std::shared_ptr<Patient>> patient_data_;
+            List<std::shared_ptr<Nurse>> nurse_data;
+            List<std::shared_ptr<Doctor>> doctor_data;
+            List<std::shared_ptr<Patient>> patient_data;
     };
 } // namespace pms
 

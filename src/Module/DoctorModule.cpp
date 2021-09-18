@@ -54,7 +54,7 @@ namespace pms
                 std::cout << "\n" << std::endl;
             
             // Display options
-            std::cout << " = Login = " << std::endl;
+            std::cout << " = Doctor Login = " << std::endl;
             std::cout << std::endl;
             std::cout << "Username (\"!\" to exit): ";
             std::cin >> username;
@@ -69,10 +69,10 @@ namespace pms
             std::cin >> password;
 
             // Run selected option
-            int found = resource_pool_->doctor_data_.Search(std::make_shared<Doctor>("", username, password, "", "", ""), MatchAccount);
+            int found = resource_pool_->doctor_data.Search(std::make_shared<Doctor>("", username, password, "", "", ""), MatchAccount);
             if (found != -1)
             {
-                logged_in_doctor_ = resource_pool_->doctor_data_.At(found);
+                logged_in_doctor_ = resource_pool_->doctor_data.At(found);
                 logged_in_ = true;
                 exit = true;
             }
@@ -99,26 +99,34 @@ namespace pms
             int option = Util::Menu("Welcome, " + logged_in_doctor_->first_name, option_text, 4);
 
             // Run selected option
+            std::cout << std::endl;
+            std::cout << std::endl;
             switch (option)
             {
                 case 0:
-                    //PrintPatientList();
-                    std::cout << "[DEBUG] Print Patient List" << std::endl;
+                    std::cout << " = Print Patient List = " << std::endl;
+                    std::cout << std::endl;
+                    PrintPatientList();
                     break;
                 case 1:
+                    std::cout << " = Search & Modify = " << std::endl;
+                    std::cout << std::endl;
                     //Modify(Search());
-                    std::cout << "[DEBUG] Search & Modify" << std::endl;
                     break;
                 case 2:
+                    std::cout << " = Pagination for patient = " << std::endl;
+                    std::cout << std::endl;
                     //Pagination();
-                    std::cout << "[DEBUG] Pagination for patient" << std::endl;
                     break;
                 case 3:
+                    std::cout << " = Search & View = " << std::endl;
+                    std::cout << std::endl;
                     //PrintPatient(Search());
-                    std::cout << "[DEBUG] Search & View" << std::endl;
                     break;
                 case 4:
+                    std::cout << "Logging out..." << std::endl;
                     logged_in_ = false;
+                    logged_in_doctor_ = nullptr;
                     exit = true;
                     break;
             }
@@ -126,5 +134,35 @@ namespace pms
 
         // free pointer above
         delete[] option_text;
+    }
+
+    void DoctorModule::PrintPatientList()
+    {
+        for (int i = 0; i < resource_pool_->patient_data.Size(); ++i)
+        {
+            Patient copy = *(resource_pool_->patient_data.At(i));
+            
+            std::cout << copy.id << " - " << copy.first_name << " " << copy.last_name << std::endl;
+            std::cout << "Age: " << copy.age << std::endl;
+            std::cout << "Gender: " << copy.gender << std::endl;
+            std::cout << "Contact Number: " << copy.contact_number << std::endl;
+            std::cout << "Address: " << copy.address << std::endl;
+            std::cout << "Disability: " << copy.disability << std::endl;
+            std::cout << "Visit History: " << std::endl;
+            for (int j = 0; j < copy.visit_history.Size(); ++j)
+            {
+                std::cout << "\t" << "Visit #" << j + 1 << std::endl;
+                std::cout << "\t" << "Sickness: " << copy.visit_history.At(j).sickness << std::endl;
+                std::cout << "\t" << "Description: " << copy.visit_history.At(j).description << std::endl;
+                std::cout << "\t" << "Visit Date: " << copy.visit_history.At(j).current_visit_date << std::endl;
+                std::cout << "\t" << "Visit Time: " << copy.visit_history.At(j).current_visit_time << std::endl;
+                std::cout << "\t" << "Doctor: " << copy.visit_history.At(j).doctor->id << " - " << copy.visit_history.At(j).doctor->first_name << copy.visit_history.At(j).doctor->last_name << std::endl;
+                std::cout << "\t" << "Medicide Information: " << copy.visit_history.At(j).medicine_information << std::endl;
+                
+                if (j != copy.visit_history.Size() - 1)
+                    std::cout << std::endl;
+            }
+            std::cout << std::endl;
+        }
     }
 } // namespace pms

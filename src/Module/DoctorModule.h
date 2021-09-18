@@ -21,6 +21,9 @@ namespace pms
             void Menu();
 
         private:
+            void PrintPatientList();
+
+        private:
             bool logged_in_;
             bool exit_;
             std::shared_ptr<Doctor> logged_in_doctor_;
