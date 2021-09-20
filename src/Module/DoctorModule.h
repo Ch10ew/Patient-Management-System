@@ -23,6 +23,7 @@ namespace pms
         private:
             void PrintPatientList();
             std::shared_ptr<Patient> Search();
+            void Pagination();
 
         private:
             bool logged_in_;

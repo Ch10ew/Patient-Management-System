@@ -48,7 +48,7 @@ namespace pms
                     std::cout << size + 1 << " - Exit" << std::endl;
                     std::cout << std::endl;
                     std::cout << "Enter an option: ";
-                    std::cin >> input_string;
+                    getline(std::cin, input_string);
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                     try
@@ -74,6 +74,31 @@ namespace pms
                         }
                     }
                 }
+            }
+
+            std::string FitString(std::string input_string, const int width)
+            {
+                int count = 0;
+                std::string return_string;
+
+                if (input_string.length() > width - 3)
+                {
+                    for (int i = 0; i < width - 3; ++i)
+                    {
+                        return_string += input_string[i];
+                    }
+                    return_string += "...";
+                }
+                else
+                {
+                    return_string = input_string;
+                    while (return_string.length() < width)
+                    {
+                        return_string += " ";
+                    }
+                }
+                
+                return return_string;
             }
     };
 } //namespace pms

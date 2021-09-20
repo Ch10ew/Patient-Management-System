@@ -21,7 +21,7 @@ namespace pms
         ListNode() = delete;
         ListNode(T data);
 
-        T data = nullptr;
+        T data = NULL;
         std::shared_ptr<ListNode<T>> prev = nullptr;
         std::shared_ptr<ListNode<T>> next = nullptr;
     };
@@ -68,8 +68,6 @@ namespace pms
             List();
             List(const List<T> &source);
             List(std::initializer_list<T> initializer_list);
-            template <typename ...Ts>
-            List(Ts&&...ts);
 
             // Element Access
             T& Head() const;
@@ -606,7 +604,7 @@ namespace pms
 
     template <typename T>
     template <class Compare>
-    int List<T>::Search(const T data, Compare func)
+    int List<T>::Search(const T data, Compare func, const int start_index)
     {
         int counter = 0;
         current_ = head_;

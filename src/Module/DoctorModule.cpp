@@ -21,8 +21,42 @@ namespace pms
 
     bool MatchPatientName(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
     {
+        // use find
         return (p1->first_name == p2->first_name) || (p1->last_name == p2->last_name);
     }
+
+    bool MatchPatientAge(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return p1->age == p2->age;
+    }
+
+    bool MatchPatientGender(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return p1->gender == p2->gender;
+    }
+
+    bool MatchPatientContactNumber(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return p1->contact_number == p2->contact_number;
+    }
+
+    bool MatchPatientAddress(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        // use find
+        return p1->address == p2->address;
+    }
+
+    bool MatchPatientDisability(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return p1->disability == p2->disability;
+    }
+
+    bool MatchPatientVisit(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+    {
+        return p1->disability == p2->disability;
+    }
+
+
 
     DoctorModule::DoctorModule(std::shared_ptr<ResourcePool> resource_pool)
     : UI(resource_pool)
@@ -178,9 +212,9 @@ namespace pms
 
     std::shared_ptr<Patient> DoctorModule::Search()
     {
-        bool exit = false;
+        int search_option;  // For normal search
 
-        std::string* option_text = new std::string[7];
+        std::string* option_text = new std::string[8];
         option_text[0] = "Search by ID";
         option_text[1] = "Search by name";
         option_text[2] = "Search by age";
@@ -188,40 +222,222 @@ namespace pms
         option_text[4] = "Search by contact number";
         option_text[5] = "Search by address";
         option_text[6] = "Search by disability";
+        option_text[7] = "Search by visit history";
 
-        while (!exit)
+        // Prompt for search criteria
+        int option = Util::Menu("Search", option_text, 8);
+
+        // Free pointer above
+        delete[] option_text;
+
+        // Run selected option
+        if (option != 7)
         {
-            int option = Util::Menu("Search", option_text, 7);
+            // Prompt for search term
+            std::cout << std::endl;
+            std::cout << std::endl;
+            std::string search_term;
+            std::cout << "Search-term: ";
+            getline(std::cin, search_term);
 
-            // Run selected option
-            std::cout << std::endl;
-            std::cout << std::endl;
-            switch (option)
+            // Print found instances
+            List<int> indices;
+            for (int pos = -1; pos < resource_pool_->patient_data.Size() - 1; )
             {
-                case 0:
+                // Print detail
+                if (pos >= 0)
+                    indices.InsertTail(pos);
 
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                case 8:
-                    exit = true;
+                if (option == 0)  // ID
+                {
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>(search_term),
+                        MatchPatientID,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 1)  // Name
+                {
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>("", search_term, search_term, 0, 0, "", "", ""),
+                        MatchPatientName,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 2)  // Age
+                {
+                    // Convert input to int
+                    int search_age;
+                    try
+                    {
+                        search_age = std::stoi(search_term);
+                    }
+                    catch(...)
+                    {
+                        break;
+                    }
+                    
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>("", "", "", search_age, 0, "", "", ""),
+                        MatchPatientAge,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 3)  // Gender
+                {
+                    // Guard longer strings
+                    if (search_term.length() > 1 || search_term.length() == 0)
+                        break;
+                    
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>("", "", "", 0, search_term[0], "", "", ""),
+                        MatchPatientGender,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 4)  // Contact Number
+                {
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>("", "", "", 0, 0, search_term, "", ""),
+                        MatchPatientContactNumber,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 5)  // Address
+                {
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>("", "", "", 0, 0, "", search_term, ""),
+                        MatchPatientAddress,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 6)  // Disability
+                {
+                    // Update position
+                    pos = resource_pool_->patient_data.Search(
+                        std::make_shared<Patient>("", "", "", 0, 0, "", "", search_term),
+                        MatchPatientDisability,
+                        pos
+                    );
+                    if (pos == -1)
+                        break;
+                }
+                if (option == 8)  // Exit
+                {
+                    return nullptr;
+                }
+            }
+
+            // Display the results & prompt for selection
+            std::string* search_matches = new std::string[indices.Size()];
+            for (int i = 0; i < indices.Size(); ++i)
+            {
+                std::string tmp;
+                
+                tmp += resource_pool_->patient_data.At(indices.At(i))->id;
+                tmp += " - ";
+                tmp += resource_pool_->patient_data.At(indices.At(i))->first_name;
+                tmp += " ";
+                tmp += resource_pool_->patient_data.At(indices.At(i))->last_name;
+
+                search_matches[i] = tmp;
+            }
+
+            search_option = Util::Menu("Search Results", search_matches, indices.Size());
+
+            // Free pointer above
+            delete[] search_matches;
+        }
+        else  // Visit History
+        {
+            
+
+            // Prompt more
+            std::string* visit_option_text = new std::string[7];
+            visit_option_text[0] = "Search by sickness";
+            visit_option_text[1] = "Search by description";
+            visit_option_text[2] = "Search by visit date";
+            visit_option_text[3] = "Search by visit time";
+            visit_option_text[4] = "Search by doctor id";
+            visit_option_text[5] = "Search by doctor name";
+            visit_option_text[6] = "Search by medicine information";
+
+            int visit_option = Util::Menu("Search by Visit History", visit_option_text, 7);
+
+            // Prompt for search term
+            std::cout << std::endl;
+            std::cout << std::endl;
+            std::string search_term;
+            std::cout << "Search-term: ";
+            getline(std::cin, search_term);
+
+            // Print found instances
+            List<int> indices;
+            for (int pos = -1; pos < resource_pool_->patient_data.Size() - 1; )
+            {
+                // Print detail
+                if (pos >= 0)
+                    indices.InsertTail(pos);
+
+                // Loop through all visit history of current patient
+                for (int pos2 = -1; pos2 < resource_pool_->patient_data.At(pos)->visit_history.Size() - 1; )
+                {
+                    if (option == 0)  // Sickness
+                    {
+                        // Update position
+                        pos2 = resource_pool_->patient_data.Search(
+                            std::make_shared<Patient>(search_term),
+                            MatchPatientID,
+                            pos2
+                        );
+                    }
+                    // send help i
+                    // cri
+                    // :")
+                }
+                if (pos == -1)
                     break;
             }
         }
 
-        // free pointer above
-        delete[] option_text;
+        // Try to return the pointer
+        try
+        {
+            return resource_pool_->patient_data.At(search_option);
+        }
+        catch(...)
+        {
+            return nullptr;
+        }
+    }
+
+    void DoctorModule::Pagination()
+    {
+        const int WIDTH = 104;
+        const int HEIGHT = 30;
+
+        std::cout << "                              ------------------------------------------" << std::endl;
+        std::cout << "                                                Patients" << std::endl;
+        std::cout << "                              ------------------------------------------" << std::endl;
+        std::cout << "";
+
     }
 } // namespace pms
