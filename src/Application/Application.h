@@ -4,6 +4,8 @@
 #include "ResourcePool.h"
 #include "../Structures/List.h"
 #include "../Module/UI.h"
+#include "../Util/Util.h"
+#include "../Util/Console.h"
 
 #include <memory>
 

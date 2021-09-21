@@ -4,7 +4,6 @@
 #include "../Structures/List.h"
 
 #include <iostream>
-#include <limits>
 #include <string>
 
 namespace pms
@@ -49,7 +48,6 @@ namespace pms
                     std::cout << std::endl;
                     std::cout << "Enter an option: ";
                     getline(std::cin, input_string);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                     try
                     {
@@ -76,7 +74,7 @@ namespace pms
                 }
             }
 
-            std::string FitString(std::string input_string, const int width)
+            static std::string FitString(std::string input_string, const int width)
             {
                 int count = 0;
                 std::string return_string;

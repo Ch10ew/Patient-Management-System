@@ -21,7 +21,7 @@ namespace pms
             "Faizal bin Abdullah",
             ""
         ));
-
+        
         // Hardcoded Doctor data
         doctor_data.InsertTail(std::make_shared<Doctor>(
             "D0001",
@@ -29,6 +29,15 @@ namespace pms
             "hafiz123",
             "Hafiz bin Abdul",
             "",
+            "Optometry"
+        ));
+
+        doctor_data.InsertTail(std::make_shared<Doctor>(
+            "D0002",
+            "tan",
+            "tan",
+            "Chee Ming",
+            "Tan",
             "Optometry"
         ));
 
@@ -124,11 +133,11 @@ namespace pms
         // 7
         patient_data.InsertTail(std::make_shared<Patient>(
             "P0000007",
-            "Dominic",
+            "Lisa",
             "Toretto",
-            40,
-            'M',
-            "012-9999999",
+            42,
+            'F',
+            "012-9999998",
             "99, Jalan Kampung Cepat, Taman Mat Rempit, 42000, Selangor",
             ""
         ));
@@ -136,11 +145,11 @@ namespace pms
         // 8
         patient_data.InsertTail(std::make_shared<Patient>(
             "P0000008",
-            "Dominic",
+            "Eason",
             "Toretto",
-            40,
+            44,
             'M',
-            "012-9999999",
+            "012-9999997",
             "99, Jalan Kampung Cepat, Taman Mat Rempit, 42000, Selangor",
             ""
         ));
@@ -160,12 +169,12 @@ namespace pms
         // 10
         patient_data.InsertTail(std::make_shared<Patient>(
             "P0000010",
-            "Keng Yeap",
-            "Chong",
-            32,
-            'M',
-            "016-3772198",
-            "10A, Jalan 3B/4, Persiaran Pog, 44100, Selangor",
+            "Hou Yin",
+            "Tan",
+            28,
+            'F',
+            "016-7788453",
+            "12, Jalan Kimi 7, Taman Penzine, 44100, Selangor",
             ""
         ));
 

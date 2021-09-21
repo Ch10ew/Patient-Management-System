@@ -368,8 +368,6 @@ namespace pms
         }
         else  // Visit History
         {
-            
-
             // Prompt more
             std::string* visit_option_text = new std::string[7];
             visit_option_text[0] = "Search by sickness";
