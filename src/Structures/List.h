@@ -88,6 +88,7 @@ namespace pms
             void RemoveInPlace(const int index);
             void RemoveTail();
 			T Pop();
+            T Poll();
 
             // Operations
             int Search(const T data);
@@ -531,6 +532,22 @@ namespace pms
 		return data_copy;
 	}
     
+    /**
+     * @brief remove the head from a list and return the data`
+     * 
+     * @tparam T Type used for List<T>
+     * @return T Type data in the head of the list
+     */
+	template<typename T>
+	T List<T>::Poll()			
+	{
+		if(size_ == 0) 
+			throw std::out_of_range("pms::List<T>::Poll(): List is empty");
+		T data_copy = head_->data;
+		RemoveHead();
+		return data_copy;
+	}
+
     // Operations
     /**
      * Returns the index of the specified data.
