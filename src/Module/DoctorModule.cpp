@@ -14,47 +14,7 @@ namespace pms
         return (d1->username == d2->username) && (d1->password == d2->password);
     }
 
-    bool MatchPatientID(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        return p1->id == p2->id;
-    }
-
-    bool MatchPatientName(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        // use find
-        return (p1->first_name == p2->first_name) || (p1->last_name == p2->last_name);
-    }
-
-    bool MatchPatientAge(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        return p1->age == p2->age;
-    }
-
-    bool MatchPatientGender(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        return p1->gender == p2->gender;
-    }
-
-    bool MatchPatientContactNumber(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        return p1->contact_number == p2->contact_number;
-    }
-
-    bool MatchPatientAddress(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        // use find
-        return p1->address == p2->address;
-    }
-
-    bool MatchPatientDisability(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        return p1->disability == p2->disability;
-    }
-
-    bool MatchPatientVisit(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
-    {
-        return p1->disability == p2->disability;
-    }
+    
 
 
 
@@ -253,7 +213,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>(search_term),
-                        MatchPatientID,
+                        Util::MatchPatientID,
                         pos
                     );
                     if (pos == -1)
@@ -264,7 +224,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", search_term, search_term, 0, 0, "", "", ""),
-                        MatchPatientName,
+                        Util::MatchPatientName,
                         pos
                     );
                     if (pos == -1)
@@ -286,7 +246,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", search_age, 0, "", "", ""),
-                        MatchPatientAge,
+                        Util::MatchPatientAge,
                         pos
                     );
                     if (pos == -1)
@@ -301,7 +261,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, search_term[0], "", "", ""),
-                        MatchPatientGender,
+                        Util::MatchPatientGender,
                         pos
                     );
                     if (pos == -1)
@@ -312,7 +272,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, 0, search_term, "", ""),
-                        MatchPatientContactNumber,
+                        Util::MatchPatientContactNumber,
                         pos
                     );
                     if (pos == -1)
@@ -323,7 +283,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, 0, "", search_term, ""),
-                        MatchPatientAddress,
+                        Util::MatchPatientAddress,
                         pos
                     );
                     if (pos == -1)
@@ -334,7 +294,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, 0, "", "", search_term),
-                        MatchPatientDisability,
+                        Util::MatchPatientDisability,
                         pos
                     );
                     if (pos == -1)
@@ -403,7 +363,7 @@ namespace pms
                         // Update position
                         pos2 = resource_pool_->patient_data.Search(
                             std::make_shared<Patient>(search_term),
-                            MatchPatientID,
+                            Util::MatchPatientID,
                             pos2
                         );
                     }
