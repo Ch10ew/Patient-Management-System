@@ -48,6 +48,26 @@ namespace pms
     {
     }
 
+    Waiting::Waiting()
+    {
+    }
+
+    Waiting::Waiting(
+      std::string id,
+      std::string first_name,
+      std::string last_name,
+      int priority,
+      time_t registration_time
+    )
+    : id(id),
+    first_name(first_name),
+    last_name(last_name),
+    priority(priority),
+    registration_time(registration_time)
+    {
+    }
+
+
     Patient::Patient()
     {
     }

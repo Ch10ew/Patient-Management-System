@@ -9,7 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
-
+#include <cctype>
 namespace pms
 {
     ResourcePool::ResourcePool()
@@ -253,5 +253,18 @@ namespace pms
             "",
             5
         ));
+
+        for(int i = 0; i < patient_data.Size(); i++)
+        {
+            Patient copy = *(patient_data.At(i));
+            time_t time_temp = (ctimew::Time() + (i * rand() % 10000));
+            waiting_data.InsertTail(std::make_shared<Waiting>(
+                copy.id,
+                copy.first_name,
+                copy.last_name,
+                time_temp
+            ));
+
+        }
     }
 } // namespace pms

@@ -3,6 +3,7 @@
 #include "../Util/Util.h"
 #include "../Structures/List.h"
 #include "../Structures/Patient.h"
+#include "../Structures/CtimeWrapper.h"
 
 #include <memory>
 #include <iostream>
@@ -244,9 +245,10 @@ namespace pms
                     break;
             }
         }
-        int size = resource_pool_->patient_data.Size() + 1;
+        int size = resource_pool_->patient_data.Size();
+        std::string id = Util::GenerateID("P", 8, size);
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
-            Util::GenerateID("P", 8, size),
+            id,
             first_name,
             last_name,
             age,
@@ -255,6 +257,14 @@ namespace pms
             address,
             disability,
             priority
+        ));
+        time_t time_temp = ctimew::Time();
+        resource_pool_->waiting_data.InsertTail(std::make_shared<Waiting>(
+            id,
+            first_name,
+            last_name,
+            priority,
+            time_temp
         ));
         std::cout << std::endl;
         std::cout << std::endl;

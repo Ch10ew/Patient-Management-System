@@ -51,6 +51,24 @@ namespace pms
         std::string medicine_information;
     };
 
+struct Waiting
+    {
+        Waiting();
+        Waiting(
+            std::string id,
+            std::string first_name,
+            std::string last_name,
+            int priorty,
+            time_t registration_time
+        );
+
+        std::string id;
+        std::string first_name;
+        std::string last_name;
+        int priority;
+        time_t registration_time;
+    };
+
     class Patient : public Role
     {
         public:
