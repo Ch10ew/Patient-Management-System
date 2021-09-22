@@ -29,6 +29,28 @@ namespace pms
         std::string medicine_information;
     };
 
+    struct VisitButForPrinting
+    {
+        VisitButForPrinting();
+        VisitButForPrinting(
+            std::string id,
+            std::string sickness,
+            std::string description,
+            std::string current_visit_date,
+            std::string current_visit_time,
+            std::shared_ptr<Doctor> doctor,
+            std::string medicine_information
+        );
+
+        std::string id;
+        std::string sickness;
+        std::string description;
+        std::string current_visit_date; // Change to ctime wrapper when done
+        std::string current_visit_time;
+        std::shared_ptr<Doctor> doctor;
+        std::string medicine_information;
+    };
+
     class Patient : public Role
     {
         public:

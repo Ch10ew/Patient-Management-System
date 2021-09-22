@@ -4,7 +4,6 @@
 #include "../Module/NurseModule.h"
 #include "../Module/DoctorModule.h"
 #include "../Util/Util.h"
-#include "../Util/Console.h"
 
 #include <iostream>
 #include <string>

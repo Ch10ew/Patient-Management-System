@@ -25,6 +25,29 @@ namespace pms
     {
     }
 
+    VisitButForPrinting::VisitButForPrinting()
+    {
+    }
+
+    VisitButForPrinting::VisitButForPrinting(
+        std::string id,
+        std::string sickness,
+        std::string description,
+        std::string current_visit_date,
+        std::string current_visit_time,
+        std::shared_ptr<Doctor> doctor,
+        std::string medicine_information
+    )
+    : id(id),
+      sickness(sickness),
+      description(description),
+      current_visit_date(current_visit_date),
+      current_visit_time(current_visit_time),
+      doctor(doctor),
+      medicine_information(medicine_information)
+    {
+    }
+
     Patient::Patient()
     {
     }
