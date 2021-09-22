@@ -64,7 +64,8 @@ namespace pms
                 char gender,
                 std::string contact_number,
                 std::string address,
-                std::string disability
+                std::string disability,
+                int priority
             );
 
         public:
@@ -75,6 +76,7 @@ namespace pms
             std::string contact_number;
             std::string address;
             std::string disability;
+            int priority;
             List<Visit> visit_history;
     };
 } // namespace pms

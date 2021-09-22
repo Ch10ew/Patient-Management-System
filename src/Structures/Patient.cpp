@@ -65,7 +65,8 @@ namespace pms
         char gender,
         std::string contact_number,
         std::string address,
-        std::string disability
+        std::string disability,
+        int priority
     )
     : Role(id),
       first_name(first_name),
@@ -74,7 +75,8 @@ namespace pms
       gender(gender),
       contact_number(contact_number),
       address(address),
-      disability(disability)
+      disability(disability),
+      priority(priority)
     {
     }
 

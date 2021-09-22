@@ -4,6 +4,7 @@
 #include "../Structures/Nurse.h"
 #include "../Structures/Doctor.h"
 #include "../Structures/Patient.h"
+#include "../Structures/CtimeWrapper.h"
 
 #include <map>
 #include <memory>
@@ -51,7 +52,8 @@ namespace pms
             'M',
             "019-6103755",
             "1, Jalan 2, Taman 3, 52200, Kuala Lumpur",
-            ""
+            "",
+            5
         ));
 
         // 2
@@ -63,7 +65,8 @@ namespace pms
             'M',
             "012-9876543",
             "2, Jalan 3, Taman 4, 52200, Kuala Lumpur",
-            ""
+            "",
+            5
         ));
 
         // 3
@@ -75,7 +78,8 @@ namespace pms
             'F',
             "012-3456789",
             "69, Jalan 30CM, Taman Kacang Deez, 47100 Puchong, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 4
@@ -87,12 +91,13 @@ namespace pms
             'F',
             "011-27273656",
             "12, Jalan Elitis Pinggu, Taman Gay, Sugahati, 41900, Selangor",
-            "Myopia"
+            "Myopia",
+            2
         ));
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Ligma",
             "Unspecified",
-            "2021-01-01",
+            ctimew::GetDate(ctimew::StructTM(ctimew::Time())),
             "00:00:00",
             doctor_data.Head(),
             "Adderall"
@@ -107,7 +112,8 @@ namespace pms
             'F',
             "018-9113268",
             "6, Lorong Wae 69/6, Bukit Gae, 25250, Kuantan",
-            ""
+            "",
+            5
         ));
 
         // 6
@@ -119,7 +125,8 @@ namespace pms
             'M',
             "012-9999999",
             "99, Jalan Kampung Cepat, Taman Mat Rempit, 42000, Selangor",
-            ""
+            "",
+            5
         ));
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Dizziness",
@@ -139,7 +146,8 @@ namespace pms
             'F',
             "012-9999998",
             "99, Jalan Kampung Cepat, Taman Mat Rempit, 42000, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 8
@@ -151,7 +159,8 @@ namespace pms
             'M',
             "012-9999997",
             "99, Jalan Kampung Cepat, Taman Mat Rempit, 42000, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 9
@@ -163,7 +172,8 @@ namespace pms
             'M',
             "016-3772198",
             "10A, Jalan 3B/4, Persiaran Pog, 44100, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 10
@@ -175,7 +185,8 @@ namespace pms
             'F',
             "016-7788453",
             "12, Jalan Kimi 7, Taman Penzine, 44100, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 11
@@ -187,7 +198,8 @@ namespace pms
             'M',
             "017-7107828",
             "222, Jalan Rohulk, Taman Aliran Berakhir, 51000, Kuala Lumpur",
-            ""
+            "",
+            5
         ));
 
         // 12
@@ -199,7 +211,8 @@ namespace pms
             'F',
             "012-9927314",
             "10575, Jalan Dalam Luar, Taman Sys, 43000, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 13
@@ -211,7 +224,8 @@ namespace pms
             'M',
             "017-2772772",
             "727, Jalan Zenith Biru, Taman Strim Keterlaluan, 42000, Selangor",
-            ""
+            "",
+            5
         ));
 
         // 14
@@ -223,7 +237,8 @@ namespace pms
             'F',
             "019-3442106",
             "10, Jalan Angstrom, Bukit Pasir Hitam, 53000, Kuala Lumpur",
-            ""
+            "",
+            5
         ));
 
         // 15
@@ -235,7 +250,8 @@ namespace pms
             'F',
             "016-2223333",
             "101-2C, Jalan 1/4, Taman Setia, Sentul 52000, Kuala Lumpur",
-            ""
+            "",
+            5
         ));
     }
 } // namespace pms

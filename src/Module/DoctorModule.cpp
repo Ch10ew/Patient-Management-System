@@ -223,7 +223,7 @@ namespace pms
                 {
                     // Update position
                     pos = resource_pool_->patient_data.Search(
-                        std::make_shared<Patient>("", search_term, search_term, 0, 0, "", "", ""),
+                        std::make_shared<Patient>("", search_term, search_term, 0, 0, "", "", "", 0),
                         Util::MatchPatientName,
                         pos
                     );
@@ -245,7 +245,7 @@ namespace pms
                     
                     // Update position
                     pos = resource_pool_->patient_data.Search(
-                        std::make_shared<Patient>("", "", "", search_age, 0, "", "", ""),
+                        std::make_shared<Patient>("", "", "", search_age, 0, "", "", "", 0),
                         Util::MatchPatientAge,
                         pos
                     );
@@ -260,7 +260,7 @@ namespace pms
                     
                     // Update position
                     pos = resource_pool_->patient_data.Search(
-                        std::make_shared<Patient>("", "", "", 0, search_term[0], "", "", ""),
+                        std::make_shared<Patient>("", "", "", 0, search_term[0], "", "", "", 0),
                         Util::MatchPatientGender,
                         pos
                     );
@@ -271,7 +271,7 @@ namespace pms
                 {
                     // Update position
                     pos = resource_pool_->patient_data.Search(
-                        std::make_shared<Patient>("", "", "", 0, 0, search_term, "", ""),
+                        std::make_shared<Patient>("", "", "", 0, 0, search_term, "", "", 0),
                         Util::MatchPatientContactNumber,
                         pos
                     );
@@ -282,7 +282,7 @@ namespace pms
                 {
                     // Update position
                     pos = resource_pool_->patient_data.Search(
-                        std::make_shared<Patient>("", "", "", 0, 0, "", search_term, ""),
+                        std::make_shared<Patient>("", "", "", 0, 0, "", search_term, "", 0),
                         Util::MatchPatientAddress,
                         pos
                     );
@@ -293,7 +293,7 @@ namespace pms
                 {
                     // Update position
                     pos = resource_pool_->patient_data.Search(
-                        std::make_shared<Patient>("", "", "", 0, 0, "", "", search_term),
+                        std::make_shared<Patient>("", "", "", 0, 0, "", "", search_term, 0),
                         Util::MatchPatientDisability,
                         pos
                     );

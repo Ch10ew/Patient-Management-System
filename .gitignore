@@ -11,3 +11,10 @@ Artifacts/
 src/main.bat
 src/test_main.bat
 src/a.exe
+src/compile.bat
+src/my_test.cpp
+src/my_test.exe
+src/pms.exe
+src/test_main.exe
+
+DSTR-Assignment-workspace.code-workspace
