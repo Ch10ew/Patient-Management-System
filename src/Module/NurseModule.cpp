@@ -246,7 +246,7 @@ namespace pms
         }
         int size = resource_pool_->patient_data.Size() + 1;
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
-            GeneratePatientID("P", 8, size),
+            Util::GenerateID("P", 8, size),
             first_name,
             last_name,
             age,
@@ -516,9 +516,5 @@ namespace pms
         }
     }
 
-    std::string NurseModule::GeneratePatientID(std::string prefix, int length, int list_size){
-        std::stringstream ss;
-        ss << prefix << std::setfill('0') << std::setw(length) << list_size;
-        return ss.str();
-    }
+    
 } // namespace pms

@@ -141,6 +141,13 @@ namespace pms
                 return p1->disability == p2->disability;
             }
 
+            static std::string GenerateID(std::string prefix, int length, int list_size)
+            {
+                std::stringstream ss;
+                ss << prefix << std::setfill('0') << std::setw(length) << list_size;
+                return ss.str();
+            }
+
     };
 } //namespace pms
 
