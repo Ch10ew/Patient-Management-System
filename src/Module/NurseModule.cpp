@@ -104,7 +104,7 @@ namespace pms
 
         while (!exit)
         {
-            int option = Util::Menu("Welcome, " + logged_in_nurse_->first_name, option_text, 6);
+            int option = pms::util::Menu("Welcome, " + logged_in_nurse_->first_name, option_text, 6);
 
             // Run selected option
             std::cout << std::endl;
@@ -246,7 +246,7 @@ namespace pms
             }
         }
         int size = resource_pool_->patient_data.Size();
-        std::string id = Util::GenerateID("P", 8, size);
+        std::string id = pms::util::GenerateID("P", 8, size);
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
             id,
             first_name,
@@ -324,7 +324,7 @@ namespace pms
         option_text[7] = "Search by visit history";
 
         // Prompt for search criteria
-        int option = Util::Menu("Search", option_text, 8);
+        int option = pms::util::Menu("Search", option_text, 8);
 
         // Free pointer above
         delete[] option_text;
@@ -352,7 +352,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>(search_term),
-                        Util::MatchPatientID,
+                        pms::util::MatchPatientID,
                         pos
                     );
                     if (pos == -1)
@@ -363,7 +363,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", search_term, search_term, 0, 0, "", "", "", 0),
-                        Util::MatchPatientName,
+                        pms::util::MatchPatientName,
                         pos
                     );
                     if (pos == -1)
@@ -385,7 +385,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", search_age, 0, "", "", "", 0),
-                        Util::MatchPatientAge,
+                        pms::util::MatchPatientAge,
                         pos
                     );
                     if (pos == -1)
@@ -400,7 +400,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, search_term[0], "", "", "", 0),
-                        Util::MatchPatientGender,
+                        pms::util::MatchPatientGender,
                         pos
                     );
                     if (pos == -1)
@@ -411,7 +411,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, 0, search_term, "", "", 0),
-                        Util::MatchPatientContactNumber,
+                        pms::util::MatchPatientContactNumber,
                         pos
                     );
                     if (pos == -1)
@@ -422,7 +422,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, 0, "", search_term, "", 0),
-                        Util::MatchPatientAddress,
+                        pms::util::MatchPatientAddress,
                         pos
                     );
                     if (pos == -1)
@@ -433,7 +433,7 @@ namespace pms
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>("", "", "", 0, 0, "", "", search_term, 0),
-                        Util::MatchPatientDisability,
+                        pms::util::MatchPatientDisability,
                         pos
                     );
                     if (pos == -1)
@@ -460,7 +460,7 @@ namespace pms
                 search_matches[i] = tmp;
             }
 
-            search_option = Util::Menu("Search Results", search_matches, indices.Size());
+            search_option = pms::util::Menu("Search Results", search_matches, indices.Size());
 
             // Free pointer above
             delete[] search_matches;
@@ -477,7 +477,7 @@ namespace pms
             visit_option_text[5] = "Search by doctor name";
             visit_option_text[6] = "Search by medicine information";
 
-            int visit_option = Util::Menu("Search by Visit History", visit_option_text, 7);
+            int visit_option = pms::util::Menu("Search by Visit History", visit_option_text, 7);
 
             // Prompt for search term
             std::cout << std::endl;
@@ -502,7 +502,7 @@ namespace pms
                         // Update position
                         pos2 = resource_pool_->patient_data.Search(
                             std::make_shared<Patient>(search_term),
-                            Util::MatchPatientID,
+                            pms::util::MatchPatientID,
                             pos2
                         );
                     }
