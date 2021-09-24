@@ -30,7 +30,7 @@ namespace pms
     }
 
     VisitButForPrinting::VisitButForPrinting(
-        std::string id,
+        std::string patient_id,
         std::string sickness,
         std::string description,
         std::string current_visit_date,
@@ -38,7 +38,7 @@ namespace pms
         std::shared_ptr<Doctor> doctor,
         std::string medicine_information
     )
-    : id(id),
+    : patient_id(patient_id),
       sickness(sickness),
       description(description),
       current_visit_date(current_visit_date),
