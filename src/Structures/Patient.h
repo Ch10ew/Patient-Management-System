@@ -33,7 +33,7 @@ namespace pms
     {
         VisitButForPrinting();
         VisitButForPrinting(
-            std::string id,
+            std::string patient_id,
             std::string sickness,
             std::string description,
             std::string current_visit_date,
@@ -42,7 +42,7 @@ namespace pms
             std::string medicine_information
         );
 
-        std::string id;
+        std::string patient_id;
         std::string sickness;
         std::string description;
         std::string current_visit_date; // Change to ctime wrapper when done
