@@ -22,6 +22,7 @@ namespace pms
             List<std::shared_ptr<Nurse>> nurse_data;
             List<std::shared_ptr<Doctor>> doctor_data;
             List<std::shared_ptr<Patient>> patient_data;
+            List<std::shared_ptr<Waiting>> waiting_data;
     };
 } // namespace pms
 

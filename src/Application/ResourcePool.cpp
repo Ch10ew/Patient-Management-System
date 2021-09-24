@@ -262,6 +262,7 @@ namespace pms
                 copy.id,
                 copy.first_name,
                 copy.last_name,
+                copy.priority,
                 time_temp
             ));
 
