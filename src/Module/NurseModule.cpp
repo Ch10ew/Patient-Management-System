@@ -246,7 +246,7 @@ namespace pms
             }
         }
         int size = resource_pool_->patient_data.Size();
-        std::string id = pms::util::GenerateID("P", 8, size);
+        id = pms::util::GenerateID("P", 8, size);
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
             id,
             first_name,

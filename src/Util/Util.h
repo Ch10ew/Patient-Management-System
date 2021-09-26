@@ -137,9 +137,45 @@ namespace pms
             return p1->disability == p2->disability;
         }
 
-        static bool MatchPatientVisit(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+        static bool MatchVisitSickness(Visit v1, Visit v2)
         {
-            return p1->disability == p2->disability;
+            return v1.sickness == v2.sickness;
+        }
+
+        static bool MatchVisitDescription(Visit v1, Visit v2)
+        {
+            return v1.description == v2.description;
+        }
+
+        /**
+         * Will soon be deprecated
+         */
+        static bool MatchVisitVisitDate(Visit v1, Visit v2)
+        {
+            return v1.current_visit_date == v2.current_visit_date;
+        }
+
+        /**
+         * Will soon be deprecated
+         */
+        static bool MatchVisitVisitTime(Visit v1, Visit v2)
+        {
+            return v1.current_visit_time == v2.current_visit_time;
+        }
+
+        static bool MatchVisitDoctorID(Visit v1, Visit v2)
+        {
+            return v1.doctor->id == v2.doctor->id;
+        }
+
+        static bool MatchVisitDoctorName(Visit v1, Visit v2)
+        {
+            return (v1.doctor->first_name == v2.doctor->first_name) || (v1.doctor->last_name == v2.doctor->last_name);
+        }
+
+        static bool MatchVisitMedicineInformation(Visit v1, Visit v2)
+        {
+            return v1.medicine_information == v2.medicine_information;
         }
 
         static std::string GenerateID(std::string prefix, int length, int list_size)

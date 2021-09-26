@@ -23,6 +23,22 @@ namespace pms
         private:
             void PrintPatientList();
             std::shared_ptr<Patient> Search();
+            std::shared_ptr<Patient> SearchByVisitHistory();
+            std::string PromptSearch(std::string attribute);
+            std::shared_ptr<Patient> SearchByID(std::string search_term);
+            std::shared_ptr<Patient> SearchByName(std::string search_term);
+            std::shared_ptr<Patient> SearchByAge(int search_term);
+            std::shared_ptr<Patient> SearchByGender(std::string search_term);
+            std::shared_ptr<Patient> SearchByContactNumber(std::string search_term);
+            std::shared_ptr<Patient> SearchByAddress(std::string search_term);
+            std::shared_ptr<Patient> SearchByDisability(std::string search_term);
+            std::shared_ptr<Patient> SearchBySickness(std::string search_term);
+            std::shared_ptr<Patient> SearchByDescription(std::string search_term);
+            std::shared_ptr<Patient> SearchByVisitDate(std::string search_term);
+            std::shared_ptr<Patient> SearchByVisitTime(std::string search_term);
+            std::shared_ptr<Patient> SearchByDoctorID(std::string search_term);
+            std::shared_ptr<Patient> SearchByDoctorName(std::string search_term);
+            std::shared_ptr<Patient> SearchByMedicineInformation(std::string search_term);
             void Pagination();
 
         private:

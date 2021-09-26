@@ -7,7 +7,7 @@
 #include <iomanip>
 
 namespace ctimew{
-    time_t Time(){
+    static time_t Time(){
         time_t currentTime;
         return time(&currentTime);
     }
@@ -17,7 +17,7 @@ namespace ctimew{
      * 
      * @return Local time in struct tm pointer`
      */
-    tm* StructTM(time_t time){
+    static tm* StructTM(time_t time){
         return localtime(&time); 
     }
 
@@ -27,7 +27,7 @@ namespace ctimew{
      * @param struct tm pointer
      * @return String of readable time`
      */
-    std::string FormatTime(tm *data){
+    static std::string FormatTime(tm *data){
         return asctime(data);
     }
 
@@ -37,7 +37,7 @@ namespace ctimew{
      * @param struct tm pointer
      * @return String date in the formate of DD/MM/YYYY`
      */
-    std::string GetDate(tm *data){
+    static std::string GetDate(tm *data){
         std::stringstream ss;
         int month = data-> tm_mon + 1;
         int day = data-> tm_mday;
@@ -49,7 +49,7 @@ namespace ctimew{
         return ss.str();
     }
 
-    std::string GetTime(tm *data){
+    static std::string GetTime(tm *data){
         std::stringstream ss;
         ss << std::setfill('0');
         ss << std::setw(2) << data->tm_hour << '/'

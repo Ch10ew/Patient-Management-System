@@ -30,7 +30,7 @@ namespace pms
 
         while (!exit_)
         {
-            int option = Util::Menu("Patient Management System", option_text, modules_.Size());
+            int option = util::Menu("Patient Management System", option_text, modules_.Size());
 
             // Run selected option
             if (option == modules_.Size())
