@@ -3,6 +3,7 @@
 #include "../Structures/List.h"
 #include "../Structures/Patient.h"
 #include "../Util/Util.h"
+#include "../Structures/CtimeWrapper.h"
 
 #include <memory>
 #include <iostream>
@@ -166,8 +167,7 @@ namespace pms
                 std::cout << "\t" << "Visit #" << j + 1 << std::endl;
                 std::cout << "\t" << "Sickness: " << copy.visit_history.At(j).sickness << std::endl;
                 std::cout << "\t" << "Description: " << copy.visit_history.At(j).description << std::endl;
-                std::cout << "\t" << "Visit Date: " << copy.visit_history.At(j).current_visit_date << std::endl;
-                std::cout << "\t" << "Visit Time: " << copy.visit_history.At(j).current_visit_time << std::endl;
+                std::cout << "\t" << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(copy.visit_history.At(j).registration_time)) << std::endl;
                 std::cout << "\t" << "Doctor: " << copy.visit_history.At(j).doctor->id << " - " << copy.visit_history.At(j).doctor->first_name << copy.visit_history.At(j).doctor->last_name << std::endl;
                 std::cout << "\t" << "Medicide Information: " << copy.visit_history.At(j).medicine_information << std::endl;
                 
@@ -210,17 +210,7 @@ namespace pms
                 break;
             case 2:  // Age
                 search_term = PromptSearch("age");
-                // Convert input to int
-                int search_age;
-                try
-                {
-                    search_age = std::stoi(search_term);
-                }
-                catch(...)
-                {
-                    return nullptr;
-                }
-                return SearchByAge(search_age);
+                return SearchByAge(search_term);
                 break;
             case 3:  // Gender
                 search_term = PromptSearch("gender");
@@ -249,17 +239,16 @@ namespace pms
 
     std::shared_ptr<Patient> DoctorModule::SearchByVisitHistory()
     {
-        std::string* option_text = new std::string[7];
+        std::string* option_text = new std::string[6];
         option_text[0] = "Search by sickness";
         option_text[1] = "Search by description";
         option_text[2] = "Search by visit date";
-        option_text[3] = "Search by visit time";
-        option_text[4] = "Search by doctor id";
-        option_text[5] = "Search by doctor name";
-        option_text[6] = "Search by medicine information";
+        option_text[3] = "Search by doctor id";
+        option_text[4] = "Search by doctor name";
+        option_text[5] = "Search by medicine information";
 
         // Prompt for search criteria
-        int option = util::Menu("Search", option_text, 7);
+        int option = util::Menu("Search", option_text, 6);
 
         // Free pointer above
         delete[] option_text;
@@ -274,23 +263,25 @@ namespace pms
                 break;
             case 1:  // Description
                 search_term = PromptSearch("description");
+                return SearchByDescription(search_term);
                 break;
             case 2:  // Visit Date
                 search_term = PromptSearch("visit date");
+                return SearchByVisitDate(search_term);
                 break;
-            case 3:  // Visit Time
-                search_term = PromptSearch("visit time");
-                break;
-            case 4:  // Doctor ID
+            case 3:  // Doctor ID
                 search_term = PromptSearch("doctor id");
+                return SearchByDoctorID(search_term);
                 break;
-            case 5:  // Doctor Name
+            case 4:  // Doctor Name
                 search_term = PromptSearch("doctor name");
+                return SearchByDoctorName(search_term);
                 break;
-            case 6:  // Medicine Information
+            case 5:  // Medicine Information
                 search_term = PromptSearch("medicine information");
+                return SearchByMedicineInformation(search_term);
                 break;
-            case 7:  // Exit
+            case 6:  // Exit
                 return nullptr;
                 break;
         }
@@ -430,8 +421,19 @@ namespace pms
         }
     }
 
-    std::shared_ptr<Patient> DoctorModule::SearchByAge(int search_term)
+    std::shared_ptr<Patient> DoctorModule::SearchByAge(std::string search_term)
     {
+        int search_age;
+        try
+        {
+            search_age = std::stoi(search_term);
+        }
+        catch(...)
+        {
+            std::cout << " - No results found - " << std::endl;
+            return nullptr;
+        }
+
         List<int> matching_indices;
 
         // Get matches
@@ -443,7 +445,7 @@ namespace pms
             
             // Update position
             pos = resource_pool_->patient_data.Search(
-                std::make_shared<Patient>("", "", "", search_term, 0, "", "", "", 0),
+                std::make_shared<Patient>("", "", "", search_age, 0, "", "", "", 0),
                 util::MatchPatientAge,
                 pos + 1
             );
@@ -749,9 +751,7 @@ namespace pms
                     // Format
                     // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
                     matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
+                    matching_visit_history += ctimew::FormatTime(ctimew::StructTM(vh_tmp.At(i).registration_time));
                     matching_visit_history += " - ";
                     matching_visit_history += vh_tmp.At(i).sickness;
                     matching_visit_history += " | ";
@@ -771,7 +771,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit(search_term, "", "", "", nullptr, ""),
+                    Visit(search_term, "", NULL, nullptr, ""),
                     util::MatchVisitSickness,
                     i + 1
                 );
@@ -851,9 +851,7 @@ namespace pms
                     // Format
                     // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
                     matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
+                    matching_visit_history += ctimew::FormatTime(ctimew::StructTM(vh_tmp.At(i).registration_time));
                     matching_visit_history += " - ";
                     matching_visit_history += vh_tmp.At(i).sickness;
                     matching_visit_history += " | ";
@@ -873,7 +871,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", search_term, "", "", nullptr, ""),
+                    Visit("", search_term, NULL, nullptr, ""),
                     util::MatchVisitDescription,
                     i + 1
                 );
@@ -931,108 +929,19 @@ namespace pms
 
     std::shared_ptr<Patient> DoctorModule::SearchByVisitDate(std::string search_term)
     {
-        List<int> matching_indices;
-        List<std::string> matching_strings;
+        time_t search_time;
 
-        // Loop through patients
-        std::string matching_visit_history;
-        bool current_patient_has_match;
-        for (int pos = 0; pos < resource_pool_->patient_data.Size(); ++pos)
+        // Guard invalid search time
+        try
         {
-            matching_visit_history = "";
-            current_patient_has_match = false;
-            std::shared_ptr<Patient> p_tmp = resource_pool_->patient_data.At(pos);
-            
-            // Get matches
-            for (int i = -1; i < p_tmp->visit_history.Size(); )
-            {
-                List<Visit> vh_tmp = p_tmp->visit_history;
-                // Add match into matching list
-                if (i >= 0)
-                {
-                    // Format
-                    // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
-                    matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
-                    matching_visit_history += " - ";
-                    matching_visit_history += vh_tmp.At(i).sickness;
-                    matching_visit_history += " | ";
-                    matching_visit_history += vh_tmp.At(i).description;
-                    matching_visit_history += " | ";
-                    matching_visit_history += vh_tmp.At(i).doctor->id;
-                    matching_visit_history += " - ";
-                    matching_visit_history += vh_tmp.At(i).doctor->first_name;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).doctor->last_name;
-                    matching_visit_history += " | ";
-                    matching_visit_history += vh_tmp.At(i).medicine_information;
-
-                    matching_visit_history += "\n";  // newline
-                    current_patient_has_match = true;
-                }
-
-                // Update position
-                i = p_tmp->visit_history.Search(
-                    Visit("", "", search_term, "", nullptr, ""),
-                    util::MatchVisitVisitDate,
-                    i + 1
-                );
-
-                if (i == -1)
-                    i = p_tmp->visit_history.Size();
-                }
-            
-            // Add matches to lists
-            if (current_patient_has_match)
-            {
-                std::string tmp;
-                tmp += p_tmp->id;
-                tmp += " - ";
-                tmp += p_tmp->first_name;
-                tmp += " ";
-                tmp += p_tmp->last_name;
-                tmp += "\n";
-
-                matching_visit_history = tmp + matching_visit_history;
-
-                matching_indices.InsertTail(pos);
-                matching_strings.InsertTail(matching_visit_history);
-            }
+            search_time = ctimew::GetTimeTFromString(search_term);
         }
-
-        // Add matches as options into array
-        std::string* search_matches = new std::string[matching_indices.Size()];
-        for (int i = 0; i < matching_strings.Size(); ++i)
-        {
-            search_matches[i] = matching_strings.At(i);
-        }
-
-        if (matching_indices.Size() == 0)
+        catch(...)
         {
             std::cout << " - No results found - " << std::endl;
             return nullptr;
         }
 
-        int option = util::Menu("Search Results", search_matches, matching_indices.Size());
-
-        // Free pointer above
-        delete[] search_matches;
-
-        // Try to return the pointer
-        try
-        {
-            return resource_pool_->patient_data.At(matching_indices.At(option));
-        }
-        catch(...)
-        {
-            return nullptr;
-        }
-    }
-
-    std::shared_ptr<Patient> DoctorModule::SearchByVisitTime(std::string search_term)
-    {
         List<int> matching_indices;
         List<std::string> matching_strings;
 
@@ -1055,9 +964,7 @@ namespace pms
                     // Format
                     // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
                     matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
+                    matching_visit_history += ctimew::FormatTime(ctimew::StructTM(vh_tmp.At(i).registration_time));
                     matching_visit_history += " - ";
                     matching_visit_history += vh_tmp.At(i).sickness;
                     matching_visit_history += " | ";
@@ -1077,8 +984,8 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", "", search_term, nullptr, ""),
-                    util::MatchVisitVisitTime,
+                    Visit("", "", search_time, nullptr, ""),
+                    util::MatchVisitVisitDate,
                     i + 1
                 );
 
@@ -1157,9 +1064,7 @@ namespace pms
                     // Format
                     // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
                     matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
+                    matching_visit_history += ctimew::FormatTime(ctimew::StructTM(vh_tmp.At(i).registration_time));
                     matching_visit_history += " - ";
                     matching_visit_history += vh_tmp.At(i).sickness;
                     matching_visit_history += " | ";
@@ -1179,7 +1084,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", "", "", std::make_shared<Doctor>(search_term), ""),
+                    Visit("", "", NULL, std::make_shared<Doctor>(search_term), ""),
                     util::MatchVisitDoctorID,
                     i + 1
                 );
@@ -1259,9 +1164,7 @@ namespace pms
                     // Format
                     // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
                     matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
+                    matching_visit_history += ctimew::FormatTime(ctimew::StructTM(vh_tmp.At(i).registration_time));
                     matching_visit_history += " - ";
                     matching_visit_history += vh_tmp.At(i).sickness;
                     matching_visit_history += " | ";
@@ -1281,7 +1184,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", "", "", std::make_shared<Doctor>("", "", "", search_term, search_term, ""), ""),
+                    Visit("", "", NULL, std::make_shared<Doctor>("", "", "", search_term, search_term, ""), ""),
                     util::MatchVisitDoctorName,
                     i + 1
                 );
@@ -1361,9 +1264,7 @@ namespace pms
                     // Format
                     // 2021-09-26 11:09:00 - Fever | Unspecified | D0001 - Hafiz bin Abdul | Paracetamol
                     matching_visit_history += "\t";
-                    matching_visit_history += vh_tmp.At(i).current_visit_date;
-                    matching_visit_history += " ";
-                    matching_visit_history += vh_tmp.At(i).current_visit_time;
+                    matching_visit_history += ctimew::FormatTime(ctimew::StructTM(vh_tmp.At(i).registration_time));
                     matching_visit_history += " - ";
                     matching_visit_history += vh_tmp.At(i).sickness;
                     matching_visit_history += " | ";
@@ -1383,7 +1284,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", "", "", nullptr, search_term),
+                    Visit("", "", NULL, nullptr, search_term),
                     util::MatchVisitMedicineInformation,
                     i + 1
                 );
@@ -1447,7 +1348,7 @@ namespace pms
         std::cout << "                              ------------------------------------------" << std::endl;
         std::cout << "                                                Patients" << std::endl;
         std::cout << "                              ------------------------------------------" << std::endl;
-        std::cout << "";
+        std::cout << std::endl;
 
     }
 } // namespace pms

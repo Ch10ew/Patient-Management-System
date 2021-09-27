@@ -11,15 +11,13 @@ namespace pms
     Visit::Visit(
         std::string sickness,
         std::string description,
-        std::string current_visit_date,
-        std::string current_visit_time,
+        time_t registration_time,
         std::shared_ptr<Doctor> doctor,
         std::string medicine_information
     )
     : sickness(sickness),
       description(description),
-      current_visit_date(current_visit_date),
-      current_visit_time(current_visit_time),
+      registration_time(registration_time),
       doctor(doctor),
       medicine_information(medicine_information)
     {
@@ -33,16 +31,14 @@ namespace pms
         std::string patient_id,
         std::string sickness,
         std::string description,
-        std::string current_visit_date,
-        std::string current_visit_time,
+        time_t registration_time,
         std::shared_ptr<Doctor> doctor,
         std::string medicine_information
     )
     : patient_id(patient_id),
       sickness(sickness),
       description(description),
-      current_visit_date(current_visit_date),
-      current_visit_time(current_visit_time),
+      registration_time(registration_time),
       doctor(doctor),
       medicine_information(medicine_information)
     {

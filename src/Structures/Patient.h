@@ -15,16 +15,14 @@ namespace pms
         Visit(
             std::string sickness,
             std::string description,
-            std::string current_visit_date,
-            std::string current_visit_time,
+            time_t registration_time,
             std::shared_ptr<Doctor> doctor,
             std::string medicine_information
         );
 
         std::string sickness;
         std::string description;
-        std::string current_visit_date; // Change to ctime wrapper when done
-        std::string current_visit_time;
+        time_t registration_time;
         std::shared_ptr<Doctor> doctor;
         std::string medicine_information;
     };
@@ -36,8 +34,7 @@ namespace pms
             std::string patient_id,
             std::string sickness,
             std::string description,
-            std::string current_visit_date,
-            std::string current_visit_time,
+            time_t registration_time,
             std::shared_ptr<Doctor> doctor,
             std::string medicine_information
         );
@@ -45,8 +42,7 @@ namespace pms
         std::string patient_id;
         std::string sickness;
         std::string description;
-        std::string current_visit_date; // Change to ctime wrapper when done
-        std::string current_visit_time;
+        time_t registration_time;
         std::shared_ptr<Doctor> doctor;
         std::string medicine_information;
     };

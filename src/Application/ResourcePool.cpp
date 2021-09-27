@@ -97,8 +97,7 @@ namespace pms
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Ligma",
             "Unspecified",
-            ctimew::GetDate(ctimew::StructTM(ctimew::Time())),
-            "00:00:00",
+            ctimew::Time(),
             doctor_data.Head(),
             "Adderall"
         ));
@@ -131,8 +130,7 @@ namespace pms
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Dizziness",
             "Unspecified",
-            "2021-01-01",
-            "00:00:00",
+            ctimew::Time(),
             doctor_data.Head(),
             "Panadol"
         ));

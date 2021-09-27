@@ -2,11 +2,13 @@
 #define PMS_UTIL_H
 
 #include "../Structures/List.h"
+#include "../Structures/CtimeWrapper.h"
 
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <cctype>
 
 namespace pms
 {
@@ -75,6 +77,17 @@ namespace pms
             }
         }
 
+        static std::string ToLower(std::string input_string)
+        {
+            std::string ret;
+            for (char c : input_string)
+            {
+                ret += tolower(c);
+            }
+
+            return ret;
+        }
+
         static std::string FitString(std::string input_string, const int width)
         {
             int count = 0;
@@ -102,13 +115,19 @@ namespace pms
 
         static bool MatchPatientID(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
-            return p1->id == p2->id;
+            int res = ToLower(p1->id).find(ToLower(p2->id));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchPatientName(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
-            // use find
-            return (p1->first_name == p2->first_name) || (p1->last_name == p2->last_name);
+            int res1 = ToLower(p1->first_name).find(ToLower(p2->first_name));
+            int res2 = ToLower(p1->last_name).find(ToLower(p2->last_name));
+            if (res1 != std::string::npos || res2 != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchPatientAge(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
@@ -123,59 +142,80 @@ namespace pms
 
         static bool MatchPatientContactNumber(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
-            return p1->contact_number == p2->contact_number;
+            int res = ToLower(p1->contact_number).find(ToLower(p2->contact_number));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchPatientAddress(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
-            // use find
-            return p1->address == p2->address;
+            int res = ToLower(p1->address).find(ToLower(p2->address));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchPatientDisability(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
-            return p1->disability == p2->disability;
+            int res = ToLower(p1->disability).find(ToLower(p2->disability));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchVisitSickness(Visit v1, Visit v2)
         {
-            return v1.sickness == v2.sickness;
+            int res = ToLower(v1.sickness).find(ToLower(v2.sickness));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchVisitDescription(Visit v1, Visit v2)
         {
-            return v1.description == v2.description;
+            int res = ToLower(v1.description).find(ToLower(v2.description));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
-        /**
-         * Will soon be deprecated
-         */
         static bool MatchVisitVisitDate(Visit v1, Visit v2)
         {
-            return v1.current_visit_date == v2.current_visit_date;
-        }
+            struct tm t1 = *ctimew::StructTM(v1.registration_time);
+            struct tm t2 = *ctimew::StructTM(v2.registration_time);
 
-        /**
-         * Will soon be deprecated
-         */
-        static bool MatchVisitVisitTime(Visit v1, Visit v2)
-        {
-            return v1.current_visit_time == v2.current_visit_time;
+            return (t1.tm_year == t2.tm_year) ||
+                (t1.tm_mon == t2.tm_mon) ||
+                (t1.tm_mday == t2.tm_mday) ||
+                (t1.tm_hour == t2.tm_hour) ||
+                (t1.tm_min == t2.tm_min) ||
+                (t1.tm_sec == t2.tm_sec);
         }
 
         static bool MatchVisitDoctorID(Visit v1, Visit v2)
         {
-            return v1.doctor->id == v2.doctor->id;
+            int res = ToLower(v1.doctor->id).find(ToLower(v2.doctor->id));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchVisitDoctorName(Visit v1, Visit v2)
         {
-            return (v1.doctor->first_name == v2.doctor->first_name) || (v1.doctor->last_name == v2.doctor->last_name);
+            int res1 = ToLower(v1.doctor->first_name).find(ToLower(v2.doctor->first_name));
+            int res2 = ToLower(v1.doctor->last_name).find(ToLower(v2.doctor->last_name));
+            if (res1 != std::string::npos || res2 != std::string::npos)
+                return true;
+            return false;
         }
 
         static bool MatchVisitMedicineInformation(Visit v1, Visit v2)
         {
-            return v1.medicine_information == v2.medicine_information;
+            int res = ToLower(v1.medicine_information).find(ToLower(v2.medicine_information));
+            if (res != std::string::npos)
+                return true;
+            return false;
         }
 
         static std::string GenerateID(std::string prefix, int length, int list_size)

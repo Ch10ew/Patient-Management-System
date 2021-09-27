@@ -5,9 +5,11 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <stdio.h>
 
 namespace ctimew{
-    static time_t Time(){
+    static time_t Time()
+    {
         time_t currentTime;
         return time(&currentTime);
     }
@@ -17,7 +19,8 @@ namespace ctimew{
      * 
      * @return Local time in struct tm pointer`
      */
-    static tm* StructTM(time_t time){
+    static tm* StructTM(time_t time)
+    {
         return localtime(&time); 
     }
 
@@ -27,7 +30,8 @@ namespace ctimew{
      * @param struct tm pointer
      * @return String of readable time`
      */
-    static std::string FormatTime(tm *data){
+    static std::string FormatTime(tm *data)
+    {
         return asctime(data);
     }
 
@@ -37,7 +41,8 @@ namespace ctimew{
      * @param struct tm pointer
      * @return String date in the formate of DD/MM/YYYY`
      */
-    static std::string GetDate(tm *data){
+    static std::string GetDate(tm *data)
+    {
         std::stringstream ss;
         int month = data-> tm_mon + 1;
         int day = data-> tm_mday;
@@ -49,13 +54,40 @@ namespace ctimew{
         return ss.str();
     }
 
-    static std::string GetTime(tm *data){
+    static std::string GetTime(tm *data)
+    {
         std::stringstream ss;
         ss << std::setfill('0');
         ss << std::setw(2) << data->tm_hour << '/'
         << std::setw(2) << data->tm_min << '/'
         << std::setw(2) << data->tm_sec;
         return ss.str();
+    }
+
+    static time_t GetTimeTFromString(std::string data)
+    {
+        // Parse string using sscanf
+        const char* char_arr_ptr = data.c_str();
+        int year, month, day, hour, minute, second;
+        int res = sscanf(char_arr_ptr, "%d/%d/%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+
+        if (res != 6)
+            throw std::invalid_argument("ctimew::GetTimeTFromString(): String parsing failed");
+        
+        // Find time from epoch
+        struct tm tm_tmp;
+        tm_tmp.tm_year = year - 1900;
+        tm_tmp.tm_mon = month - 1;
+        tm_tmp.tm_mday = day;
+        tm_tmp.tm_hour = hour;
+        tm_tmp.tm_min = minute;
+        tm_tmp.tm_sec = second;
+        tm_tmp.tm_isdst = -1;
+
+        // get time_t
+        time_t time_tmp = mktime(&tm_tmp);
+
+        return time_tmp;
     }
 }
 

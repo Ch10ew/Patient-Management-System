@@ -297,8 +297,7 @@ namespace pms
                 std::cout << "\t" << "Visit #" << j + 1 << std::endl;
                 std::cout << "\t" << "Sickness: " << copy.visit_history.At(j).sickness << std::endl;
                 std::cout << "\t" << "Description: " << copy.visit_history.At(j).description << std::endl;
-                std::cout << "\t" << "Visit Date: " << copy.visit_history.At(j).current_visit_date << std::endl;
-                std::cout << "\t" << "Visit Time: " << copy.visit_history.At(j).current_visit_time << std::endl;
+                std::cout << "\t" << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(copy.visit_history.At(j).registration_time)) << std::endl;
                 std::cout << "\t" << "Doctor: " << copy.visit_history.At(j).doctor->id << " - " << copy.visit_history.At(j).doctor->first_name << copy.visit_history.At(j).doctor->last_name << std::endl;
                 std::cout << "\t" << "Medicide Information: " << copy.visit_history.At(j).medicine_information << std::endl;
                 
