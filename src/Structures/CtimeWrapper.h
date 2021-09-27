@@ -32,7 +32,9 @@ namespace ctimew{
      */
     static std::string FormatTime(tm *data)
     {
-        return asctime(data);
+        std::string s = asctime(data);
+        s.pop_back();
+        return s;
     }
 
     /**

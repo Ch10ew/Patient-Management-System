@@ -64,6 +64,7 @@ namespace pms
             std::cout << std::endl;
             std::cout << "Username (\"!\" to exit): ";
             std::cin >> username;
+            std::cin.ignore();
 
             if (username == "!")
             {
@@ -73,6 +74,7 @@ namespace pms
             
             std::cout << "Password: ";
             std::cin >> password;
+            std::cin.ignore();
 
             // Run selected option
             int found = resource_pool_->nurse_data.Search(std::make_shared<Nurse>("", username, password, "", ""), MatchAccount);

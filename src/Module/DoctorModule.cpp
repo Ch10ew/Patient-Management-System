@@ -296,7 +296,15 @@ namespace pms
         std::cout << std::endl;
         std::cout << " = Search by " << attribute << " = " << std::endl;
         std::cout << std::endl;
-        std::cout << "Search Term: ";
+        if (attribute == "visit date")
+        {
+            std::cout << "Date format is YYYY/MM/DD HH:MM:SS. Loosely searches for any date/time field that matches." << std::endl;
+            std::cout << "Search Term: ";
+        }
+        else
+        {
+            std::cout << "Search Term: ";
+        }
         getline(std::cin, input_string);
 
         return input_string;
@@ -309,7 +317,6 @@ namespace pms
         // Get matches
         for (int pos = -1; pos < resource_pool_->patient_data.Size(); )
         {
-            std::cout << "pos: " << pos << std::endl;
             // Add index into matching list
             if (pos >= 0)
                 matching_indices.InsertTail(pos);
@@ -771,7 +778,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit(search_term, "", NULL, nullptr, ""),
+                    Visit(search_term, "", 0, nullptr, ""),
                     util::MatchVisitSickness,
                     i + 1
                 );
@@ -871,7 +878,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", search_term, NULL, nullptr, ""),
+                    Visit("", search_term, 0, nullptr, ""),
                     util::MatchVisitDescription,
                     i + 1
                 );
@@ -1084,7 +1091,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", NULL, std::make_shared<Doctor>(search_term), ""),
+                    Visit("", "", 0, std::make_shared<Doctor>(search_term), ""),
                     util::MatchVisitDoctorID,
                     i + 1
                 );
@@ -1184,7 +1191,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", NULL, std::make_shared<Doctor>("", "", "", search_term, search_term, ""), ""),
+                    Visit("", "", 0, std::make_shared<Doctor>("", "", "", search_term, search_term, ""), ""),
                     util::MatchVisitDoctorName,
                     i + 1
                 );
@@ -1284,7 +1291,7 @@ namespace pms
 
                 // Update position
                 i = p_tmp->visit_history.Search(
-                    Visit("", "", NULL, nullptr, search_term),
+                    Visit("", "", 0, nullptr, search_term),
                     util::MatchVisitMedicineInformation,
                     i + 1
                 );

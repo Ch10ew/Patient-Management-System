@@ -97,7 +97,7 @@ namespace pms
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Ligma",
             "Unspecified",
-            ctimew::Time(),
+            ctimew::Time(), // change to hardcoded time
             doctor_data.Head(),
             "Adderall"
         ));
@@ -130,7 +130,7 @@ namespace pms
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Dizziness",
             "Unspecified",
-            ctimew::Time(),
+            ctimew::Time(), // change to hardcoded time
             doctor_data.Head(),
             "Panadol"
         ));

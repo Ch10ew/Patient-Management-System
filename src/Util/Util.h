@@ -137,7 +137,7 @@ namespace pms
 
         static bool MatchPatientGender(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
-            return p1->gender == p2->gender;
+            return tolower(p1->gender) == tolower(p2->gender);
         }
 
         static bool MatchPatientContactNumber(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
