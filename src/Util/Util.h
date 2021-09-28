@@ -25,7 +25,6 @@ namespace pms
             std::string input_string;
             bool invalid_input = false;
             int option = -1;
-            bool exit = false;
 
             while (true)
             {
@@ -93,21 +92,26 @@ namespace pms
             int count = 0;
             std::string return_string;
 
-            if (input_string.length() > width - 3)
+            if (input_string.length() == width)
             {
-                for (int i = 0; i < width - 3; ++i)
-                {
-                    return_string += input_string[i];
-                }
-                return_string += "...";
+                return input_string;
             }
-            else
+            else if (input_string.length() < width)
             {
                 return_string = input_string;
                 while (return_string.length() < width)
                 {
                     return_string += " ";
                 }
+
+            }
+            else if (input_string.length() > width - 3)
+            {
+                for (int i = 0; i < width - 3; ++i)
+                {
+                    return_string += input_string[i];
+                }
+                return_string += "...";
             }
             
             return return_string;
@@ -164,7 +168,7 @@ namespace pms
             return false;
         }
 
-        static bool MatchVisitSickness(Visit v1, Visit v2)
+        static bool MatchVisitSickness(const Visit& v1, const Visit& v2)
         {
             int res = ToLower(v1.sickness).find(ToLower(v2.sickness));
             if (res != std::string::npos)
@@ -172,7 +176,7 @@ namespace pms
             return false;
         }
 
-        static bool MatchVisitDescription(Visit v1, Visit v2)
+        static bool MatchVisitDescription(const Visit& v1, const Visit& v2)
         {
             int res = ToLower(v1.description).find(ToLower(v2.description));
             if (res != std::string::npos)
@@ -180,7 +184,7 @@ namespace pms
             return false;
         }
 
-        static bool MatchVisitVisitDate(Visit v1, Visit v2)
+        static bool MatchVisitVisitDate(const Visit& v1, const Visit& v2)
         {
             struct tm t1 = *ctimew::StructTM(v1.registration_time);
             struct tm t2 = *ctimew::StructTM(v2.registration_time);
@@ -193,7 +197,7 @@ namespace pms
                 (t1.tm_sec == t2.tm_sec);
         }
 
-        static bool MatchVisitDoctorID(Visit v1, Visit v2)
+        static bool MatchVisitDoctorID(const Visit& v1, const Visit& v2)
         {
             int res = ToLower(v1.doctor->id).find(ToLower(v2.doctor->id));
             if (res != std::string::npos)
@@ -201,7 +205,7 @@ namespace pms
             return false;
         }
 
-        static bool MatchVisitDoctorName(Visit v1, Visit v2)
+        static bool MatchVisitDoctorName(const Visit& v1, const Visit& v2)
         {
             int res1 = ToLower(v1.doctor->first_name).find(ToLower(v2.doctor->first_name));
             int res2 = ToLower(v1.doctor->last_name).find(ToLower(v2.doctor->last_name));
@@ -210,12 +214,24 @@ namespace pms
             return false;
         }
 
-        static bool MatchVisitMedicineInformation(Visit v1, Visit v2)
+        static bool MatchVisitMedicineInformation(const Visit& v1, const Visit& v2)
         {
             int res = ToLower(v1.medicine_information).find(ToLower(v2.medicine_information));
             if (res != std::string::npos)
                 return true;
             return false;
+        }
+
+        static bool ComparePatientID(const Patient& p1, const Patient& p2)
+        {
+            /*std::string pid1_str = p1.id.substr(1);
+            std::string pid2_str = p2.id.substr(1);
+            int pid1 = std::stoi(pid1_str);
+            int pid2 = std::stoi(pid2_str);
+            return pid1 < pid2;*/
+
+            // testing sort by age
+            return p1.age < p2.age;
         }
 
         static std::string GenerateID(std::string prefix, int length, int list_size)

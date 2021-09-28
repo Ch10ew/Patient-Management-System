@@ -2228,17 +2228,32 @@ namespace pms
             return;
         }
 
-        std::cout << "Test F - Test Sort() when list has 4 elements." << std::endl;
+        std::cout << "Test F - Test Sort() when list has 5 elements." << std::endl;
         list.Clear();
-        list.InsertTail(5);
-        list.InsertTail(4);
-        list.InsertTail(3);
-        list.InsertTail(2);
-        list.InsertTail(1);
+        list.InsertTail(21);
+        list.InsertTail(30);
+        list.InsertTail(20);
+        list.InsertTail(87);
+        list.InsertTail(19);
         list.Sort();
-        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
+        if (list.At(0) != 19 || list.At(1) != 20 || list.At(2) != 21 || list.At(3) != 30 || list.At(4) != 87)
         {
-            std::cerr << "Failed Test - List contains { 5, 4, 3, 2, 1 }. Expected { 1, 2, 3, 4, 5 }." << std::endl;
+            std::cerr << "Failed Test - List contains { 21, 30, 20, 87, 19 }. Expected { 19, 20, 21, 30, 87 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test G - Test Sort() when list has 6 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(21);
+        list.InsertTail(30);
+        list.InsertTail(20);
+        list.InsertTail(87);
+        list.InsertTail(19);
+        list.InsertTail(56);
+        list.Sort();
+        if (list.At(0) != 19 || list.At(1) != 20 || list.At(2) != 21 || list.At(3) != 30 || list.At(4) != 56 || list.At(5) != 87)
+        {
+            std::cerr << "Failed Test - List contains { 21, 30, 20, 87, 19, 56 }. Expected { 19, 20, 21, 30, 56, 87 }." << std::endl;
             return;
         }
     }
@@ -2310,17 +2325,32 @@ namespace pms
             return;
         }
 
-        std::cout << "Test F - Test Sort2() when list has 4 elements." << std::endl;
+        std::cout << "Test F - Test Sort2() when list has 5 elements." << std::endl;
         list.Clear();
-        list.InsertTail(5);
-        list.InsertTail(4);
-        list.InsertTail(3);
-        list.InsertTail(2);
-        list.InsertTail(1);
+        list.InsertTail(21);
+        list.InsertTail(30);
+        list.InsertTail(20);
+        list.InsertTail(87);
+        list.InsertTail(19);
         list.Sort(Sort2Comparison);
-        if (list.At(0) != 1 || list.At(1) != 2 || list.At(2) != 3 || list.At(3) != 4 || list.At(4) != 5)
+        if (list.At(0) != 19 || list.At(1) != 20 || list.At(2) != 21 || list.At(3) != 30 || list.At(4) != 87)
         {
-            std::cerr << "Failed Test - List contains { 5, 4, 3, 2, 1 }. Expected { 1, 2, 3, 4, 5 }." << std::endl;
+            std::cerr << "Failed Test - List contains { 21, 30, 20, 87, 19 }. Expected { 19, 20, 21, 30, 87 }." << std::endl;
+            return;
+        }
+
+        std::cout << "Test G - Test Sort2() when list has 6 elements." << std::endl;
+        list.Clear();
+        list.InsertTail(21);
+        list.InsertTail(30);
+        list.InsertTail(20);
+        list.InsertTail(87);
+        list.InsertTail(19);
+        list.InsertTail(56);
+        list.Sort(Sort2Comparison);
+        if (list.At(0) != 19 || list.At(1) != 20 || list.At(2) != 21 || list.At(3) != 30 || list.At(4) != 56 || list.At(5) != 87)
+        {
+            std::cerr << "Failed Test - List contains { 21, 30, 20, 87, 19, 56 }. Expected { 19, 20, 21, 30, 56, 87 }." << std::endl;
             return;
         }
     }

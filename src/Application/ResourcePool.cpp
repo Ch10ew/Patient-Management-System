@@ -45,7 +45,7 @@ namespace pms
         // Hardcoded Patient data
         // 1
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000001",
+            "P000001",
             "John",
             "Smith",
             21,
@@ -58,7 +58,7 @@ namespace pms
 
         // 2
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000002",
+            "P000002",
             "Kris",
             "Wu",
             30,
@@ -71,7 +71,7 @@ namespace pms
 
         // 3
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000003",
+            "P000003",
             "Monica",
             "Cheng",
             20,
@@ -84,7 +84,7 @@ namespace pms
 
         // 4
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000004",
+            "P000004",
             "Madelline",
             "Ping",
             87,
@@ -104,7 +104,7 @@ namespace pms
 
         // 5
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000005",
+            "P000005",
             "Mika",
             "Lam",
             19,
@@ -117,7 +117,7 @@ namespace pms
 
         // 6
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000006",
+            "P000006",
             "Dominic",
             "Toretto",
             40,
@@ -137,7 +137,7 @@ namespace pms
 
         // 7
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000007",
+            "P000007",
             "Lisa",
             "Toretto",
             42,
@@ -150,7 +150,7 @@ namespace pms
 
         // 8
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000008",
+            "P000008",
             "Eason",
             "Toretto",
             44,
@@ -163,7 +163,7 @@ namespace pms
 
         // 9
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000009",
+            "P000009",
             "Keng Yeap",
             "Chong",
             32,
@@ -176,7 +176,7 @@ namespace pms
 
         // 10
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000010",
+            "P000010",
             "Hou Yin",
             "Tan",
             28,
@@ -189,7 +189,7 @@ namespace pms
 
         // 11
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000011",
+            "P000011",
             "Tzen Fung",
             "Lim",
             42,
@@ -202,7 +202,7 @@ namespace pms
 
         // 12
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000012",
+            "P000012",
             "Take",
             "Tanaka",
             14,
@@ -215,7 +215,7 @@ namespace pms
 
         // 13
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000013",
+            "P000013",
             "Will",
             "Stetson",
             23,
@@ -228,7 +228,7 @@ namespace pms
 
         // 14
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000014",
+            "P000014",
             "Jessica",
             "Simpson",
             41,
@@ -241,13 +241,156 @@ namespace pms
 
         // 15
         patient_data.InsertTail(std::make_shared<Patient>(
-            "P0000015",
+            "P000015",
             "Taylor",
             "Swift",
             22,
             'F',
             "016-2223333",
             "101-2C, Jalan 1/4, Taman Setia, Sentul 52000, Kuala Lumpur",
+            "",
+            5
+        ));
+
+        // 16
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000016",
+            "Nubia",
+            "Wayra",
+            21,
+            'F',
+            "012-3334447",
+            "77, Jalan 7, Taman Perindustrian Desa, 51000, Kuala Lumpur",
+            "Blind",
+            4
+        ));
+
+        // 17
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000017",
+            "Katy",
+            "Snoddon",
+            41,
+            'F',
+            "012-0551321",
+            "Perbadanan Niaga Felda, Jln Patin Felda, Sungai Retang, 27000, Jerantut, Pahang",
+            "Deaf",
+            4
+        ));
+
+        // 18
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000018",
+            "Colleen",
+            "Winsley",
+            76,
+            'M',
+            "014-4312505",
+            "No. 1, Jalan Kemajuan, Off Jalan Tampoi,81200 Johor Bahru",
+            "",
+            5
+        ));
+
+        // 19
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000019",
+            "Helena",
+            "Bagguley",
+            48,
+            'F',
+            "014-7641570",
+            "No. 260, Lbh Pantai, 10300, Pulau Pinang",
+            "Crippled",
+            2
+        ));
+
+        // 20
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000020",
+            "Larry",
+            "Gemnett",
+            24,
+            'M',
+            "014-7042904",
+            "31St Floor Block B, Centre Point, Jln Haji Abdul Rahman, 25000, Kuantan, Pahang",
+            "Paralyzed",
+            1
+        ));
+
+        // 21
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000021",
+            "Patricia",
+            "Savatier",
+            37,
+            'F',
+            "015-3233371",
+            "No 17,Taman Bukit Kuchai, Batu 8 Jalan Puchong ,47100, Selangor",
+            "",
+            5
+        ));
+
+        // 22
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000022",
+            "Isidora",
+            "Duncklee",
+            29,
+            'M',
+            "014-6589633",
+            "66, Jln Utara Batu 3, Hock Seng Light Industry, 90000, Sandakan, Sabah",
+            "",
+            5
+        ));
+
+        // 23
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000023",
+            "Tabor",
+            "Houndesome",
+            25,
+            'M',
+            "017-2437963",
+            "2251, Jln Balakong, Kampung Baru Balakong, 43300, Seri Kembangan, Selangor",
+            "ALS",
+            3
+        ));
+
+        // 24
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000024",
+            "Dwight",
+            "Karlicek",
+            87,
+            'M',
+            "011-15713223",
+            "76, Jln 2A/76A, Seksyen 1 Wangsa Maju, 53300, Wilayah Persekutuan, Kuala Lumpur",
+            "",
+            5
+        ));
+
+        // 25
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000025",
+            "Perren",
+            "Childes",
+            66,
+            'F',
+            "016-2962393",
+            "15, Jalan PJS 11/15, Bandar Sunway, 46150, Selangor",
+            "",
+            5
+        ));
+
+        // 26
+        patient_data.InsertTail(std::make_shared<Patient>(
+            "P000026",
+            "Orelie",
+            "Risso",
+            71,
+            'F',
+            "011-42246777",
+            "Lot 3 & 4, Lengkok Rishah Dua, Kawasan Perindustrian Silibin, 30100, Ipoh",
             "",
             5
         ));

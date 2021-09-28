@@ -83,6 +83,9 @@ struct Waiting
             );
 
         public:
+            inline bool operator<(const Patient& rhs) const { return this->id < rhs.id; };
+
+        public:
             std::string first_name;
             std::string last_name;
             int age;
