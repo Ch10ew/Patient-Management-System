@@ -248,7 +248,7 @@ namespace pms
             }
         }
         int size = resource_pool_->patient_data.Size();
-        id = pms::util::GenerateID("P", 8, size);
+        id = pms::util::GenerateId("P", 8, size);
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
             id,
             first_name,
@@ -315,7 +315,7 @@ namespace pms
         int search_option;  // For normal search
 
         std::string* option_text = new std::string[8];
-        option_text[0] = "Search by ID";
+        option_text[0] = "Search by Id";
         option_text[1] = "Search by name";
         option_text[2] = "Search by age";
         option_text[3] = "Search by gender";
@@ -348,12 +348,12 @@ namespace pms
                 if (pos >= 0)
                     indices.InsertTail(pos);
 
-                if (option == 0)  // ID
+                if (option == 0)  // Id
                 {
                     // Update position
                     pos = resource_pool_->patient_data.Search(
                         std::make_shared<Patient>(search_term),
-                        pms::util::MatchPatientID,
+                        pms::util::MatchPatientId,
                         pos
                     );
                     if (pos == -1)
@@ -503,7 +503,7 @@ namespace pms
                         // Update position
                         pos2 = resource_pool_->patient_data.Search(
                             std::make_shared<Patient>(search_term),
-                            pms::util::MatchPatientID,
+                            pms::util::MatchPatientId,
                             pos2
                         );
                     }

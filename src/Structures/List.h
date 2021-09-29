@@ -780,8 +780,8 @@ namespace pms
         }
 
         // Recursively sort the sublists
-        left_list = Sorter(left_list);
-        right_list = Sorter(right_list);
+        left_list = Sorter(left_list, func);
+        right_list = Sorter(right_list, func);
 
         // Merge sorted sublists
         return Merge(left_list, right_list, func);

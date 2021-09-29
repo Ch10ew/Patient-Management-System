@@ -117,7 +117,7 @@ namespace pms
             return return_string;
         }
 
-        static bool MatchPatientID(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
+        static bool MatchPatientId(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
             int res = ToLower(p1->id).find(ToLower(p2->id));
             if (res != std::string::npos)
@@ -197,7 +197,7 @@ namespace pms
                 (t1.tm_sec == t2.tm_sec);
         }
 
-        static bool MatchVisitDoctorID(const Visit& v1, const Visit& v2)
+        static bool MatchVisitDoctorId(const Visit& v1, const Visit& v2)
         {
             int res = ToLower(v1.doctor->id).find(ToLower(v2.doctor->id));
             if (res != std::string::npos)
@@ -222,19 +222,105 @@ namespace pms
             return false;
         }
 
-        static bool ComparePatientID(const Patient& p1, const Patient& p2)
+        static bool ComparePatientIdAsc(const Patient& p1, const Patient& p2)
         {
-            /*std::string pid1_str = p1.id.substr(1);
+            std::string pid1_str = p1.id.substr(1);
             std::string pid2_str = p2.id.substr(1);
             int pid1 = std::stoi(pid1_str);
             int pid2 = std::stoi(pid2_str);
-            return pid1 < pid2;*/
+            return pid1 < pid2;
+        }
 
-            // testing sort by age
+        static bool ComparePatientIdDesc(const Patient& p1, const Patient& p2)
+        {
+            std::string pid1_str = p1.id.substr(1);
+            std::string pid2_str = p2.id.substr(1);
+            int pid1 = std::stoi(pid1_str);
+            int pid2 = std::stoi(pid2_str);
+            return pid1 > pid2;
+        }
+
+        static bool ComparePatientFirstNameAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.first_name < p2.first_name;
+        }
+
+        static bool ComparePatientFirstNameDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.first_name > p2.first_name;
+        }
+
+        static bool ComparePatientLastNameAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.last_name < p2.last_name;
+        }
+
+        static bool ComparePatientLastNameDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.last_name > p2.last_name;
+        }
+
+        static bool ComparePatientAgeAsc(const Patient& p1, const Patient& p2)
+        {
             return p1.age < p2.age;
         }
 
-        static std::string GenerateID(std::string prefix, int length, int list_size)
+        static bool ComparePatientAgeDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.age > p2.age;
+        }
+
+        static bool ComparePatientGenderAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.gender < p2.gender;
+        }
+
+        static bool ComparePatientGenderDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.gender > p2.gender;
+        }
+
+        static bool ComparePatientContactNumberAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.contact_number < p2.contact_number;
+        }
+
+        static bool ComparePatientContactNumberDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.contact_number > p2.contact_number;
+        }
+
+        static bool ComparePatientAddressAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.address < p2.address;
+        }
+
+        static bool ComparePatientAddressDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.address > p2.address;
+        }
+
+        static bool ComparePatientDisabilityAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.disability < p2.disability;
+        }
+
+        static bool ComparePatientDisabilityDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.disability > p2.disability;
+        }
+
+        static bool ComparePatientVisitsAsc(const Patient& p1, const Patient& p2)
+        {
+            return p1.visit_history.Size() < p2.visit_history.Size();
+        }
+
+        static bool ComparePatientVisitsDesc(const Patient& p1, const Patient& p2)
+        {
+            return p1.visit_history.Size() > p2.visit_history.Size();
+        }
+
+        static std::string GenerateId(std::string prefix, int length, int list_size)
         {
             std::stringstream ss;
             ss << prefix << std::setfill('0') << std::setw(length) << list_size;

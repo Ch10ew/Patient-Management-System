@@ -118,23 +118,17 @@ namespace pms
                     PrintPatientList();
                     break;
                 case 1:
-                    //std::cout << " = Search & Modify = " << std::endl;
-                    //std::cout << std::endl;
-                    res = Search();
-                    if (res)
-                        std::cout << res->id << std::endl;
-                    std::cout << "done" << std::endl;
-                    //Modify(Search());
+                    Modify(Search());
                     break;
                 case 2:
                     std::cout << " = Pagination for patient = " << std::endl;
                     std::cout << std::endl;
-                    Pagination();
+                    PromptPagination();
                     break;
                 case 3:
                     std::cout << " = Search & View = " << std::endl;
                     std::cout << std::endl;
-                    //PrintPatient(Search());
+                    Search();
                     break;
                 case 4:
                     std::cout << "Logging out..." << std::endl;
@@ -178,6 +172,150 @@ namespace pms
         }
     }
 
+    void DoctorModule::Modify(std::shared_ptr<pms::Patient> patient_ptr)
+    {
+        bool exit = false;
+        int option;
+        std::string* option_text = new std::string[8];
+        option_text[0] = "Modify first name";
+        option_text[1] = "Modify last name";
+        option_text[2] = "Modify age";
+        option_text[3] = "Modify gender";
+        option_text[4] = "Modify contact number";
+        option_text[5] = "Modify address";
+        option_text[6] = "Modify disability";
+        option_text[7] = "Modify visit history";
+
+        while (!exit)
+        {
+            // Prompt for search criteria
+            option = util::Menu("Search", option_text, 8);
+
+            // Print current patient details
+            std::cout << patient_ptr->id << " - " << patient_ptr->first_name << " " << patient_ptr->last_name << std::endl;
+            std::cout << "Age: " << patient_ptr->age << std::endl;
+            std::cout << "Gender: " << patient_ptr->gender << std::endl;
+            std::cout << "Contact Number: " << patient_ptr->contact_number << std::endl;
+            std::cout << "Address: " << patient_ptr->address << std::endl;
+            std::cout << "Disability: " << patient_ptr->disability << std::endl;
+            std::cout << "Visit History: " << std::endl;
+            for (int j = 0; j < patient_ptr->visit_history.Size(); ++j)
+            {
+                std::cout << "\t" << "Visit #" << j + 1 << std::endl;
+                std::cout << "\t" << "Sickness: " << patient_ptr->visit_history.At(j).sickness << std::endl;
+                std::cout << "\t" << "Description: " << patient_ptr->visit_history.At(j).description << std::endl;
+                std::cout << "\t" << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(patient_ptr->visit_history.At(j).registration_time)) << std::endl;
+                std::cout << "\t" << "Doctor: " << patient_ptr->visit_history.At(j).doctor->id << " - " << patient_ptr->visit_history.At(j).doctor->first_name << patient_ptr->visit_history.At(j).doctor->last_name << std::endl;
+                std::cout << "\t" << "Medicide Information: " << patient_ptr->visit_history.At(j).medicine_information << std::endl;
+                
+                if (j != patient_ptr->visit_history.Size() - 1)
+                    std::cout << std::endl;
+            }
+            std::cout << std::endl;
+            
+            // Run based on option selected
+            int age = 0;
+            std::string data;
+
+            bool invalid_input = false;
+            switch (option)
+            {
+                case 0:  // First Name
+                    patient_ptr->first_name = PromptModify("first name");
+                    break;
+                case 1:  // Last Name
+                    patient_ptr->last_name = PromptModify("last name");
+                    break;
+                case 2:  // Age
+                    do
+                    {
+                        if (invalid_input)
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+
+                        data = PromptModify("age");                        
+                        try
+                        {
+                            age = std::stoi(data);
+                        }
+                        catch (...)
+                        {
+                            invalid_input = true;
+                        }
+
+                        if (age < 0 || age > 150)
+                            invalid_input = true;
+                    }
+                    while (invalid_input);
+
+                    patient_ptr->age = age;
+                    break;
+                case 3:  // Gender
+                    do
+                    {
+                        if (invalid_input)
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+
+                        data = PromptModify("gender");
+                        if (data.length() > 1 || data.length() == 0)
+                            invalid_input = true;
+                        
+                        if (data[0] != 'M' || data[0] != 'F')
+                            invalid_input = true;
+                    }
+                    while (invalid_input);
+
+                    patient_ptr->gender = data[0];
+                    break;
+                case 4:  // Contact Number
+                    do
+                    {
+                        if (invalid_input)
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+
+                        data = PromptModify("contact number");
+                        if (data.find_first_not_of("+-#*()0123456789") != std::string::npos)
+                            invalid_input = true;
+                    }
+                    while (invalid_input);
+
+                    patient_ptr->contact_number = data;
+                    break;
+                case 5:  // Address
+                    patient_ptr->address = PromptModify("address");
+                    break;
+                case 6:  // Disability
+                    patient_ptr->disability = PromptModify("disability");
+                    break;
+                case 7:  // Visit history
+                    ModifyVisitHistory(patient_ptr);
+                    break;
+                case 8:  // Exit
+                    exit = true;
+                    break;
+            }
+        }
+
+        // Free pointer above
+        delete[] option_text;
+    }
+
+    void ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr)
+    {
+        List<std::string> visits_string;
+
+        /*for (int i = 0; i < patient_ptr->visit_history.Size(); ++i)
+        {
+            // how not to compile 101
+        }*/
+
+        std::string* option_text = new std::string[5];
+        option_text[0] = "Modify sickness";
+        option_text[1] = "Modify description";
+        option_text[2] = "Modify visit date";
+        option_text[3] = "Modify doctor";
+        option_text[4] = "Modify medicine information";
+    }
+
     std::shared_ptr<Patient> DoctorModule::Search()
     {
         std::string* option_text = new std::string[8];
@@ -200,10 +338,10 @@ namespace pms
         std::string search_term;
         switch (option)
         {
-            case 0:  // ID
+            case 0:  // Id
                 search_term = PromptSearch("ID");
-                //return SearchByID(search_term);
-                return SearchBy(Patient(search_term), util::MatchPatientID);
+                //return SearchById(search_term);
+                return SearchBy(Patient(search_term), util::MatchPatientId);
                 break;
             case 1:  // Name
                 search_term = PromptSearch("name");
@@ -290,11 +428,11 @@ namespace pms
                 }
                 return SearchBy(Visit("", "", search_time, nullptr, ""), util::MatchVisitVisitDate);
                 break;
-            case 3:  // Doctor ID
+            case 3:  // Doctor Id
                 search_term = PromptSearch("doctor id");
                 return SearchBy(
                     Visit("", "", 0, std::make_shared<Doctor>(search_term), ""),
-                    util::MatchVisitDoctorID
+                    util::MatchVisitDoctorId
                 );
                 break;
             case 4:  // Doctor Name
@@ -315,6 +453,29 @@ namespace pms
                 return nullptr;
                 break;
         }
+    }
+
+    std::string DoctorModule::PromptModify(std::string attribute)
+    {
+        std::string input_string;
+
+        // Display options
+        std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << " = Modify " << attribute << " = " << std::endl;
+        std::cout << std::endl;
+        if (attribute == "visit date")
+        {
+            std::cout << "Date format is YYYY/MM/DD HH:MM:SS." << std::endl;
+            std::cout << "New data: ";
+        }
+        else
+        {
+            std::cout << "New data: ";
+        }
+        getline(std::cin, input_string);
+
+        return input_string;
     }
 
     std::string DoctorModule::PromptSearch(std::string attribute)
@@ -340,123 +501,93 @@ namespace pms
         return input_string;
     }
 
-    void DoctorModule::Pagination()
+    void DoctorModule::PromptPagination()
     {
-        bool invalid_input = false;
-        bool exit = false;
+        std::string* option_text = new std::string[18];
+        option_text[0] = "Sort by Id (Ascending)";
+        option_text[1] = "Sort by Id (Descending)";
+        option_text[2] = "Sort by first name (Ascending)";
+        option_text[3] = "Sort by first name (Descending)";
+        option_text[4] = "Sort by last name (Ascending)";
+        option_text[5] = "Sort by last name (Descending)";
+        option_text[6] = "Sort by age (Ascending)";
+        option_text[7] = "Sort by age (Descending)";
+        option_text[8] = "Sort by gender (Ascending)";
+        option_text[9] = "Sort by gender (Descending)";
+        option_text[10] = "Sort by contact (Ascending)";
+        option_text[11] = "Sort by contact (Descending)";
+        option_text[12] = "Sort by address (Ascending)";
+        option_text[13] = "Sort by address (Descending)";
+        option_text[14] = "Sort by disability (Ascending)";
+        option_text[15] = "Sort by disability (Descending)";
+        option_text[16] = "Sort by visit count (Ascending)";
+        option_text[17] = "Sort by visit count (Descending)";
 
-        const int WIDTH = 104;
-        const int HEIGHT = 30;
-        int lines = HEIGHT - 8; // for header & footer
-        int page_count = (int)ceil((double)resource_pool_->patient_data.Size() / (double)lines);
-        int current_page_index = 0;
-        std::string input;
+        // Prompt for search criteria
+        int option = util::Menu("Search", option_text, 18);
 
-        while (!exit)
+        // Free pointer above
+        delete[] option_text;
+        
+        // Run based on option selected
+        switch (option)
         {
-            lines = HEIGHT - 8; // reset lines
-
-
-            // "Header" text
-            std::cout << "                              ------------------------------------------" << std::endl;
-            std::cout << "                                                Patients" << std::endl;
-            std::cout << "                              ------------------------------------------" << std::endl;
-            std::cout << "ID      First Name  Last Name   Age Gender  Contact         Address                 Disability  Visits" << std::endl;
-
-            // Create sorted list
-            List<pms::Patient> copy;
-            for (int i = 0; i < resource_pool_->patient_data.Size(); ++i)
-            {
-                Patient p_tmp = *resource_pool_->patient_data.At(i);
-
-                /*Patient p_tmp;
-                p_tmp.id = resource_pool_->patient_data.At(i)->id;
-                p_tmp.first_name = resource_pool_->patient_data.At(i)->first_name;
-                p_tmp.last_name = resource_pool_->patient_data.At(i)->last_name;
-                p_tmp.age = resource_pool_->patient_data.At(i)->age;
-                p_tmp.gender = resource_pool_->patient_data.At(i)->gender;
-                p_tmp.contact_number = resource_pool_->patient_data.At(i)->contact_number;
-                p_tmp.address = resource_pool_->patient_data.At(i)->address;
-                p_tmp.disability = resource_pool_->patient_data.At(i)->disability;
-                p_tmp.priority = resource_pool_->patient_data.At(i)->priority;
-                
-                for (int j = 0; j < resource_pool_->patient_data.At(i)->visit_history.Size(); ++j)
-                {
-                    Visit v_tmp;
-                    v_tmp.sickness = resource_pool_->patient_data.At(i)->visit_history.At(j).sickness;
-                    v_tmp.description = resource_pool_->patient_data.At(i)->visit_history.At(j).description;
-                    v_tmp.registration_time = resource_pool_->patient_data.At(i)->visit_history.At(j).registration_time;
-                    v_tmp.doctor = resource_pool_->patient_data.At(i)->visit_history.At(j).doctor;
-                    v_tmp.medicine_information = resource_pool_->patient_data.At(i)->visit_history.At(j).medicine_information;
-                    p_tmp.visit_history.InsertTail(v_tmp);
-                }*/
-
-                copy.InsertTail(p_tmp);
-            }
-
-            copy.Sort(util::ComparePatientID);
-
-            // Print 1 line
-            for (int i = lines * current_page_index; i < resource_pool_->patient_data.Size(); ++i)
-            {
-                --lines;
-
-                Patient p_tmp = copy.At(i);
-                std::cout << util::FitString(p_tmp.id, 7) << " ";  // ID
-                std::cout << util::FitString(p_tmp.first_name, 11) << " ";  // First Name
-                std::cout << util::FitString(p_tmp.last_name, 11) << " ";  // Last Name
-                std::cout << util::FitString(std::to_string(p_tmp.age), 3) << " ";  // Age
-                std::cout << util::FitString(std::string(1, p_tmp.gender), 7) << " ";  // Gender
-                std::cout << util::FitString(p_tmp.contact_number, 15) << " ";  // Contact
-                std::cout << util::FitString(p_tmp.address, 23) << " ";  // Address
-                std::cout << util::FitString(p_tmp.disability, 11) << " ";  // Disability
-                std::cout << util::FitString(std::to_string(p_tmp.visit_history.Size()), 7) << std::endl;  // Visits
-
-                if (lines == 0)
-                    break;
-            }
-
-            while (lines > 0)
-            {
-                std::cout << std::endl;
-                --lines;
-            }
-
-            // "Footer" text
-            if (invalid_input)
-            {
-                std::cout << "========== Invalid Input ==========" << std::endl;
-                invalid_input = false;
-            }
-            else
-                std::cout << std::endl;
-            std::cout << "Page " << current_page_index + 1 << " of " << page_count << std::endl;
-            std::cout << "\"<\" Back | \"!\" Exit | \">\" Forward" << std::endl;
-            std::cout << "Input: ";
-            std::cin >> input;
-            std::cin.ignore();
-
-            switch (input[0])
-            {
-                case '<':
-                    if (current_page_index < page_count - 1)
-                        invalid_input = true;
-                    else
-                        --current_page_index;
-                    break;
-                case '!':
-                    exit = true;
-                    break;
-                case '>':
-                    if (current_page_index > page_count - 2)
-                        invalid_input = true;
-                    else
-                        ++current_page_index;
-                    break;
-                default:
-                    invalid_input = true;
-                    break;
-            }
+            case 0:
+                Pagination(util::ComparePatientIdAsc);
+                break;
+            case 1:
+                Pagination(util::ComparePatientIdDesc);
+                break;
+            case 2:
+                Pagination(util::ComparePatientFirstNameAsc);
+                break;
+            case 3:
+                Pagination(util::ComparePatientFirstNameDesc);
+                break;
+            case 4:
+                Pagination(util::ComparePatientLastNameAsc);
+                break;
+            case 5:
+                Pagination(util::ComparePatientLastNameDesc);
+                break;
+            case 6:
+                Pagination(util::ComparePatientAgeAsc);
+                break;
+            case 7:
+                Pagination(util::ComparePatientAgeDesc);
+                break;
+            case 8:
+                Pagination(util::ComparePatientGenderAsc);
+                break;
+            case 9:
+                Pagination(util::ComparePatientGenderDesc);
+                break;
+            case 10:
+                Pagination(util::ComparePatientContactNumberAsc);
+                break;
+            case 11:
+                Pagination(util::ComparePatientContactNumberDesc);
+                break;
+            case 12:
+                Pagination(util::ComparePatientAddressAsc);
+                break;
+            case 13:
+                Pagination(util::ComparePatientAddressDesc);
+                break;
+            case 14:
+                Pagination(util::ComparePatientDisabilityAsc);
+                break;
+            case 15:
+                Pagination(util::ComparePatientDisabilityDesc);
+                break;
+            case 16:
+                Pagination(util::ComparePatientVisitsAsc);
+                break;
+            case 17:
+                Pagination(util::ComparePatientVisitsDesc);
+                break;
+            case 18:
+                break;
         }
     }
 } // namespace pms
