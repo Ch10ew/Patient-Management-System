@@ -46,15 +46,14 @@ namespace pms
 
         do
         {
-            std::cout << std::endl;
-            std::cout << std::endl;
+            util::ClearScreen();
             if (show_invalid)
             {
-                std::cout << "\n" << "========== Invalid Credentials ==========" << std::endl;
+                std::cout << "========== Invalid Credentials ==========" << std::endl;
                 show_invalid = false;
             }
             else
-                std::cout << "\n" << std::endl;
+                std::cout << std::endl;
             
             // Display options
             std::cout << " = Doctor Login = " << std::endl;
@@ -96,7 +95,7 @@ namespace pms
         std::string* option_text = new std::string[4];
         option_text[0] = "View full patient list";
         option_text[1] = "Modify patient record";
-        option_text[2] = "View patient list in descending order";
+        option_text[2] = "View patient list in pagination";
         option_text[3] = "Search for patient record";
 
         while (!exit)
@@ -108,13 +107,10 @@ namespace pms
             // DEBUG ======
 
             // Run selected option
-            std::cout << std::endl;
-            std::cout << std::endl;
+            util::ClearScreen();
             switch (option)
             {
                 case 0:
-                    std::cout << " = Print Patient List = " << std::endl;
-                    std::cout << std::endl;
                     PrintPatientList();
                     break;
                 case 1:
@@ -128,7 +124,7 @@ namespace pms
                 case 3:
                     std::cout << " = Search & View = " << std::endl;
                     std::cout << std::endl;
-                    Search();
+                    PrintPatient(Search());
                     break;
                 case 4:
                     std::cout << "Logging out..." << std::endl;
@@ -143,8 +139,61 @@ namespace pms
         delete[] option_text;
     }
 
+    void DoctorModule::PrintPatient(std::shared_ptr<Patient> patient_ptr)
+    {
+        util::ClearScreen();
+
+        std::string input;
+        if (!patient_ptr)
+        {
+            std::cout << std::endl;
+            std::cout << " = Search Results =" << std::endl;
+            std::cout << std::endl;
+            std::cout << " - No results found - " << std::endl;
+            std::cout << std::endl;
+            std::cout << "Enter anything to continue... ";
+            getline(std::cin, input);
+            return;
+        }
+        
+        Patient copy = *patient_ptr;
+
+        std::cout << std::endl;
+        std::cout << " = Search Results =" << std::endl;
+        std::cout << std::endl;
+        std::cout << copy.id << " - " << copy.first_name << " " << copy.last_name << std::endl;
+        std::cout << "Age: " << copy.age << std::endl;
+        std::cout << "Gender: " << copy.gender << std::endl;
+        std::cout << "Contact Number: " << copy.contact_number << std::endl;
+        std::cout << "Address: " << copy.address << std::endl;
+        std::cout << "Disability: " << copy.disability << std::endl;
+        std::cout << "Visit History: " << std::endl;
+        for (int j = 0; j < copy.visit_history.Size(); ++j)
+        {
+            std::cout << "\t" << "Visit #" << j + 1 << std::endl;
+            std::cout << "\t" << "Sickness: " << copy.visit_history.At(j).sickness << std::endl;
+            std::cout << "\t" << "Description: " << copy.visit_history.At(j).description << std::endl;
+            std::cout << "\t" << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(copy.visit_history.At(j).registration_time)) << std::endl;
+            std::cout << "\t" << "Doctor: " << copy.visit_history.At(j).doctor->id << " - " << copy.visit_history.At(j).doctor->first_name << copy.visit_history.At(j).doctor->last_name << std::endl;
+            std::cout << "\t" << "Medicide Information: " << copy.visit_history.At(j).medicine_information << std::endl;
+            
+            if (j != copy.visit_history.Size() - 1)
+                std::cout << std::endl;
+        }
+        std::cout << std::endl;
+        std::cout << "Enter anything to continue... ";
+        getline(std::cin, input);
+
+    }
+
     void DoctorModule::PrintPatientList()
     {
+        std::string input;
+
+        util::ClearScreen();
+        
+        std::cout << " = Print Patient List = " << std::endl;
+        std::cout << std::endl;
         for (int i = 0; i < resource_pool_->patient_data.Size(); ++i)
         {
             Patient copy = *(resource_pool_->patient_data.At(i));
@@ -170,6 +219,9 @@ namespace pms
             }
             std::cout << std::endl;
         }
+
+        std::cout << "Enter anything to continue... ";
+        getline(std::cin, input);
     }
 
     void DoctorModule::Modify(std::shared_ptr<pms::Patient> patient_ptr)
@@ -188,10 +240,10 @@ namespace pms
 
         while (!exit)
         {
-            // Prompt for search criteria
-            option = util::Menu("Search", option_text, 8);
+            util::ClearScreen();
 
             // Print current patient details
+            std::cout << std::endl;
             std::cout << patient_ptr->id << " - " << patient_ptr->first_name << " " << patient_ptr->last_name << std::endl;
             std::cout << "Age: " << patient_ptr->age << std::endl;
             std::cout << "Gender: " << patient_ptr->gender << std::endl;
@@ -212,6 +264,9 @@ namespace pms
                     std::cout << std::endl;
             }
             std::cout << std::endl;
+
+            // Prompt for attribute
+            option = util::Menu("Select attribute to modify", option_text, 8, false);
             
             // Run based on option selected
             int age = 0;
@@ -299,21 +354,50 @@ namespace pms
         delete[] option_text;
     }
 
-    void ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr)
+    void DoctorModule::ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr)
     {
+        // Add available visits into list
         List<std::string> visits_string;
 
-        /*for (int i = 0; i < patient_ptr->visit_history.Size(); ++i)
+        for (int i = 0; i < patient_ptr->visit_history.Size(); ++i)
         {
-            // how not to compile 101
-        }*/
+            visits_string.InsertTail(
+                patient_ptr->visit_history.At(i).sickness +
+                " | " +
+                patient_ptr->visit_history.At(i).description +
+                " | " +
+                patient_ptr->visit_history.At(i).doctor->first_name +
+                " " +
+                patient_ptr->visit_history.At(i).doctor->last_name
+            );
+        }
 
+        // Convert to string array
+        std::string* visit_options = new std::string[visits_string.Size()];
+        for (int i = 0; i < visits_string.Size(); ++i)
+        {
+            visit_options[i] = visits_string.At(i);
+        }
+
+        // Prompt for visit to modify
+        int visit_index = util::Menu("Select visit to modify", visit_options, visits_string.Size());
+
+        // Free pointer above
+        delete[] visit_options;
+
+        // Create string array for prompt
         std::string* option_text = new std::string[5];
         option_text[0] = "Modify sickness";
         option_text[1] = "Modify description";
         option_text[2] = "Modify visit date";
         option_text[3] = "Modify doctor";
         option_text[4] = "Modify medicine information";
+
+        // Prompt for modification field
+        int option = util::Menu("Select attribute to modify", option_text, 8);
+
+        // Free pointer above
+        delete[] option_text;
     }
 
     std::shared_ptr<Patient> DoctorModule::Search()

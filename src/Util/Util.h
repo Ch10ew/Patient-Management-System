@@ -3,6 +3,7 @@
 
 #include "../Structures/List.h"
 #include "../Structures/CtimeWrapper.h"
+#include "Console.h"
 
 #include <iostream>
 #include <string>
@@ -14,13 +15,25 @@ namespace pms
 {
     namespace util
     {
+        static void ClearScreen()
+        {
+            static bool init_done = false;
+            /*std::cout << std::endl;
+            std::cout << std::endl;
+            std::cout << std::endl;*/
+            if (!init_done)
+                console::InitConsole();
+            
+            std::cout << console::AnsiEsc(console::ANSI_SEQ::ESC_CLEAR_SCREEN);
+        }
+
         /**
          * @brief Menu template
          * 
          * @param options Option text to be displayed
          * @return int option selected (-1 means invalid)
          */
-        static int Menu(std::string title, const std::string* options, const int size)
+        static int Menu(std::string title, const std::string* options, const int size, bool clear_screen = true)
         {
             std::string input_string;
             bool invalid_input = false;
@@ -28,16 +41,16 @@ namespace pms
 
             while (true)
             {
-                std::cout << std::endl;
-                std::cout << std::endl;
+                if (clear_screen)
+                    ClearScreen();
 
                 if (invalid_input)
                 {
-                    std::cout << "\n" << "========== Invalid Input ==========" << std::endl;
+                    std::cout << "========== Invalid Input ==========" << std::endl;
                     invalid_input = false;
                 }
                 else
-                    std::cout << "\n" << std::endl;
+                    std::cout << std::endl;
                 
                 // Display options
                 std::cout << " = " << title << " = " << std::endl;

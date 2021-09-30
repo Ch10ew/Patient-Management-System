@@ -63,14 +63,14 @@ namespace console
         ESC_COUNT,
     };
 
-    inline std::string AnsiEscCursorPosition(int x, int y)
+    static inline std::string AnsiEscCursorPosition(int x, int y)
     {
         std::stringstream ss;
         ss << "\x1b[" << ++y << ";" << ++x << "H";
         return ss.str();
     }
 
-    std::string AnsiEsc(ANSI_SEQ e)
+    static std::string AnsiEsc(ANSI_SEQ e)
     {
         switch (e)
         {
@@ -204,7 +204,7 @@ namespace console
         }
     }
 
-    void InitConsole()
+    static void InitConsole()
     {
         #ifdef _WIN32
             // WINAPI Setup for Terminal (Windows only)

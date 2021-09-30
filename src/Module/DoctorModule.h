@@ -23,6 +23,7 @@ namespace pms
 
         private:
             void PrintPatientList();
+            void PrintPatient(std::shared_ptr<Patient> patient_ptr);
             void Modify(std::shared_ptr<pms::Patient> patient_ptr);
             void ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr);
             std::shared_ptr<Patient> Search();
@@ -89,6 +90,10 @@ namespace pms
         if (matching_indices.Size() == 0)
         {
             std::cout << " - No results found - " << std::endl;
+
+            // Free pointer above
+            delete[] search_matches;
+
             return nullptr;
         }
 
@@ -190,6 +195,10 @@ namespace pms
         if (matching_indices.Size() == 0)
         {
             std::cout << " - No results found - " << std::endl;
+
+            // Free pointer above
+            delete[] search_matches;
+
             return nullptr;
         }
 
@@ -226,6 +235,7 @@ namespace pms
         {
             lines = HEIGHT - 8; // reset lines
 
+            util::ClearScreen();
 
             // "Header" text
             std::cout << "                              ------------------------------------------" << std::endl;
