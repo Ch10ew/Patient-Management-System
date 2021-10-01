@@ -117,13 +117,9 @@ namespace pms
                     Modify(Search());
                     break;
                 case 2:
-                    std::cout << " = Pagination for patient = " << std::endl;
-                    std::cout << std::endl;
                     PromptPagination();
                     break;
                 case 3:
-                    std::cout << " = Search & View = " << std::endl;
-                    std::cout << std::endl;
                     PrintPatient(Search());
                     break;
                 case 4:
@@ -167,6 +163,7 @@ namespace pms
         std::cout << "Contact Number: " << copy.contact_number << std::endl;
         std::cout << "Address: " << copy.address << std::endl;
         std::cout << "Disability: " << copy.disability << std::endl;
+        std::cout << "Priority: " << copy.priority << std::endl;
         std::cout << "Visit History: " << std::endl;
         for (int j = 0; j < copy.visit_history.Size(); ++j)
         {
@@ -228,7 +225,7 @@ namespace pms
     {
         bool exit = false;
         int option;
-        std::string* option_text = new std::string[8];
+        std::string* option_text = new std::string[9];
         option_text[0] = "Modify first name";
         option_text[1] = "Modify last name";
         option_text[2] = "Modify age";
@@ -236,7 +233,8 @@ namespace pms
         option_text[4] = "Modify contact number";
         option_text[5] = "Modify address";
         option_text[6] = "Modify disability";
-        option_text[7] = "Modify visit history";
+        option_text[7] = "Modify priority";
+        option_text[8] = "Modify visit history";
 
         while (!exit)
         {
@@ -250,6 +248,7 @@ namespace pms
             std::cout << "Contact Number: " << patient_ptr->contact_number << std::endl;
             std::cout << "Address: " << patient_ptr->address << std::endl;
             std::cout << "Disability: " << patient_ptr->disability << std::endl;
+            std::cout << "Priority: " << patient_ptr->priority << std::endl;
             std::cout << "Visit History: " << std::endl;
             for (int j = 0; j < patient_ptr->visit_history.Size(); ++j)
             {
@@ -266,10 +265,10 @@ namespace pms
             std::cout << std::endl;
 
             // Prompt for attribute
-            option = util::Menu("Select attribute to modify", option_text, 8, false);
+            option = util::Menu("Select attribute to modify", option_text, 9, false);
             
             // Run based on option selected
-            int age = 0;
+            int age = 0, priority = 0;
             std::string data;
 
             bool invalid_input = false;
@@ -285,7 +284,10 @@ namespace pms
                     do
                     {
                         if (invalid_input)
+                        {
                             std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
 
                         data = PromptModify("age");                        
                         try
@@ -308,13 +310,16 @@ namespace pms
                     do
                     {
                         if (invalid_input)
+                        {
                             std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
 
                         data = PromptModify("gender");
-                        if (data.length() > 1 || data.length() == 0)
+                        if (data.length() > 2 || data.length() == 0)
                             invalid_input = true;
                         
-                        if (data[0] != 'M' || data[0] != 'F')
+                        if (data[0] != 'M' && data[0] != 'F')
                             invalid_input = true;
                     }
                     while (invalid_input);
@@ -325,7 +330,10 @@ namespace pms
                     do
                     {
                         if (invalid_input)
+                        {
                             std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
 
                         data = PromptModify("contact number");
                         if (data.find_first_not_of("+-#*()0123456789") != std::string::npos)
@@ -341,10 +349,33 @@ namespace pms
                 case 6:  // Disability
                     patient_ptr->disability = PromptModify("disability");
                     break;
-                case 7:  // Visit history
+                case 7:  // Priority
+                    do
+                    {
+                        if (invalid_input)
+                        {
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
+
+                        data = PromptModify("priority");                        
+                        try
+                        {
+                            priority = std::stoi(data);
+                        }
+                        catch (...)
+                        {
+                            invalid_input = true;
+                        }
+                    }
+                    while (invalid_input);
+
+                    patient_ptr->priority = priority;
+                    break;
+                case 8:  // Visit history
                     ModifyVisitHistory(patient_ptr);
                     break;
-                case 8:  // Exit
+                case 9:  // Exit
                     exit = true;
                     break;
             }
@@ -553,6 +584,11 @@ namespace pms
             std::cout << "Date format is YYYY/MM/DD HH:MM:SS." << std::endl;
             std::cout << "New data: ";
         }
+        else if (attribute == "priority")
+        {
+            std::cout << "0 for high priority, 5 for low priority." << std::endl;
+            std::cout << "New data: ";
+        }
         else
         {
             std::cout << "New data: ";
@@ -608,7 +644,7 @@ namespace pms
         option_text[17] = "Sort by visit count (Descending)";
 
         // Prompt for search criteria
-        int option = util::Menu("Search", option_text, 18);
+        int option = util::Menu("Pagination for patient", option_text, 18);
 
         // Free pointer above
         delete[] option_text;
