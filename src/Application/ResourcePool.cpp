@@ -6,10 +6,9 @@
 #include "../Structures/Patient.h"
 #include "../Structures/CtimeWrapper.h"
 
-#include <map>
 #include <memory>
 #include <string>
-#include <cctype>
+
 namespace pms
 {
     ResourcePool::ResourcePool()
@@ -97,7 +96,7 @@ namespace pms
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Ligma",
             "Unspecified",
-            ctimew::Time(), // change to hardcoded time
+            ctimew::GetTimeTFromString("2021/10/03 12:45:11"), // change to hardcoded time
             doctor_data.Head(),
             "Adderall"
         ));
@@ -130,7 +129,7 @@ namespace pms
         patient_data.Tail()->visit_history.InsertTail(Visit(
             "Dizziness",
             "Unspecified",
-            ctimew::Time(), // change to hardcoded time
+            ctimew::GetTimeTFromString("2021/09/28 15:03:58"), // change to hardcoded time
             doctor_data.Head(),
             "Panadol"
         ));

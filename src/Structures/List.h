@@ -12,7 +12,8 @@ namespace pms
     ///   List node structure.
     /// ========================================
     /**
-     * Supporting structure for List class.
+     * @brief Supporting structure for List class.
+     * 
      * Defines a single node of the list.
      */
     template <typename T>
@@ -29,6 +30,9 @@ namespace pms
     /// ========================================
     ///   Optimization structures.
     /// ========================================
+    /**
+     * @brief Defines the node to start from when transversing through the list.
+     */
     enum class TransversalStartNode
     {
         HEAD,
@@ -36,6 +40,9 @@ namespace pms
         TAIL
     };
 
+    /**
+     * @brief Defines the direction to transverse when transversing through the list.
+     */
     enum class TransversalDirection
     {
         LEFT = -1,
@@ -44,7 +51,6 @@ namespace pms
 
     /**
      * @brief Defines the transversal start node, direction, and distance for operations in the list
-     * 
      */
     struct TransversalInfo
     {
@@ -57,8 +63,8 @@ namespace pms
     ///   List class.
     /// ========================================
     /**
-     * Meta class for a list "structure". Type supplied in T
-     * should have operator== and operator< overloads.
+     * @brief Meta class for a list "structure". Type supplied in T should have operator== and
+     * operator< overloads for `Search()` and `Sort()` respectively.
      */
     template <typename T>
     class List
@@ -142,6 +148,11 @@ namespace pms
     {
     }*/
 
+    /**
+     * @brief Construct a new ListNode<T>::List Node object
+     * 
+     * @param data Data to initialize node with.
+     */
     template <typename T>
     ListNode<T>::ListNode(T data) : data(data)
     {
@@ -150,20 +161,30 @@ namespace pms
     /// ========================================
     ///   List class constructor definitions.
     /// ========================================
-    // Default constructor
+    /**
+     * @brief Default Constructor. Does nothing.
+     */
     template <typename T>
     List<T>::List()
     {
     }
 
-    // Copy constructor
+    /**
+     * @brief Copy constructor.
+     * 
+     * @param source 
+     */
     template <typename T>
     List<T>::List(const List<T> &source)
     {
         *this = source;
     }
 
-    // Constructor for initializer list initialization
+    /**
+     * @brief Constructor overload for initializer list.
+     * 
+     * @param initializer_list 
+     */
     template <typename T>
     List<T>::List(std::initializer_list<T> initializer_list)
     {
@@ -177,6 +198,11 @@ namespace pms
     ///   List class member functions definitions.
     /// ========================================
     // Element Access
+    /**
+     * @brief Gets the head element.
+     * 
+     * @return T& Head element.
+     */
     template <typename T>
     T& List<T>::Head() const
     {
@@ -186,6 +212,11 @@ namespace pms
         throw std::out_of_range("pms::List<T>::Head(): List is empty");
     }
 
+    /**
+     * @brief Gets the tail element.
+     * 
+     * @return T& Tail element.
+     */
     template <typename T>
     T& List<T>::Tail() const
     {
@@ -195,6 +226,12 @@ namespace pms
         throw std::out_of_range("pms::List<T>::Tail(): List is empty");
     }
 
+    /**
+     * @brief Gets the element at `n`
+     * 
+     * @param n Index of the element to be accessed.
+     * @return T& Element at `n`.
+     */
     template <typename T>
     T& List<T>::At(const int n) const
     {
@@ -234,12 +271,23 @@ namespace pms
     }
 
     // Capacity
+    /**
+     * @brief Gets if list is empty.
+     * 
+     * @return true if list is empty
+     * @return false if list is not empty.
+     */
     template <typename T>
     const bool List<T>::Empty() const
     {
         return size_ == 0;
     }
 
+    /**
+     * @brief Gets the size of the list.
+     * 
+     * @return const int The size of the list.
+     */
     template <typename T>
     const int List<T>::Size() const
     {
@@ -247,6 +295,9 @@ namespace pms
     }
 
     // Modifiers
+    /**
+     * @brief Clears the list.
+     */
     template <typename T>
     void List<T>::Clear()
     {
@@ -276,6 +327,11 @@ namespace pms
         size_ = 0;
     }
 
+    /**
+     * @brief Shrinks the list to fit in `size`.
+     * 
+     * @param size Size to shrink the list to.
+     */
     template <typename T>
     void List<T>::ShrinkToFit(const int size)
     {
@@ -295,6 +351,11 @@ namespace pms
         throw std::length_error("pms::List<T>::Head(): New size given is larger than size of original list");
     }
 
+    /**
+     * @brief Inserts an element to the start of the list.
+     * 
+     * @param data Data to insert.
+     */
     template <typename T>
     void List<T>::InsertHead(const T data)
     {
@@ -316,6 +377,12 @@ namespace pms
         current_index_ = 0;
     }
 
+    /**
+     * @brief Inserts an element to the specified index into the list.
+     * 
+     * @param data Data to insert.
+     * @param index Index to insert.
+     */
     template <typename T>
     void List<T>::InsertInPlace(const T data, const int index)
     {
@@ -383,6 +450,11 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Inserts an element to the end of the list.
+     * 
+     * @param data Data to insert.
+     */
     template <typename T>
     void List<T>::InsertTail(const T data)
     {
@@ -405,6 +477,9 @@ namespace pms
         current_index_ = size_ - 1;
     }
 
+    /**
+     * @brief Removes an element from the start of the list.
+     */
     template <typename T>
     void List<T>::RemoveHead()
     {
@@ -427,6 +502,11 @@ namespace pms
         current_index_ = 0;
     }
 
+    /**
+     * @brief Removes an element from the specified index from the list.
+     * 
+     * @param index Index to remove.
+     */
     template <typename T>
     void List<T>::RemoveInPlace(const int index)
     {
@@ -495,6 +575,9 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Removes an element from the end of the list.
+     */
     template <typename T>
     void List<T>::RemoveTail()
     {
@@ -517,10 +600,9 @@ namespace pms
     }
 
     /**
-     * @brief remove the tail from a list and return the data`
+     * @brief Removes an element from the end of the list and returns it.
      * 
-     * @tparam T Type used for List<T>
-     * @return T Type data in the tail of the list
+     * @return T Element popped.
      */
 	template<typename T>
 	T List<T>::Pop()			
@@ -533,10 +615,9 @@ namespace pms
 	}
     
     /**
-     * @brief remove the head from a list and return the data`
+     * @brief Removes an element from the start of the list and returns it.
      * 
-     * @tparam T Type used for List<T>
-     * @return T Type data in the head of the list
+     * @return T Element polled.
      */
 	template<typename T>
 	T List<T>::Poll()			
@@ -550,7 +631,10 @@ namespace pms
 
     // Operations
     /**
-     * Returns the index of the specified data.
+     * @brief Searches the list for a matching `data`.
+     * 
+     * @param data Data to be matched.
+     * @return int Index of the match in the list. Returns -1 if not found.
      */
     template <typename T>
     int List<T>::Search(const T data)
@@ -573,6 +657,13 @@ namespace pms
         return -1;
     }
 
+    /**
+     * @brief Searches the list for a matching `data`.
+     * 
+     * @param data Data to be matched.
+     * @param start_index Starting index of search.
+     * @return int Index of the match in the list. Returns -1 if not found.
+     */
     template <typename T>
     int List<T>::Search(const T data, const int start_index)
     {
@@ -597,6 +688,13 @@ namespace pms
         return -1;
     }
     
+    /**
+     * @brief Searches the list for a matching `data`.
+     * 
+     * @param data Data to be matched.
+     * @param func Comparison function to be used in the search.
+     * @return int Index of the match in the list. Returns -1 if not found.
+     */
     template <typename T>
     template <class Compare>
     int List<T>::Search(const T data, Compare func)
@@ -619,6 +717,14 @@ namespace pms
         return -1;
     }
 
+    /**
+     * @brief Searches the list for a matching `data`.
+     * 
+     * @param data Data to be matched.
+     * @param func Comparison function to be used in the search.
+     * @param start_index Starting index of search.
+     * @return int Index of the match in the list. Returns -1 if not found.
+     */
     template <typename T>
     template <class Compare>
     int List<T>::Search(const T data, Compare func, const int start_index)
@@ -644,6 +750,12 @@ namespace pms
         return -1;
     }
 
+    /**
+     * @brief Swaps the position of two elements in the list.
+     * 
+     * @param a Index of first element.
+     * @param b Index of second element.
+     */
     template <typename T>
     void List<T>::Swap(const int a, const int b)
     {
@@ -681,9 +793,9 @@ namespace pms
     }
     
     /**
-     * @brief Sorts the current list
+     * @brief Sorts the current list.
      * 
-     * @tparam T Type used for List<T>
+     * Does not return a copy but performs the sort on the list.
      */
     template <typename T>
     void List<T>::Sort()
@@ -697,7 +809,8 @@ namespace pms
     /**
      * @brief Sorts the current list
      * 
-     * @tparam T Type used for List<T>
+     * Does not return a copy but performs the sort on the list.
+     * 
      * @param func Comparison function in the form of `bool foo(const T& lhs, const T& rhs)`
      */
     template <typename T>
@@ -710,6 +823,11 @@ namespace pms
         *this = Sorter(*this, func);
     }
 
+    /**
+     * @brief Overload for assignment operator to perform deep copy of a list.
+     * 
+     * @param source List to be deep copied.
+     */
     template <typename T>
     void List<T>::operator=(const List<T>& source)
     {
@@ -721,6 +839,12 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Merge sort main routine.
+     * 
+     * @param input_list List to be broken down to sublists.
+     * @return List<T> Merged list.
+     */
     template <typename T>
     List<T> List<T>::Sorter(List<T> input_list)
     {
@@ -753,6 +877,13 @@ namespace pms
         return Merge(left_list, right_list);
     }
 
+    /**
+     * @brief Merge sort main routine.
+     * 
+     * @param input_list List to be broken down to sublists.
+     * @param func Comparison function to be used for sorting.
+     * @return List<T> Merged list.
+     */
     template <typename T>
     template <class Compare>
     List<T> List<T>::Sorter(List<T> input_list, Compare func)
@@ -788,7 +919,7 @@ namespace pms
     }
 
     /**
-     * @brief Sorts and merges two `List<T>`
+     * @brief Merge sort subroutine. Sorts and merges two `List<T>`
      * 
      * @tparam T Type used for List<T>
      * @param left_list (Sorted) Left list to be merged
@@ -835,7 +966,7 @@ namespace pms
     }
 
     /**
-     * @brief Sorts and merges two `List<T>`
+     * @brief Merge sort subroutine. Sorts and merges two `List<T>`
      * 
      * @tparam T Type used for List<T>
      * @param left_list (Sorted) Left list to be merged
@@ -882,6 +1013,12 @@ namespace pms
         return return_list;
     }
     
+    /**
+     * @brief Gets information on the shortest possible transversal path to `index`.
+     * 
+     * @param index Target index.
+     * @return const TransversalInfo Information on shortest transversal path.
+     */
     template <typename T>
     const TransversalInfo List<T>::GetTransversalInfo(const int index) const
     {

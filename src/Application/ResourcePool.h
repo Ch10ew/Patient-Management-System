@@ -6,22 +6,40 @@
 #include "../Structures/Doctor.h"
 #include "../Structures/Patient.h"
 
-#include <map>
 #include <memory>
 
 namespace pms
 {
+    /**
+     * @brief Container for data used throughout the system. Currently stores: `nurse_data`,
+     * `doctor_data`, `patient_data`, `waiting_data`.
+     */
     class ResourcePool
     {
         public:
-            // Constructor (Edit if necessary)
-            // Used to load the data
+            /**
+             * @brief Loads the default data... Because... No database...
+             */
             ResourcePool();
             
-            // Stores all the data needed for the program
+            /**
+             * @brief Container for all registered nurses.
+             */
             List<std::shared_ptr<Nurse>> nurse_data;
+            
+            /**
+             * @brief Container for all registered doctors.
+             */
             List<std::shared_ptr<Doctor>> doctor_data;
+
+            /**
+             * @brief Container for all registered patients.
+             */
             List<std::shared_ptr<Patient>> patient_data;
+
+            /**
+             * @brief The active waiting list of the clinic.
+             */
             List<std::shared_ptr<Waiting>> waiting_data;
     };
 } // namespace pms

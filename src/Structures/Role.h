@@ -5,6 +5,9 @@
 
 namespace pms
 {
+    /**
+     * @brief `Role` defines an entity with an id.
+     */
     class Role
     {
         public:

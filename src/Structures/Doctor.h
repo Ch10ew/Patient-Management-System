@@ -6,6 +6,9 @@
 
 namespace pms
 {
+    /**
+     * @brief `Doctor` defines a doctor's profile.
+     */
     class Doctor : public Role
     {
         public:

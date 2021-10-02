@@ -10,6 +10,15 @@
 
 namespace pms
 {
+    /**
+     * @brief Auxiliary function for DoctorModule during login. Used to check if `username` and
+     * `password` matches.
+     * 
+     * @param d1 lhs value
+     * @param d2 rhs value
+     * @return true if `username` and `password` matches.
+     * @return false if `username` or `password` does not match.
+     */
     bool MatchAccount(std::shared_ptr<Doctor> d1, std::shared_ptr<Doctor> d2)
     {
         return (d1->username == d2->username) && (d1->password == d2->password);
@@ -17,12 +26,20 @@ namespace pms
 
     
 
+    /**
+     * @brief Initializes `ResourcePool` pointer. Initializes option text to "Doctor Login".
+     * 
+     * @param resource_pool Pointer to `ResourcePool` instance.
+     */
     DoctorModule::DoctorModule(std::shared_ptr<ResourcePool> resource_pool)
     : Module(resource_pool)
     {
         module_option_text_ = "Doctor Login";
     }
 
+    /**
+     * @brief Entry point of `DoctorModule`. Loops `Login()` (and optionally `Menu()`) until exit flag is set.
+     */
     void DoctorModule::Run()
     {
         do
@@ -36,6 +53,11 @@ namespace pms
         while (!exit_);
     }
 
+    /**
+     * @brief Prompts for username and password. Then, tries to find a match.
+     * 
+     * Sets logged in flag if successful. Also sets the logged in doctor pointer.
+     */
     void DoctorModule::Login()
     {
         int option = -1;
@@ -88,6 +110,10 @@ namespace pms
         while (!exit);
     }
 
+    /**
+     * @brief Allows the doctor to print patient list, modify a patient record, see the patient list
+     * in pagination, and search for a specific patient.
+     */
     void DoctorModule::Menu()
     {
         bool exit = false;
@@ -135,6 +161,11 @@ namespace pms
         delete[] option_text;
     }
 
+    /**
+     * @brief Prints the given patient. Expected to be used after a `Search()` call.
+     * 
+     * @param patient_ptr Pointer to `Patient` to be printed.
+     */
     void DoctorModule::PrintPatient(std::shared_ptr<Patient> patient_ptr)
     {
         util::ClearScreen();
@@ -183,6 +214,9 @@ namespace pms
 
     }
 
+    /**
+     * @brief Prints the entire patient list.
+     */
     void DoctorModule::PrintPatientList()
     {
         std::string input;
@@ -221,6 +255,13 @@ namespace pms
         getline(std::cin, input);
     }
 
+    /**
+     * @brief Prompts for the modification of the given patient. Expected to be used after `Search()` call.
+     * 
+     * Shows that there are no results found if `nullptr` is supplied.
+     * 
+     * @param patient_ptr Pointer to `Patient` to be modified.
+     */
     void DoctorModule::Modify(std::shared_ptr<pms::Patient> patient_ptr)
     {
         util::ClearScreen();
@@ -400,6 +441,11 @@ namespace pms
         delete[] option_text;
     }
 
+    /**
+     * @brief Prompts for the modification of visit history of the given patient.
+     * 
+     * @param patient_ptr Pointer to `Patient` to be modified. Must not be `nullptr`.
+     */
     void DoctorModule::ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr)
     {
         // Add available visits into list
@@ -446,6 +492,11 @@ namespace pms
         delete[] option_text;
     }
 
+    /**
+     * @brief Prompts for search of a patient.
+     * 
+     * @return std::shared_ptr<Patient> pointer to `Patient`. May be `nullptr`.
+     */
     std::shared_ptr<Patient> DoctorModule::Search()
     {
         std::string* option_text = new std::string[8];
@@ -516,6 +567,11 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Prompts for search of a patient by visit history.
+     * 
+     * @return std::shared_ptr<Patient> pointer to `Patient`. May be `nullptr`.
+     */
     std::shared_ptr<Patient> DoctorModule::SearchByVisitHistory()
     {
         std::string* option_text = new std::string[6];
@@ -585,6 +641,12 @@ namespace pms
         }
     }
 
+    /**
+     * @brief General function to prompt for modification of a certain attribute.
+     * 
+     * @param attribute To be displayed in the prompt for the user to see.
+     * @return std::string data supplied by the user
+     */
     std::string DoctorModule::PromptModify(std::string attribute)
     {
         std::string input_string;
@@ -613,6 +675,12 @@ namespace pms
         return input_string;
     }
 
+    /**
+     * @brief General function to prompt for search of a certain attribute.
+     * 
+     * @param attribute To be displayed in the prompt for the user to see.
+     * @return std::string search term supplied by the user
+     */
     std::string DoctorModule::PromptSearch(std::string attribute)
     {
         std::string input_string;
@@ -636,6 +704,9 @@ namespace pms
         return input_string;
     }
 
+    /**
+     * @brief Prompts for the sorting method for pagination.
+     */
     void DoctorModule::PromptPagination()
     {
         std::string* option_text = new std::string[18];

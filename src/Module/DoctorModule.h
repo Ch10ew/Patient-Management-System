@@ -13,6 +13,9 @@ namespace pms
 {
     bool MatchAccount(std::shared_ptr<Doctor> d1, std::shared_ptr<Doctor> d2);
 
+    /**
+     * @brief The module that is targeted towards doctors (in other words used by doctors).
+     */
     class DoctorModule : public Module
     {
         public:
@@ -48,6 +51,13 @@ namespace pms
             std::shared_ptr<Doctor> logged_in_doctor_;
     };
 
+    /**
+     * @brief Searches the patient list by a given search term and a given comparison function.
+     * 
+     * @param search_term `Patient` object with search term
+     * @param comp Comparison function that satisfy the Compare C++ named requirement
+     * @return std::shared_ptr<Patient> Pointer to `Patient`. May be `nullptr`.
+     */
     template <class Compare>
     std::shared_ptr<Patient> DoctorModule::SearchBy(Patient search_term, Compare comp)
     {
@@ -113,6 +123,13 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Searches the patient list by a given search term and a given comparison function.
+     * 
+     * @param search_term `Visit` object with search term
+     * @param comp Comparison function that satisfy the Compare C++ named requirement
+     * @return std::shared_ptr<Patient> Pointer to `Patient`. May be `nullptr`.
+     */
     template <class Compare>
     std::shared_ptr<Patient> DoctorModule::SearchBy(Visit search_term, Compare func)
     {
@@ -218,6 +235,14 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Creates pagination for the patient list.
+     * 
+     * Has a chance to run out of memory as it creates a copy of the current patient list.
+     * 
+     * @param func Comparison function that satisfy the Compare C++ named requirement. Used for sorting
+     * the patient list beforehand.
+     */
     template <class Compare>
     void DoctorModule::Pagination(Compare func)
     {

@@ -9,6 +9,9 @@
 
 namespace pms
 {
+    /**
+     * @brief `Visit` defines a `Patient`'s visit record.
+     */
     struct Visit
     {
         Visit();
@@ -27,6 +30,9 @@ namespace pms
         std::string medicine_information;
     };
 
+    /**
+     * @brief `VisitButForPrinting` defines a `Visit`, but its for printing.
+     */
     struct VisitButForPrinting
     {
         VisitButForPrinting();
@@ -47,7 +53,10 @@ namespace pms
         std::string medicine_information;
     };
 
-struct Waiting
+    /**
+     * @brief `Waiting` defines a record of a patient's visit.
+     */
+    struct Waiting
     {
         Waiting();
         Waiting(
@@ -65,6 +74,9 @@ struct Waiting
         time_t registration_time;
     };
 
+    /**
+     * @brief `Patient` defines a patient's profile.
+     */
     class Patient : public Role
     {
         public:
@@ -83,6 +95,9 @@ struct Waiting
             );
 
         public:
+            /**
+             * @brief Overload for less than to compare by id.
+             */
             inline bool operator<(const Patient& rhs) const { return this->id < rhs.id; };
 
         public:

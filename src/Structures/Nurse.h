@@ -6,6 +6,9 @@
 
 namespace pms
 {
+    /**
+     * @brief `Nurse` defines a nurse's profile.
+     */
     class Nurse : public Role
     {
         public:

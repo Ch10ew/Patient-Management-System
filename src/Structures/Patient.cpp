@@ -4,10 +4,22 @@
 
 namespace pms
 {
+    /**
+     * @brief Default constructor. Does nothing.
+     */
     Visit::Visit()
     {
     }
 
+    /**
+     * @brief Construct a new Visit::Visit object.
+     * 
+     * @param sickness 
+     * @param description 
+     * @param registration_time 
+     * @param doctor 
+     * @param medicine_information 
+     */
     Visit::Visit(
         std::string sickness,
         std::string description,
@@ -23,10 +35,23 @@ namespace pms
     {
     }
 
+    /**
+     * @brief Default constructor. Does nothing.
+     */
     VisitButForPrinting::VisitButForPrinting()
     {
     }
 
+    /**
+     * @brief Construct a new VisitButForPrinting::VisitButForPrinting object.
+     * 
+     * @param patient_id 
+     * @param sickness 
+     * @param description 
+     * @param registration_time 
+     * @param doctor 
+     * @param medicine_information 
+     */
     VisitButForPrinting::VisitButForPrinting(
         std::string patient_id,
         std::string sickness,
@@ -44,10 +69,22 @@ namespace pms
     {
     }
 
+    /**
+     * @brief Default constructor. Does nothing.
+     */
     Waiting::Waiting()
     {
     }
 
+    /**
+     * @brief Construct a new Waiting::Waiting object
+     * 
+     * @param id 
+     * @param first_name 
+     * @param last_name 
+     * @param priority 
+     * @param registration_time 
+     */
     Waiting::Waiting(
       std::string id,
       std::string first_name,
@@ -63,16 +100,36 @@ namespace pms
     {
     }
 
-
+    /**
+     * @brief Default constructor. Does nothing.
+     */
     Patient::Patient()
     {
     }
 
+    /**
+     * @brief Construct a new Patient::Patient object
+     * 
+     * @param id 
+     */
     Patient::Patient(std::string id)
     : Role(id)
     {
     }
     
+    /**
+     * @brief Construct a new Patient::Patient object
+     * 
+     * @param id 
+     * @param first_name 
+     * @param last_name 
+     * @param age 
+     * @param gender 
+     * @param contact_number 
+     * @param address 
+     * @param disability 
+     * @param priority 
+     */
     Patient::Patient(
         std::string id,
         std::string first_name,

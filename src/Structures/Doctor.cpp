@@ -4,15 +4,34 @@
 
 namespace pms
 {
+    /**
+     * @brief Default constructor. Does nothing.
+     * 
+     */
     Doctor::Doctor()
     {
     }
 
+    /**
+     * @brief Construct a new Doctor::Doctor object
+     * 
+     * @param id 
+     */
     Doctor::Doctor(std::string id)
     : Role(id)
     {
     }
     
+    /**
+     * @brief Construct a new Doctor::Doctor object
+     * 
+     * @param id 
+     * @param username 
+     * @param password 
+     * @param first_name 
+     * @param last_name 
+     * @param specialism 
+     */
     Doctor::Doctor(
         std::string id,
         std::string username,

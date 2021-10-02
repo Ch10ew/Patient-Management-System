@@ -9,6 +9,11 @@
 
 namespace ctimew
 {
+    /**
+     * @brief Gets the current time, in POSIX time (`long long`).
+     * 
+     * @return time_t Current time in POSIX format.
+     */
     static time_t Time()
     {
         time_t currentTime;
@@ -16,9 +21,9 @@ namespace ctimew
     }
     
     /**
-     * @brief Gets local time in struct tm`
+     * @brief Gets local time in `struct tm`
      * 
-     * @return Local time in struct tm pointer`
+     * @return tm* Local time in `struct tm` pointer
      */
     static tm* StructTM(time_t time)
     {
@@ -26,12 +31,12 @@ namespace ctimew
     }
 
     /**
-     * @brief Convert struct tm to a string of readable time`
+     * @brief Convert struct tm to a string of readable time.
      * 
-     * @param struct tm pointer
-     * @return String of readable time`
+     * @param struct tm* Pointer
+     * @return std::string String of readable time
      */
-    static std::string FormatTime(tm *data)
+    static std::string FormatTime(tm* data)
     {
         std::string s = asctime(data);
         s.pop_back();
@@ -39,10 +44,10 @@ namespace ctimew
     }
 
     /**
-     * @brief Get date in the format of DD/MM/YYYY from struct tm`
+     * @brief Get date in the format of "DD/MM/YYYY" from `struct tm`.
      * 
-     * @param struct tm pointer
-     * @return String date in the formate of DD/MM/YYYY`
+     * @param struct tm* Pointer
+     * @return std::string Date in the format of "DD/MM/YYYY"
      */
     static std::string GetDate(tm *data)
     {
@@ -57,16 +62,32 @@ namespace ctimew
         return ss.str();
     }
 
+    /**
+     * @brief Get time in the format of "HH:MM:SS" from `struct tm`.
+     * 
+     * @param struct tm* Pointer
+     * @return std::string Time in the format of "HH:MM:SS"
+     */
     static std::string GetTime(tm *data)
     {
         std::stringstream ss;
         ss << std::setfill('0');
-        ss << std::setw(2) << data->tm_hour << '/'
-        << std::setw(2) << data->tm_min << '/'
+        ss << std::setw(2) << data->tm_hour << ':'
+        << std::setw(2) << data->tm_min << ':'
         << std::setw(2) << data->tm_sec;
         return ss.str();
     }
 
+    /**
+     * @brief Attempts to parse `std::string` to `time_t`.
+     * 
+     * Throws `std::invalid_argument` if argument is invalid.
+     * 
+     * Will return broken `time_t` (`time_t` with -1 as value) if given invalid arguments.
+     * 
+     * @param data 
+     * @return time_t 
+     */
     static time_t GetTimeTFromString(std::string data)
     {
         // Parse string using sscanf
