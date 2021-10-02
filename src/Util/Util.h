@@ -1,6 +1,7 @@
 #ifndef PMS_UTIL_H
 #define PMS_UTIL_H
 
+#include "../Structures/Patient.h"
 #include "../Structures/List.h"
 #include "../Structures/CtimeWrapper.h"
 #include "Console.h"
