@@ -223,6 +223,21 @@ namespace pms
 
     void DoctorModule::Modify(std::shared_ptr<pms::Patient> patient_ptr)
     {
+        util::ClearScreen();
+        
+        std::string input;
+        if (!patient_ptr)
+        {
+            std::cout << std::endl;
+            std::cout << " = Search Results =" << std::endl;
+            std::cout << std::endl;
+            std::cout << " - No results found - " << std::endl;
+            std::cout << std::endl;
+            std::cout << "Enter anything to continue... ";
+            getline(std::cin, input);
+            return;
+        }
+
         bool exit = false;
         int option;
         std::string* option_text = new std::string[9];
