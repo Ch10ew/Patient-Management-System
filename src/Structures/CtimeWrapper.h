@@ -7,7 +7,8 @@
 #include <iomanip>
 #include <stdio.h>
 
-namespace ctimew{
+namespace ctimew
+{
     static time_t Time()
     {
         time_t currentTime;
@@ -91,6 +92,6 @@ namespace ctimew{
 
         return time_tmp;
     }
-}
+} // namespace ctimew
 
 #endif // CTIME_WRAPPER

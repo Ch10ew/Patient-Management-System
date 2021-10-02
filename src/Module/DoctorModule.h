@@ -18,10 +18,10 @@ namespace pms
         public:
             DoctorModule(std::shared_ptr<ResourcePool> resource_pool);
             void Run();
+            
+        private:
             void Login();
             void Menu();
-
-        private:
             void PrintPatientList();
             void PrintPatient(std::shared_ptr<Patient> patient_ptr);
             void Modify(std::shared_ptr<pms::Patient> patient_ptr);
