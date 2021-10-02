@@ -3,7 +3,7 @@
 
 #include "ResourcePool.h"
 #include "../Structures/List.h"
-#include "../Module/UI.h"
+#include "../Module/Module.h"
 #include "../Util/Util.h"
 
 #include <memory>
@@ -30,7 +30,7 @@ namespace pms
 			// system. Each module will be "loaded" in order and
 			// will be displayed as options with the display text
 			// tl;dr this is the "State Machine"
-			pms::List<std::shared_ptr<UI>> modules_;
+			pms::List<std::shared_ptr<Module>> modules_;
 			
 			// Flag for if the user wants to exit, used to keep the
 			// program alive

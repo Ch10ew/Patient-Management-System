@@ -1,4 +1,4 @@
-#include "UI.h"
+#include "Module.h"
 
 #include <memory>
 #include <string>
@@ -6,12 +6,12 @@
 
 namespace pms
 {
-    UI::UI(std::shared_ptr<ResourcePool> resource_pool)
+    Module::Module(std::shared_ptr<ResourcePool> resource_pool)
     : resource_pool_(resource_pool)
     {
     }
 
-    const std::string UI::getOptionText() const
+    const std::string Module::getOptionText() const
     {
         return module_option_text_;
     }

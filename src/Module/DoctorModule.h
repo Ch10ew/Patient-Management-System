@@ -1,7 +1,7 @@
 #ifndef PMS_DOCTOR_MODULE_H
 #define PMS_DOCTOR_MODULE_H
 
-#include "UI.h"
+#include "Module.h"
 #include "../Structures/List.h"
 #include "../Structures/Patient.h"
 #include "../Util/Util.h"
@@ -13,7 +13,7 @@ namespace pms
 {
     bool MatchAccount(std::shared_ptr<Doctor> d1, std::shared_ptr<Doctor> d2);
 
-    class DoctorModule : public UI
+    class DoctorModule : public Module
     {
         public:
             DoctorModule(std::shared_ptr<ResourcePool> resource_pool);

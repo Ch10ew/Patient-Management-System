@@ -1,5 +1,5 @@
-#ifndef PMS_UI_H
-#define PMS_UI_H
+#ifndef PMS_MODULE_H
+#define PMS_MODULE_H
 
 #include "../Application/ResourcePool.h"
 
@@ -8,16 +8,16 @@
 
 namespace pms
 {
-    class UI
+    class Module
     {
         public:
             // Constructor (Edit if necessary)
             // Initialize that pointer in the protected section
             // for ResourcePool
-            UI(std::shared_ptr<ResourcePool> resource_pool);
+            Module(std::shared_ptr<ResourcePool> resource_pool);
 
             // Destructor
-            virtual ~UI() {}
+            virtual ~Module() {}
 
             // Virtual function to be overloaded by inheriting
             // classes. Used as the "driver code" for each module
@@ -35,4 +35,4 @@ namespace pms
     };
 } // namespace pms
 
-#endif // PMS_UI_H
+#endif // PMS_MODULE_H

@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "../Structures/List.h"
+#include "../Module/Module.h"
 #include "../Module/NurseModule.h"
 #include "../Module/DoctorModule.h"
 #include "../Util/Util.h"

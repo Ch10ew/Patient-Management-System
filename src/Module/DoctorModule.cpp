@@ -18,7 +18,7 @@ namespace pms
     
 
     DoctorModule::DoctorModule(std::shared_ptr<ResourcePool> resource_pool)
-    : UI(resource_pool)
+    : Module(resource_pool)
     {
         module_option_text_ = "Doctor Login";
     }

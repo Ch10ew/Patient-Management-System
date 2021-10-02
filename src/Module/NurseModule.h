@@ -1,7 +1,7 @@
 #ifndef PMS_NURSE_MODULE_H
 #define PMS_NURSE_MODULE_H
 
-#include "UI.h"
+#include "Module.h"
 #include "../Structures/List.h"
 #include "../Structures/Role.h"
 #include "../Structures/Patient.h"
@@ -11,7 +11,7 @@
 
 namespace pms
 {
-    class NurseModule : public UI
+    class NurseModule : public Module
     {
         public:
             NurseModule(std::shared_ptr<ResourcePool> resource_pool);
