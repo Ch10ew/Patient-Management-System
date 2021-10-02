@@ -16,6 +16,9 @@ namespace pms
 {
     namespace util
     {
+        /**
+         * @brief Clears the console.
+         */
         static void ClearScreen()
         {
             static bool init_done = false;
@@ -90,6 +93,12 @@ namespace pms
             }
         }
 
+        /**
+         * @brief Converts a std::string to lowercase.
+         * 
+         * @param input_string 
+         * @return std::string Lowercase string.
+         */
         static std::string ToLower(std::string input_string)
         {
             std::string ret;
@@ -101,6 +110,13 @@ namespace pms
             return ret;
         }
 
+        /**
+         * @brief Fits a string within `width`
+         * 
+         * @param input_string 
+         * @param width 
+         * @return std::string 
+         */
         static std::string FitString(std::string input_string, const int width)
         {
             int count = 0;
@@ -130,7 +146,7 @@ namespace pms
             
             return return_string;
         }
-
+        
         static bool MatchPatientId(std::shared_ptr<Patient> p1, std::shared_ptr<Patient> p2)
         {
             int res = ToLower(p1->id).find(ToLower(p2->id));
@@ -334,6 +350,14 @@ namespace pms
             return p1.visit_history.Size() > p2.visit_history.Size();
         }
 
+        /**
+         * @brief Generates a new id (+1 from previous maximum) given `prefix`, `length`, and `list_size`.
+         * 
+         * @param prefix String of prefix to be used for id.
+         * @param length Length of id.
+         * @param list_size Size of list (index to be used as maximum).
+         * @return std::string Generated next id.
+         */
         static std::string GenerateId(std::string prefix, int length, int list_size)
         {
             std::stringstream ss;
