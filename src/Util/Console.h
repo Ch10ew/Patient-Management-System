@@ -63,6 +63,13 @@ namespace console
         ESC_COUNT,
     };
 
+    /**
+     * @brief Moves the cursor to position `x`, `y`.
+     * 
+     * @param x New x pos
+     * @param y New y pos
+     * @return std::string String to print to console to move the cursor.
+     */
     static inline std::string AnsiEscCursorPosition(int x, int y)
     {
         std::stringstream ss;
@@ -70,6 +77,12 @@ namespace console
         return ss.str();
     }
 
+    /**
+     * @brief Converts an `ANSI_SEQ` enum to its string counterpart.
+     * 
+     * @param e `ANSI_SEQ` enum
+     * @return std::string String to print to console to achieve the effect.
+     */
     static std::string AnsiEsc(ANSI_SEQ e)
     {
         switch (e)
@@ -204,6 +217,10 @@ namespace console
         }
     }
 
+    /**
+     * @brief Sets up the console/terminal to support ANSI Escape sequences.
+     * 
+     */
     static void InitConsole()
     {
         #ifdef _WIN32
@@ -217,11 +234,11 @@ namespace console
             // For stdout,
             //   0x0004 - ENABLE_VIRTUAL_TERMINAL_PROCESSING
             DWORD original_mode = 0;
-            HANDLE stdin_handle = GetStdHandle(-10);
+            /*HANDLE stdin_handle = GetStdHandle(-10);*/
             HANDLE stdout_handle = GetStdHandle(-11);
             // stdin
-            GetConsoleMode(stdin_handle, &original_mode);
-            SetConsoleMode(stdin_handle, original_mode | 0x0200);
+            /*GetConsoleMode(stdin_handle, &original_mode);
+            SetConsoleMode(stdin_handle, original_mode | 0x0200);*/
 
             // stdout
             GetConsoleMode(stdout_handle, &original_mode);
@@ -229,10 +246,10 @@ namespace console
         #else
             // termios Setup for Terminal (Linux only)
             // https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/termios.h.html
-            struct termios t;
+            /*struct termios t;
             tcgetattr(STDIN_FILENO, &t);
             t.c_lflag &= ~ICANON; // Canonical input
-            tcsetattr(STDIN_FILENO, TSCANOW, &t);
+            tcsetattr(STDIN_FILENO, TSCANOW, &t);*/
         #endif // _WIN32
     }
 } // namespace console
