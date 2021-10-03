@@ -607,8 +607,9 @@ namespace pms
 	template<typename T>
 	T List<T>::Pop()			
 	{
-		if(size_ == 0) 
+		if (size_ == 0) 
 			throw std::out_of_range("pms::List<T>::Pop(): List is empty");
+        
 		T data_copy = tail_->data;
 		RemoveTail();
 		return data_copy;
@@ -622,8 +623,9 @@ namespace pms
 	template<typename T>
 	T List<T>::Poll()			
 	{
-		if(size_ == 0) 
+		if (size_ == 0) 
 			throw std::out_of_range("pms::List<T>::Poll(): List is empty");
+        
 		T data_copy = head_->data;
 		RemoveHead();
 		return data_copy;
