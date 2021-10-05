@@ -34,6 +34,7 @@ namespace pms
             std::string PromptModify(std::string attribute);
             std::string PromptSearch(std::string attribute);
             void PromptPagination();
+            void PromptPaginationList();
         
         private:
             template <class Compare>
@@ -44,6 +45,9 @@ namespace pms
 
             template <class Compare>
             void Pagination(Compare func);
+
+            template <class Compare>
+            void PaginationList(Compare func);
 
         private:
             bool logged_in_;
@@ -236,7 +240,7 @@ namespace pms
     }
 
     /**
-     * @brief Creates pagination for the patient list.
+     * @brief Creates pagination for patients.
      * 
      * Has a chance to run out of memory as it creates a copy of the current patient list.
      * 
@@ -245,6 +249,123 @@ namespace pms
      */
     template <class Compare>
     void DoctorModule::Pagination(Compare func)
+    {
+        bool invalid_input = false;
+        bool exit = false;
+
+        int page_count = resource_pool_->patient_data.Size();
+        int current_page_index = 0;
+        std::string input;
+
+        while (!exit)
+        {
+            util::ClearScreen();
+
+            // "Header" text
+            std::cout << "                              ------------------------------------------" << std::endl;
+            std::cout << "                                                Patients" << std::endl;
+            std::cout << "                              ------------------------------------------" << std::endl;
+            std::cout << std::endl;
+
+            // Create sorted list
+            List<pms::Patient> copy;
+            for (int i = 0; i < resource_pool_->patient_data.Size(); ++i)
+            {
+                Patient p_tmp = *resource_pool_->patient_data.At(i);
+                copy.InsertTail(p_tmp);
+            }
+
+            copy.Sort(func);
+
+            // Print 1 patient
+            Patient p_tmp = copy.At(current_page_index);
+            std::cout << p_tmp.id << " - " << p_tmp.first_name << " " << p_tmp.last_name << std::endl;
+            std::cout << "Age: " << p_tmp.age << std::endl;
+            std::cout << "Gender: " << p_tmp.gender << std::endl;
+            std::cout << "Contact Number: " << p_tmp.contact_number << std::endl;
+            std::cout << "Address: " << p_tmp.address << std::endl;
+            std::cout << "Disability: " << p_tmp.disability << std::endl;
+            std::cout << "Priority: " << p_tmp.priority << std::endl;
+            std::cout << "Visit History: " << std::endl;
+            for (int i = 0; i < p_tmp.visit_history.Size(); ++i)
+            {
+                std::cout << "\t" << "Visit #" << i + 1 << std::endl;
+                std::cout << "\t" << "Sickness: " << p_tmp.visit_history.At(i).sickness << std::endl;
+                std::cout << "\t" << "Description: " << p_tmp.visit_history.At(i).description << std::endl;
+                std::cout << "\t" << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(p_tmp.visit_history.At(i).registration_time)) << std::endl;
+                std::cout << "\t" << "Doctor: " << p_tmp.visit_history.At(i).doctor->id << " - " << p_tmp.visit_history.At(i).doctor->first_name << p_tmp.visit_history.At(i).doctor->last_name << std::endl;
+                std::cout << "\t" << "Medicide Information: " << p_tmp.visit_history.At(i).medicine_information << std::endl;
+
+                if (i != p_tmp.visit_history.Size() - 1)
+                    std::cout << std::endl;
+            }
+
+            // "Footer" text
+            if (invalid_input)
+            {
+                std::cout << "========== Invalid Input ==========" << std::endl;
+                invalid_input = false;
+            }
+            else
+                std::cout << std::endl;
+            std::cout << "Page " << current_page_index + 1 << " of " << page_count << std::endl;
+            std::cout << "\"<<\" Start | \"<\" Back | \"!\" Exit | \">\" Forward | \">>\" End" << std::endl;
+            std::cout << "Input: ";
+            std::cin >> input;
+            std::cin.ignore();
+
+            if (input == "<<" && !(current_page_index - 1 < 0))
+            {
+                current_page_index = 0;
+            }
+            else if (input == ">>" && !(current_page_index > page_count - 2))
+            {
+                current_page_index = page_count - 1;
+            }
+            else
+            {
+                if (input.length() > 1)
+                {
+                    invalid_input = true;
+                }
+                else
+                {
+                    switch (input[0])
+                    {
+                        case '<':
+                            if (current_page_index - 1 < 0)
+                                invalid_input = true;
+                            else
+                                --current_page_index;
+                            break;
+                        case '!':
+                            exit = true;
+                            break;
+                        case '>':
+                            if (current_page_index > page_count - 2)
+                                invalid_input = true;
+                            else
+                                ++current_page_index;
+                            break;
+                        default:
+                            invalid_input = true;
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @brief Creates pagination for the patient list.
+     * 
+     * Has a chance to run out of memory as it creates a copy of the current patient list.
+     * 
+     * @param func Comparison function that satisfy the Compare C++ named requirement. Used for sorting
+     * the patient list beforehand.
+     */
+    template <class Compare>
+    void DoctorModule::PaginationList(Compare func)
     {
         bool invalid_input = false;
         bool exit = false;
@@ -313,31 +434,49 @@ namespace pms
             else
                 std::cout << std::endl;
             std::cout << "Page " << current_page_index + 1 << " of " << page_count << std::endl;
-            std::cout << "\"<\" Back | \"!\" Exit | \">\" Forward" << std::endl;
+            std::cout << "\"<<\" Start | \"<\" Back | \"!\" Exit | \">\" Forward | \">>\" End" << std::endl;
             std::cout << "Input: ";
             std::cin >> input;
             std::cin.ignore();
 
-            switch (input[0])
+            if (input == "<<" && !(current_page_index - 1 < 0))
             {
-                case '<':
-                    if (current_page_index < page_count - 1)
-                        invalid_input = true;
-                    else
-                        --current_page_index;
-                    break;
-                case '!':
-                    exit = true;
-                    break;
-                case '>':
-                    if (current_page_index > page_count - 2)
-                        invalid_input = true;
-                    else
-                        ++current_page_index;
-                    break;
-                default:
+                current_page_index = 0;
+            }
+            else if (input == ">>" && !(current_page_index > page_count - 2))
+            {
+                current_page_index = page_count - 1;
+            }
+            else
+            {
+                if (input.length() > 1)
+                {
                     invalid_input = true;
-                    break;
+                }
+                else
+                {
+                    switch (input[0])
+                    {
+                        case '<':
+                            if (current_page_index - 1 < 0)
+                                invalid_input = true;
+                            else
+                                --current_page_index;
+                            break;
+                        case '!':
+                            exit = true;
+                            break;
+                        case '>':
+                            if (current_page_index > page_count - 2)
+                                invalid_input = true;
+                            else
+                                ++current_page_index;
+                            break;
+                        default:
+                            invalid_input = true;
+                            break;
+                    }
+                }
             }
         }
     }

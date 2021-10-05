@@ -118,15 +118,16 @@ namespace pms
     {
         bool exit = false;
 
-        std::string* option_text = new std::string[4];
+        std::string* option_text = new std::string[5];
         option_text[0] = "View full patient list";
         option_text[1] = "Modify patient record";
-        option_text[2] = "View patient list in pagination";
-        option_text[3] = "Search for patient record";
+        option_text[2] = "View patient list in pagination (patient)";
+        option_text[3] = "View patient list in pagination (list)";
+        option_text[4] = "Search for patient record";
 
         while (!exit)
         {
-            int option = util::Menu("Welcome, " + logged_in_doctor_->first_name, option_text, 4);
+            int option = util::Menu("Welcome, " + logged_in_doctor_->first_name, option_text, 5);
 
             // DEBUG ======
             std::shared_ptr<Patient> res;
@@ -146,9 +147,12 @@ namespace pms
                     PromptPagination();
                     break;
                 case 3:
-                    PrintPatient(Search());
+                    PromptPagination();
                     break;
                 case 4:
+                    PrintPatient(Search());
+                    break;
+                case 5:
                     std::cout << "Logging out..." << std::endl;
                     logged_in_ = false;
                     logged_in_doctor_ = nullptr;
@@ -702,6 +706,99 @@ namespace pms
         getline(std::cin, input_string);
 
         return input_string;
+    }
+
+    /**
+     * @brief Prompts for the sorting method for pagination.
+     */
+    void DoctorModule::PromptPaginationList()
+    {
+        std::string* option_text = new std::string[18];
+        option_text[0] = "Sort by Id (Ascending)";
+        option_text[1] = "Sort by Id (Descending)";
+        option_text[2] = "Sort by first name (Ascending)";
+        option_text[3] = "Sort by first name (Descending)";
+        option_text[4] = "Sort by last name (Ascending)";
+        option_text[5] = "Sort by last name (Descending)";
+        option_text[6] = "Sort by age (Ascending)";
+        option_text[7] = "Sort by age (Descending)";
+        option_text[8] = "Sort by gender (Ascending)";
+        option_text[9] = "Sort by gender (Descending)";
+        option_text[10] = "Sort by contact (Ascending)";
+        option_text[11] = "Sort by contact (Descending)";
+        option_text[12] = "Sort by address (Ascending)";
+        option_text[13] = "Sort by address (Descending)";
+        option_text[14] = "Sort by disability (Ascending)";
+        option_text[15] = "Sort by disability (Descending)";
+        option_text[16] = "Sort by visit count (Ascending)";
+        option_text[17] = "Sort by visit count (Descending)";
+
+        // Prompt for search criteria
+        int option = util::Menu("Pagination for patient", option_text, 18);
+
+        // Free pointer above
+        delete[] option_text;
+        
+        // Run based on option selected
+        switch (option)
+        {
+            case 0:
+                PaginationList(util::ComparePatientIdAsc);
+                break;
+            case 1:
+                PaginationList(util::ComparePatientIdDesc);
+                break;
+            case 2:
+                PaginationList(util::ComparePatientFirstNameAsc);
+                break;
+            case 3:
+                PaginationList(util::ComparePatientFirstNameDesc);
+                break;
+            case 4:
+                PaginationList(util::ComparePatientLastNameAsc);
+                break;
+            case 5:
+                PaginationList(util::ComparePatientLastNameDesc);
+                break;
+            case 6:
+                PaginationList(util::ComparePatientAgeAsc);
+                break;
+            case 7:
+                PaginationList(util::ComparePatientAgeDesc);
+                break;
+            case 8:
+                PaginationList(util::ComparePatientGenderAsc);
+                break;
+            case 9:
+                PaginationList(util::ComparePatientGenderDesc);
+                break;
+            case 10:
+                PaginationList(util::ComparePatientContactNumberAsc);
+                break;
+            case 11:
+                PaginationList(util::ComparePatientContactNumberDesc);
+                break;
+            case 12:
+                PaginationList(util::ComparePatientAddressAsc);
+                break;
+            case 13:
+                PaginationList(util::ComparePatientAddressDesc);
+                break;
+            case 14:
+                PaginationList(util::ComparePatientDisabilityAsc);
+                break;
+            case 15:
+                PaginationList(util::ComparePatientDisabilityDesc);
+                break;
+            case 16:
+                PaginationList(util::ComparePatientVisitsAsc);
+                break;
+            case 17:
+                PaginationList(util::ComparePatientVisitsDesc);
+                break;
+            case 18:
+                break;
+        }
     }
 
     /**
