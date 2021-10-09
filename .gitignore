@@ -16,5 +16,6 @@ src/my_test.cpp
 src/my_test.exe
 src/pms.exe
 src/test_main.exe
+build/
 
 DSTR-Assignment-workspace.code-workspace
