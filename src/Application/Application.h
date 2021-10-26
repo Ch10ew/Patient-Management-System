@@ -44,7 +44,7 @@ namespace pms
 			/**
 			 * @brief Flag for if the user wants to exit. Used to keep the program alive.
 			 */
-			bool exit_ = false;;
+			bool exit_ = false;
 	};
 } // namespace pms
 
