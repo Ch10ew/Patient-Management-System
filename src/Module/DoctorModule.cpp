@@ -147,7 +147,7 @@ namespace pms
                     PromptPagination();
                     break;
                 case 3:
-                    PromptPagination();
+                    PromptPaginationList();
                     break;
                 case 4:
                     PrintPatient(Search());
