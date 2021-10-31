@@ -350,25 +350,69 @@ namespace pms
             return p1.visit_history.Size() > p2.visit_history.Size();
         }
 
-        static bool CompareWaitingTimeAsc(const Waiting& w1, const Waiting& w2)
+        static bool CompareWaitingTimeAsc(Waiting& w1, Waiting& w2)
         {
             return w1.registration_time < w2.registration_time;
         }
 
-        static bool CompareWaitingTimeDesc(const Waiting& w1, const Waiting& w2)
+        static bool CompareWaitingTimeDesc(Waiting& w1, Waiting& w2)
         {
             return w1.registration_time > w2.registration_time;
         }
 
-        static bool ComparePriorityAsc(const Waiting& w1, const Waiting& w2)
+        static bool ComparePriorityAsc(Waiting& w1, Waiting& w2)
         {
             return w1.priority < w2.priority;
         }
 
-        static bool ComparePriorityDesc(const Waiting& w1, const Waiting& w2)
+        static bool ComparePriorityAsc2(std::shared_ptr<Waiting> w1, std::shared_ptr<Waiting> w2)
+        {
+            return w1->priority < w2->priority;
+        }
+
+        static bool ComparePriorityDesc(Waiting& w1, Waiting& w2)
         {
             return w1.priority > w2.priority;
         }
+
+        static bool CompareWaitingFirstNameAsc(Waiting& w1, Waiting& w2)
+        {
+            return w1.first_name < w2.first_name;
+        }
+
+        static bool CompareWaitingFirstNameDesc(Waiting& w1, Waiting& w2)
+        {
+            return w1.first_name > w2.first_name;
+        }
+
+        static bool CompareWaitingLastNameAsc(Waiting& w1, Waiting& w2)
+        {
+            return w1.last_name < w2.last_name;
+        }
+
+        static bool CompareWaitingLastNameDesc(Waiting& w1, Waiting& w2)
+        {
+            return w1.last_name > w2.last_name;
+        }
+
+        static bool CompareWaitingIdAsc(Waiting& w1, Waiting& w2)
+        {
+            std::string wid1_str = w1.id.substr(1);
+            std::string wid2_str = w2.id.substr(1);
+            int wid1 = std::stoi(wid1_str);
+            int wid2 = std::stoi(wid2_str);
+            return wid1 < wid2;
+        }
+
+        static bool CompareWaitingIdDesc(Waiting& w1, Waiting& w2)
+        {
+            std::string wid1_str = w1.id.substr(1);
+            std::string wid2_str = w2.id.substr(1);
+            int wid1 = std::stoi(wid1_str);
+            int wid2 = std::stoi(wid2_str);
+            return wid1 > wid2;
+        }
+
 
         /**
          * @brief Generates a new id (+1 from previous maximum) given `prefix`, `length`, and `list_size`.

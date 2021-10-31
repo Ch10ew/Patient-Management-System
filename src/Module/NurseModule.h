@@ -21,7 +21,6 @@ namespace pms
             void Run();
             void Login();
             void Menu();
-
         private:
             void AddPatient();
             void PrintPatientList();
@@ -39,7 +38,6 @@ namespace pms
             void PromptPaginationList();
             void AddtoWaiting(std::shared_ptr<Patient> patient_ptr);
             void promptWaitingPagination();
-        
         private:
             template <class Compare>
             std::shared_ptr<Patient> SearchBy(Patient search_term, Compare comp);
@@ -54,15 +52,12 @@ namespace pms
             void PaginationList(Compare func);
 
             template <class Compare>
-            void PaginationWatingList(Compare func);
-            
-
+            void PaginationWaitngList(Compare func);
         private:
             bool logged_in_;
             bool exit_;
             std::shared_ptr<Nurse> logged_in_nurse_;
             
-        
     };
 
     /**
@@ -492,15 +487,15 @@ namespace pms
     }
 
     /**
-     * @brief Creates pagination for the patient list.
+     * @brief Creates pagination for the waiting list.
      * 
-     * Has a chance to run out of memory as it creates a copy of the current patient list.
+     * Has a chance to run out of memory as it creates a copy of the current waiting list.
      * 
      * @param func Comparison function that satisfy the Compare C++ named requirement. Used for sorting
-     * the patient list beforehand.
+     * the waiting list beforehand.
      */
     template <class Compare>
-    void NurseModule::PaginationWatingList(Compare func)
+    void NurseModule::PaginationWaitngList(Compare func)
     {
         bool invalid_input = false;
         bool exit = false;
@@ -522,7 +517,7 @@ namespace pms
             std::cout << "      ------------------------------------------" << std::endl;
             std::cout << "                        Waiting List" << std::endl;
             std::cout << "      ------------------------------------------" << std::endl;
-            std::cout << "ID      First Name  Last Name   Priority  Registered Time" << std::endl;
+            std::cout << "ID      First Name  Last Name   Priority       Registered Time" << std::endl;
 
             // Create sorted list
             List<pms::Waiting> copy;
@@ -542,9 +537,10 @@ namespace pms
                 Waiting w_tmp = copy.At(i);
                 std::cout << util::FitString(w_tmp.id, 7) << " ";  // ID
                 std::cout << util::FitString(w_tmp.first_name, 11) << " ";  // First Name
-                std::cout << util::FitString(w_tmp.last_name, 11) << " ";  // Last Name
-                std::cout << util::FitString(std::to_string(w_tmp.priority), 3) << " ";  // Age
-                std::cout << ctimew::FormatTime(ctimew::StructTM(w_tmp.registration_time)) << " ";  // Gender
+                std::cout << util::FitString(w_tmp.last_name, 11) << "      ";  // Last Name
+                std::cout << util::FitString(std::to_string(w_tmp.priority), 3) << " ";  // Priority Index
+                std::cout << ctimew::FormatTime(ctimew::StructTM(w_tmp.registration_time)) << " ";  // Time
+                std::cout << std::endl;
                 if (lines == 0)
                     break;
             }

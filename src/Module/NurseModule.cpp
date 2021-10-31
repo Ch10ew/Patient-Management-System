@@ -41,9 +41,14 @@ namespace pms
         while (!exit_);
     }
 
+    /**
+     * @brief Prompts for username and password. Then, tries to find a match.
+     * 
+     * Sets logged in flag if successful. Also sets the logged in patient pointer.
+     */
     void NurseModule::Login()
     {
-        //resource_pool_->waiting_data.Sort(util::ComparePriorityDesc);
+        resource_pool_->waiting_data.Sort(util::ComparePriorityAsc2);
         int option = -1;
         bool show_invalid = false;
         bool found = false;
@@ -95,19 +100,22 @@ namespace pms
         while (!exit);
     }
 
+    /**
+     * @brief Allows the doctor to add a new patient, add an existing patient to waiting list print patient list, modify a patient record, 
+     * see the patient list in pagination, call a patient search for a specific patient and and view the waiting list in pagination.
+     */
     void NurseModule::Menu()
     {
         bool exit = false;
 
         std::string* option_text = new std::string[7];
-        option_text[0] = "Add a new patient to waiting list";     //and sort
-        option_text[1] = "Add existing patient to waiting list";  //search, return into add to wait list
-        option_text[2] = "Modify patient record";                 //search into modify
-        option_text[3] = "View patient list in pagination";       //print patient list
-        option_text[4] = "Call a patient";                        //poll from waiting list
-        option_text[5] = "Search for patient record";             //search
-        option_text[6] = "Sort Waiting List";   //sort
-
+        option_text[0] = "Add a new patient to waiting list";     
+        option_text[1] = "Add existing patient to waiting list";  
+        option_text[2] = "Modify patient record";                 
+        option_text[3] = "View patient list in pagination";       
+        option_text[4] = "Call a patient";                        
+        option_text[5] = "Search for patient record";             
+        option_text[6] = "View waiting list in pagination";   
         while (!exit)
         {
             int option = pms::util::Menu("Welcome, " + logged_in_nurse_->first_name, option_text, 7);
@@ -150,7 +158,7 @@ namespace pms
                 case 6:
                     std::cout << " = Search & View = " << std::endl;
                     std::cout << std::endl;
-                    //PrintPatient(Search());
+                    promptWaitingPagination();
                     break;
                 case 7:
                     std::cout << "Logging out..." << std::endl;
@@ -164,7 +172,9 @@ namespace pms
         // free pointer above
         delete[] option_text;
     }
-
+    /**
+     * @brief Add a patient to the database.
+     */
     void NurseModule::AddPatient()
     {
         std::string id;
@@ -277,7 +287,7 @@ namespace pms
             priority,
             time_temp
         ));
-        //resource_pool_->waiting_data.Sort(util::ComparePriorityDesc);
+        resource_pool_->waiting_data.Sort(util::ComparePriorityAsc2);
         std::cout << std::endl;
         std::cout << std::endl;
         std::cout << "========== Patient Entered Successfully ==========" << std::endl;
@@ -320,6 +330,11 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Prompts for search of a patient.
+     * 
+     * @return std::shared_ptr<Patient> pointer to `Patient`. May be `nullptr`.
+     */
     std::shared_ptr<Patient> NurseModule::Search()
     {
         std::string* option_text = new std::string[8];
@@ -858,7 +873,7 @@ namespace pms
     }
 
     /**
-     * @brief Prompts for the sorting method for pagination.
+     * @brief Prompts for the sorting method for pagination for patients.
      */
     void NurseModule::PromptPaginationList()
     {
@@ -950,6 +965,11 @@ namespace pms
         }
     }
 
+    /**
+     * @brief Calling and removing a patient from the first of the waiting list sorted with priority index.
+     * 
+     * @param Pointer to `Patient` to be called.
+     */
     void NurseModule::CallPatient(std::shared_ptr<Patient> patient_ptr){
         std::cout << "Calling the following patient" << std::endl;
         std::string input;
@@ -1046,7 +1066,12 @@ namespace pms
         getline(std::cin, input);
 
     }
-
+    
+    /**
+     * @brief Add an existing patient to waiting list.
+     * 
+     * @param Pointer to `Patient` to be called.
+     */
     void NurseModule::AddtoWaiting(std::shared_ptr<Patient> patient_ptr){
         util::ClearScreen();
 
@@ -1094,7 +1119,7 @@ namespace pms
                     priority,
                     time_temp
                 ));
-                //resource_pool_->waiting_data.Sort(util::ComparePriorityDesc);
+                resource_pool_->waiting_data.Sort(util::ComparePriorityAsc2);
                 std::cout << "Patient is added to the wating list" << std::endl;
                 std::cout << "Patient ID: " << patient_ptr->id << std::endl;
                 std::cout << "First Name: " << patient_ptr->first_name << std::endl;
@@ -1109,7 +1134,10 @@ namespace pms
         }
     }
 
-    /*void NurseModule::promptWaitingPagination(){
+    /**
+     * @brief Prompts for the sorting method for pagination for waiting list.
+     */
+    void NurseModule::promptWaitingPagination(){
         std::string* option_text = new std::string[10];
         option_text[0] = "Sort by Id (Ascending)";
         option_text[1] = "Sort by Id (Descending)";
@@ -1131,38 +1159,38 @@ namespace pms
         switch (option)
         {
             case 0:
-                PaginationList(util::ComparePatientIdAsc);
+                PaginationWaitngList(util::CompareWaitingIdAsc);
                 break;
             case 1:
-                PaginationList(util::ComparePatientIdDesc);
+                PaginationWaitngList(util::CompareWaitingIdDesc);
                 break;
             case 2:
-                PaginationList(util::ComparePatientFirstNameAsc);
+                PaginationWaitngList(util::CompareWaitingFirstNameAsc);
                 break;
             case 3:
-                PaginationList(util::ComparePatientFirstNameDesc);
+                PaginationWaitngList(util::CompareWaitingFirstNameDesc);
                 break;
             case 4:
-                PaginationList(util::ComparePatientLastNameAsc);
+                PaginationWaitngList(util::CompareWaitingLastNameAsc);
                 break;
             case 5:
-                PaginationList(util::ComparePatientLastNameDesc);
+                PaginationWaitngList(util::CompareWaitingLastNameDesc);
                 break;
             case 6:
-                PaginationList(util::CompareWaitingTimeAsc);
+                PaginationWaitngList(util::CompareWaitingTimeAsc);
                 break;
             case 7:
-                PaginationList(util::CompareWaitingTimeDesc);
+                PaginationWaitngList(util::CompareWaitingTimeDesc);
                 break;
             case 8:
-                PaginationList(util::ComparePriorityAsc);
+                PaginationWaitngList(util::ComparePriorityAsc);
                 break;
             case 9:
-                PaginationList(util::ComparePriorityDesc);
+                PaginationWaitngList(util::ComparePriorityDesc);
                 break;
             
         }
         
-    }*/
+    }
 
 } // namespace pms
