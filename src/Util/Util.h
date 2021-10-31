@@ -350,6 +350,26 @@ namespace pms
             return p1.visit_history.Size() > p2.visit_history.Size();
         }
 
+        static bool CompareWaitingTimeAsc(const Waiting& w1, const Waiting& w2)
+        {
+            return w1.registration_time < w2.registration_time;
+        }
+
+        static bool CompareWaitingTimeDesc(const Waiting& w1, const Waiting& w2)
+        {
+            return w1.registration_time > w2.registration_time;
+        }
+
+        static bool ComparePriorityAsc(const Waiting& w1, const Waiting& w2)
+        {
+            return w1.priority < w2.priority;
+        }
+
+        static bool ComparePriorityDesc(const Waiting& w1, const Waiting& w2)
+        {
+            return w1.priority > w2.priority;
+        }
+
         /**
          * @brief Generates a new id (+1 from previous maximum) given `prefix`, `length`, and `list_size`.
          * 
