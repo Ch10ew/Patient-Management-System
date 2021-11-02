@@ -29,7 +29,7 @@ namespace pms
             void Modify(std::shared_ptr<pms::Patient> patient_ptr);
             void ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr);
             void PrintPatient(std::shared_ptr<Patient> patient_ptr);
-            void CallPatient(std::shared_ptr<Patient> patient_ptr);
+            void CallPatient(std::shared_ptr<Waiting> waiting_ptr);
             std::shared_ptr<Patient> Search();
             std::shared_ptr<Patient> SearchByVisitHistory();
             std::string PromptModify(std::string attribute);

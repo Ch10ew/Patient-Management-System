@@ -150,7 +150,7 @@ namespace pms
                 case 4:
                     std::cout << " = Call a patinet = " << std::endl;
                     std::cout << std::endl;
-                    CallPatient(resource_pool_->patient_data.Poll());
+                    CallPatient(resource_pool_->waiting_data.Poll());
                     break;
                 case 5:
                     std::cout << " = Search & View = " << std::endl;
@@ -975,10 +975,11 @@ namespace pms
      * 
      * @param Pointer to `Patient` to be called.
      */
-    void NurseModule::CallPatient(std::shared_ptr<Patient> patient_ptr){
-        std::cout << "Calling the following patient" << std::endl;
+    void NurseModule::CallPatient(std::shared_ptr<Waiting> waiting_ptr){
+        
         std::string input;
-        if (!patient_ptr)
+        
+        if (!waiting_ptr)
         {
             std::cout << std::endl;
             std::cout << " = Search Results =" << std::endl;
@@ -989,9 +990,9 @@ namespace pms
             getline(std::cin, input);
             return;
         }
-        
+        std::shared_ptr<Patient> patient_ptr = SearchBy(Patient(waiting_ptr->id), util::MatchPatientId);
         Patient copy = *patient_ptr;
-
+        std::cout << "Calling the following patient" << std::endl;
         std::cout << std::endl;
         std::cout << copy.id << " - " << copy.first_name << " " << copy.last_name << std::endl;
         std::cout << "Age: " << copy.age << std::endl;
@@ -1027,7 +1028,7 @@ namespace pms
     void NurseModule::PrintPatient(std::shared_ptr<Patient> patient_ptr)
     {
         util::ClearScreen();
-
+        resource_pool_->waiting_data.Sort(util::ComparePriorityAsc2);
         std::string input;
         if (!patient_ptr)
         {
@@ -1096,7 +1097,6 @@ namespace pms
         }
         std::cout << "Patient found:"  << std::endl;
         PrintPatient(patient_ptr);
-        std::cout << patient_ptr << std::endl;
         while (!exit) {
             
             if (invalid_input){
