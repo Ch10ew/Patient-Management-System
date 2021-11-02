@@ -119,7 +119,7 @@ namespace pms
         option_text[5] = "View waiting list in pagination";   
         while (!exit)
         {
-            int option = pms::util::Menu("Welcome, " + logged_in_nurse_->first_name, option_text, 7);
+            int option = pms::util::Menu("Welcome, " + logged_in_nurse_->first_name, option_text, 6);
 
             // Run selected option
             std::cout << std::endl;
