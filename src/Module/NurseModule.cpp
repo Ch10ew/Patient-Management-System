@@ -186,7 +186,7 @@ namespace pms
         char gender;
         std::string contact_number;
         std::string address;
-        std::string disability;
+        std::string disability = "";
         int priority;
         bool invalid_input = false;
 
@@ -268,7 +268,7 @@ namespace pms
         }
         delete[] input_text;
         std::string input;
-        int size = resource_pool_->patient_data.Size();
+        int size = resource_pool_->patient_data.Size() + 1;
         id = pms::util::GenerateId("P", 6, size);
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
             id,
