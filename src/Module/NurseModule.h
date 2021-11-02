@@ -26,13 +26,11 @@ namespace pms
             void PrintPatientList();
             std::string GeneratePatientID(std::string prefix, int length, int list_size);
             void Pagination();
-            void Modify(std::shared_ptr<pms::Patient> patient_ptr);
-            void ModifyVisitHistory(std::shared_ptr<pms::Patient> patient_ptr);
+    
             void PrintPatient(std::shared_ptr<Patient> patient_ptr);
             void CallPatient(std::shared_ptr<Waiting> waiting_ptr);
             std::shared_ptr<Patient> Search();
             std::shared_ptr<Patient> SearchByVisitHistory();
-            std::string PromptModify(std::string attribute);
             std::string PromptSearch(std::string attribute);
             void PromptPagination();
             void PromptPaginationList();
