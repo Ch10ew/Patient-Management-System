@@ -991,6 +991,8 @@ namespace pms
             return;
         }
         std::shared_ptr<Patient> patient_ptr = SearchBy(Patient(waiting_ptr->id), util::MatchPatientId);
+        if(!patient_ptr)
+            return;
         Patient copy = *patient_ptr;
         std::cout << "Calling the following patient" << std::endl;
         std::cout << std::endl;
