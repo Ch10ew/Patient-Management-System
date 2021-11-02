@@ -27,7 +27,9 @@ namespace pms
         module_option_text_ = "Nurse Login";
     }
 
-   
+    /**
+     * @brief Entry point of `NurseModule`. Loops `Login()` (and optionally `Menu()`) until exit flag is set.
+     */
     void NurseModule::Run()
     {
         do
@@ -188,7 +190,7 @@ namespace pms
         int priority;
         bool invalid_input = false;
 
-        std::string* input_text = new std::string[7];
+        std::string* input_text = new std::string[8];
         input_text[0] = "First Name: ";
         input_text[1] = "Last Name: ";
         input_text[2] = "Age: ";
@@ -196,9 +198,7 @@ namespace pms
         input_text[4] = "Contact Number: ";
         input_text[5] = "Address: ";
         input_text[6] = "Disability: ";
-        input_text[7] = "Priority Index";
-
-        delete[] input_text;
+        input_text[7] = "Priority Index: ";
 
         for(int i = 0; i < 8; i++){
             std::string tmp;
@@ -209,8 +209,6 @@ namespace pms
                 std::cout << "\n" << "========== Invalid " + input_text[i] + " ==========" << std::endl;
                 invalid_input = false;
             }
-                else
-                    std::cout << "\n" << std::endl;
                     
             std::cout << input_text[i];
             switch (i)
@@ -236,8 +234,6 @@ namespace pms
                 case 3:
                     getline(std::cin, tmp2);
                     gender = toupper(tmp2[0]);
-                    std::cout << tmp2 <<std::endl;
-                    std::cout << gender << std::endl;
                     if(!(gender == 'F' || gender == 'M')){
                         invalid_input = true;
                         i--;
@@ -256,9 +252,13 @@ namespace pms
                     getline(std::cin, tmp3);
                     try
                     {
-                        priority = std::stoi(tmp);
+                        priority = std::stoi(tmp3);
+                        if (priority < 0 || priority > 5){
+                            invalid_input = true;
+                            i--;
+                        }
                     }
-                    catch(const std::exception& e)
+                    catch(...)
                     {
                         invalid_input = true;
                         i--;
@@ -266,8 +266,10 @@ namespace pms
                     break;
             }
         }
+        delete[] input_text;
+        std::string input;
         int size = resource_pool_->patient_data.Size();
-        id = pms::util::GenerateId("P", 8, size);
+        id = pms::util::GenerateId("P", 6, size);
         resource_pool_->patient_data.InsertTail(std::make_shared<Patient>(
             id,
             first_name,
@@ -298,6 +300,9 @@ namespace pms
         std::cout << "Contact Number: " << copy.contact_number << std::endl;
         std::cout << "Address: " << copy.address << std::endl;
         std::cout << "Disability: " << copy.disability << std::endl;
+        std::cout << "Priority Index: " << copy.priority << std::endl;
+        std::cout << "Enter anything to continue... ";
+        getline(std::cin, input);
         std::cout << std::endl;
     }
 
