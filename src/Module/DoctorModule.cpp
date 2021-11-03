@@ -427,6 +427,9 @@ namespace pms
                         {
                             invalid_input = true;
                         }
+
+                        if (priority < 1 || priority > 5)
+                            invalid_input = true;
                     }
                     while (invalid_input);
 
