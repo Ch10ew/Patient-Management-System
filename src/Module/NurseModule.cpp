@@ -140,7 +140,7 @@ namespace pms
                     PromptPaginationList();
                     break;
                 case 3:
-                    std::cout << " = Call a patinet = " << std::endl;
+                    std::cout << " = Call a patient = " << std::endl;
                     std::cout << std::endl;
                     CallPatient(resource_pool_->waiting_data.Poll());
                     break;
