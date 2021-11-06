@@ -144,7 +144,7 @@ namespace pms
                 case 3:
                     std::cout << " = Call a patinet = " << std::endl;
                     std::cout << std::endl;
-                    CallPatient(resource_pool_->waiting_data.Poll());
+                    CallPatient(resource_pool_->waiting_data.Head());
                     break;
                 case 4:
                     std::cout << " = Search & View = " << std::endl;
@@ -183,9 +183,10 @@ namespace pms
         std::string disability = "";
         int priority;
         bool invalid_input = false;
+        bool exit = false;
 
         std::string* input_text = new std::string[8];
-        input_text[0] = "First Name: ";
+        input_text[0] = "First Name (Enter (!) to exit): ";
         input_text[1] = "Last Name: ";
         input_text[2] = "Age: ";
         input_text[3] = "Gender(F/M): ";
@@ -195,9 +196,12 @@ namespace pms
         input_text[7] = "Priority Index: ";
 
         for(int i = 0; i < 8; i++){
+            
             std::string tmp;
             std::string tmp2;
             std::string tmp3;
+            if(exit)
+                return;
             if (invalid_input)
             {
                 std::cout << "\n" << "========== Invalid " + input_text[i] + " ==========" << std::endl;
@@ -209,9 +213,14 @@ namespace pms
             {
                 case 0:
                     getline(std::cin, first_name);
+                    if(first_name == "!")
+                        exit = true;
+                    std::cout << exit << std::endl;
                     break;
                 case 1:
                     getline(std::cin, last_name);
+                    if(last_name == "!")
+                        exit = true;
                     break;
                 case 2:
                     getline(std::cin, tmp);
@@ -624,6 +633,7 @@ namespace pms
         std::shared_ptr<Patient> patient_ptr = SearchBy(Patient(waiting_ptr->id), util::MatchPatientId);
         if(!patient_ptr)
             return;
+        resource_pool_->waiting_data.RemoveHead();
         Patient copy = *patient_ptr;
         std::cout << "Calling the following patient" << std::endl;
         std::cout << std::endl;
