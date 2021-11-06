@@ -283,7 +283,6 @@ namespace pms
             return;
         }
 
-        bool exit = false;
         int option;
         std::string* option_text = new std::string[9];
         option_text[0] = "Modify first name";
@@ -296,6 +295,7 @@ namespace pms
         option_text[7] = "Modify priority";
         option_text[8] = "Modify visit history";
 
+        bool exit = false;
         while (!exit)
         {
             util::ClearScreen();
@@ -316,7 +316,7 @@ namespace pms
                 std::cout << "\t" << "Sickness: " << patient_ptr->visit_history.At(j).sickness << std::endl;
                 std::cout << "\t" << "Description: " << patient_ptr->visit_history.At(j).description << std::endl;
                 std::cout << "\t" << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(patient_ptr->visit_history.At(j).registration_time)) << std::endl;
-                std::cout << "\t" << "Doctor: " << patient_ptr->visit_history.At(j).doctor->id << " - " << patient_ptr->visit_history.At(j).doctor->first_name << patient_ptr->visit_history.At(j).doctor->last_name << std::endl;
+                std::cout << "\t" << "Doctor: " << patient_ptr->visit_history.At(j).doctor->id << " - " << patient_ptr->visit_history.At(j).doctor->first_name << " " << patient_ptr->visit_history.At(j).doctor->last_name << std::endl;
                 std::cout << "\t" << "Medicide Information: " << patient_ptr->visit_history.At(j).medicine_information << std::endl;
                 
                 if (j != patient_ptr->visit_history.Size() - 1)
@@ -427,6 +427,9 @@ namespace pms
                         {
                             invalid_input = true;
                         }
+
+                        if (priority < 1 || priority > 5)
+                            invalid_input = true;
                     }
                     while (invalid_input);
 
@@ -489,8 +492,121 @@ namespace pms
         option_text[3] = "Modify doctor";
         option_text[4] = "Modify medicine information";
 
-        // Prompt for modification field
-        int option = util::Menu("Select attribute to modify", option_text, 8);
+        bool exit = false;
+        while (!exit)
+        {
+            util::ClearScreen();
+
+            std::cout << "Visit #" << visit_index + 1 << std::endl;
+            std::cout << "Sickness: " << patient_ptr->visit_history.At(visit_index).sickness << std::endl;
+            std::cout << "Description: " << patient_ptr->visit_history.At(visit_index).description << std::endl;
+            std::cout << "Visit Time: " << ctimew::FormatTime(ctimew::StructTM(patient_ptr->visit_history.At(visit_index).registration_time)) << std::endl;
+            std::cout << "Doctor: " << patient_ptr->visit_history.At(visit_index).doctor->id << " - " << patient_ptr->visit_history.At(visit_index).doctor->first_name << " " << patient_ptr->visit_history.At(visit_index).doctor->last_name << std::endl;
+            std::cout << "Medicide Information: " << patient_ptr->visit_history.At(visit_index).medicine_information << std::endl;
+
+            // Prompt for modification field
+            int option = util::Menu("Select attribute to modify", option_text, 5, false);
+
+            // Run based on option selected
+            int age = 0, priority = 0;
+            time_t registration_time;
+            std::string data;
+            std::string* doctor_options;  // For doctor picking
+            int doctor_option;  // For doctor picking
+
+            bool invalid_input = false;
+            switch (option)
+            {
+                case 0:  // Sickness
+                    do
+                    {
+                        if (invalid_input)
+                        {
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
+
+                        data = PromptModify("sickness");
+                        if (!data.length())
+                            invalid_input = true;
+                    }
+                    while (invalid_input);
+                    patient_ptr->visit_history.At(visit_index).sickness = data;
+                    break;
+                case 1:  // Description
+                    do
+                    {
+                        if (invalid_input)
+                        {
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
+
+                        data = PromptModify("description");
+                        if (!data.length())
+                            invalid_input = true;
+                    }
+                    while (invalid_input);
+                    patient_ptr->visit_history.At(visit_index).description = data;
+                    break;
+                case 2:  // Visit date
+                    do
+                    {
+                        if (invalid_input)
+                        {
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
+
+                        data = PromptModify("visit date");                        
+                        try
+                        {
+                            registration_time = ctimew::GetTimeTFromString(data);
+                        }
+                        catch (...)
+                        {
+                            invalid_input = true;
+                        }
+                    }
+                    while (invalid_input);
+
+                    patient_ptr->visit_history.At(visit_index).registration_time = registration_time;
+                    break;
+                case 3:  // Doctor
+                    doctor_options = new std::string[resource_pool_->doctor_data.Size()];
+                    for (int i = 0; i < resource_pool_->doctor_data.Size(); ++i)
+                    {
+                        Doctor d = *(resource_pool_->doctor_data.At(i));
+                        doctor_options[i] = d.id + " | " + d.first_name + " " + d.last_name + " | " + d.specialism;
+                    }
+                    
+                    doctor_option = util::Menu("Select doctor", doctor_options, resource_pool_->doctor_data.Size());
+                    delete[] doctor_options;
+
+                    if (option != resource_pool_->doctor_data.Size())
+                        patient_ptr->visit_history.At(visit_index).doctor = resource_pool_->doctor_data.At(doctor_option);
+                    break;
+                case 4:  // Contact Number
+                    do
+                    {
+                        if (invalid_input)
+                        {
+                            std::cout << "========== Invalid Input ==========" << std::endl;
+                            invalid_input = false;
+                        }
+
+                        data = PromptModify("medicine information");
+                        if (!data.length())
+                            invalid_input = true;
+                    }
+                    while (invalid_input);
+                    patient_ptr->visit_history.At(visit_index).medicine_information = data;
+                    break;
+                case 5:  // Exit
+                    exit = true;
+                    break;
+            }
+        }
 
         // Free pointer above
         delete[] option_text;

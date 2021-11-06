@@ -59,8 +59,7 @@ namespace pms
 
         do
         {
-            std::cout << std::endl;
-            std::cout << std::endl;
+            util::ClearScreen();
             if (show_invalid)
             {
                 std::cout << "\n" << "========== Invalid Credentials ==========" << std::endl;
@@ -122,8 +121,7 @@ namespace pms
             int option = pms::util::Menu("Welcome, " + logged_in_nurse_->first_name, option_text, 6);
 
             // Run selected option
-            std::cout << std::endl;
-            std::cout << std::endl;
+            util::ClearScreen();
             switch (option)
             {
                 case 0:
@@ -142,7 +140,7 @@ namespace pms
                     PromptPaginationList();
                     break;
                 case 3:
-                    std::cout << " = Call a patinet = " << std::endl;
+                    std::cout << " = Call a patient = " << std::endl;
                     std::cout << std::endl;
                     CallPatient(resource_pool_->waiting_data.Head());
                     break;
@@ -303,7 +301,7 @@ namespace pms
         std::cout << "Contact Number: " << copy.contact_number << std::endl;
         std::cout << "Address: " << copy.address << std::endl;
         std::cout << "Disability: " << copy.disability << std::endl;
-        std::cout << "Priority Index: " << copy.priority << std::endl;
+        std::cout << "Priority Index (1-5): " << copy.priority << std::endl;
         std::cout << "Enter anything to continue... ";
         getline(std::cin, input);
         std::cout << std::endl;
