@@ -13,6 +13,12 @@ mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=../install
 make
 ```
+Example for Unix Makefiles:
+```
+mkdir build && cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=../install -G "Unix Makefiles"
+make
+```
 
 ### g++
 Alternatively, you can build directly with **g++**.
